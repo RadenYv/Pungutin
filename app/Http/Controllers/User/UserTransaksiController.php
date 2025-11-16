@@ -29,29 +29,35 @@ class UserTransaksiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'berat_kg' => 'required|numeric|min:0.1',
-            'id_kategori' => 'required|exists:kategori_sampah,id_kategori',
-            'alamat' => 'required',
-            'no_hp' => 'required',
-        ]);
+    $request->validate([
+        'berat_kg' => 'required|numeric|min:0.1',
+        'id_kategori' => 'required|exists:kategori_sampah,id_kategori',
+        'alamat' => 'required',
+        'no_hp' => 'required',
+    ]);
 
-        TransaksiSampah::create([
-            'id_user' => Auth::id(),
-            'id_petugas' => null,
-            'id_kategori' => $request->id_kategori,
-            'berat_kg' => $request->berat_kg,
-            'total_uang' => 0,
-            'poin_didapat' => 0,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'catatan' => $request->catatan,
-            'status' => 'menunggu'
-        ]);
+    $kategori = KategoriSampah::findOrFail($request->id_kategori);
 
-        return redirect()->route('user.transaksi.index')
-            ->with('success', 'Permintaan penjemputan berhasil dikirim!');
+    $total_uang = $kategori->harga_per_kg * $request->berat_kg;
+    $poin = $kategori->poin_per_kg * $request->berat_kg;
+
+    TransaksiSampah::create([
+        'id_user' => Auth::id(),
+        'id_petugas' => null,
+        'id_kategori' => $request->id_kategori,
+        'berat_kg' => $request->berat_kg,
+        'total_uang' => $total_uang,
+        'poin_didapat' => $poin,
+        'alamat' => $request->alamat,
+        'no_hp' => $request->no_hp,
+        'catatan' => $request->catatan,
+        'status' => 'menunggu'
+    ]);
+
+    return redirect()->route('user.transaksi.index')
+        ->with('success', 'Permintaan penjemputan berhasil dikirim!');
     }
+
 
     public function show($id)
     {

@@ -35,11 +35,11 @@
                 <form action="{{ route('admin.kategori.destroy', $k->id_kategori) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin ingin menghapus petugas ini?')">Hapus</button>
+                    <button type="submit" onclick="return confirm('Yakin ingin menghapus kategori ini?')">Hapus</button>
                 </td>
             </tr>
         @empty
-            <tr><td colspan="7" style="text-align:center;">Belum ada Petugas</td></tr>
+            <tr><td colspan="7" style="text-align:center;">Belum ada Kategori</td></tr>
         @endforelse
     </tbody>
 </table>

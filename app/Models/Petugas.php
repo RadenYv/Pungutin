@@ -14,7 +14,7 @@ class Petugas extends Authenticatable
     public $incrementing = true;
 
     protected $fillable = [
-        'nama_petugas',
+        'nama',
         'email',
         'password',
         'no_hp',

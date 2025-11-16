@@ -36,6 +36,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('id_petugas')
+                ->nullable()
                 ->constrained('petugas', 'id_petugas')
                 ->restrictOnDelete();
 

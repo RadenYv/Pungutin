@@ -19,8 +19,15 @@
     <label>No HP:</label><br>
     <input type="text" name="no_hp"><br><br>
 
+    <label>Status:</label><br>
+    <select name="status" required>
+        <option value="aktif">Aktif</option>
+        <option value="nonaktif">Nonaktif</option>
+    </select><br><br>
+
     <button type="submit">Simpan</button>
 </form>
+
 
 <br>
 <a href="{{ route('admin.petugas.index') }}">Kembali</a>
