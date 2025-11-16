@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
+class UserController extends Controller
+{
+    public function index()
+    {
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        return view('admin.users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:100',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'no_hp' => 'nullable|string|max:20',
+        ]);
+
+        User::create([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'no_hp' => $request->no_hp,
+            'saldo_total' => 0,
+            'poin_total' => 0,
+        ]);
+
+        return redirect()->route('admin.users.index')->with('success', 'User Ditambahkan.');
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'nama' => 'required|string|max:100',
+            'email' => 'required|email|unique:users,email,' . $user->id_user . ',id_user',
+            'no_hp' => 'nullable|string|max:20',
+        ]);
+
+        $user->update([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'saldo_total' => $request->saldo_total,
+            'poin_total' => $request->poin_total,
+        ]);
+
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        User::findOrFail($id)->delete();
+        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+    }
+}
