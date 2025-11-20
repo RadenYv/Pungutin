@@ -7,32 +7,45 @@ use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     */
-  protected function redirectTo(Request $request): ?string
-{
-    if (! $request->expectsJson()) {
+    protected function redirectTo(Request $request): ?string
+    {
+        if (!$request->expectsJson()) {
 
-        // ADMIN AREA
-        if ($request->is('admin/*') || $request->path() === 'dashboard') {
-            session()->flash('error', 'Monggo login dulu!');
-            return route('admin.login'); // balik ke admin login
+            // 🟥 USER trying to access ADMIN → CAT MEME
+            if (
+                auth()->guard('web')->check() &&
+                ($request->is('admin/*') || $request->path() === 'dashboard')
+            ) {
+                abort(401);
+            }
+
+            // 🟪 PETUGAS trying to access ADMIN → CAT MEME
+            if (
+                auth()->guard('petugas')->check() &&
+                ($request->is('admin/*') || $request->path() === 'dashboard')
+            ) {
+                abort(401);
+            }
+
+            // 🟦 ADMIN trying to access USER route (optional)
+            if (auth()->guard('admin')->check() && $request->is('user/*')) {
+                abort(401);
+            }
+
+            // 🟩 NOT LOGGED IN — redirect normally
+            if ($request->is('admin/*') || $request->path() === 'dashboard') {
+                session()->flash('error', 'Monggo login dulu!');
+                return route('admin.login');
+            }
+
+            if ($request->is('user/*')) {
+                session()->flash('error', 'Monggo login dulu!');
+                return route('user.login');
+            }
+
+            return route('user.login');
         }
 
-        // USER AREA
-        if ($request->is('user/*')) {
-            session()->flash('error', 'Monggo login dulu!');
-            return route('user.login'); // balik ke user login
-        }
-
-        // Fallback (anggap user)
-        session()->flash('error', 'Monggo login dulu!');
-        return route('user.login');
+        return null;
     }
-
-    return null;
-}
-
-
 }

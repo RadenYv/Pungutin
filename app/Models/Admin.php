@@ -9,6 +9,8 @@ class Admin extends Authenticatable
 {
     use Notifiable;
 
+    protected $guard = 'admin';   // 🟦 SUPER IMPORTANT
+
     protected $table = 'admins';
     protected $primaryKey = 'id_admin';
     public $incrementing = true;
@@ -24,7 +26,6 @@ class Admin extends Authenticatable
         'remember_token',
     ];
 
-    // Jika nanti admin bisa assign petugas atau kelola transaksi
     public function transaksiDikelola()
     {
         return $this->hasMany(TransaksiSampah::class, 'id_admin', 'id_admin');

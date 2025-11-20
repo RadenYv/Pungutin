@@ -1,0 +1,72 @@
+/* OCEAN DARK BACKGROUND */
+body {
+    background: radial-gradient(circle at top,
+        #003049 0%,     /* Deep ocean blue */
+        #001219 40%,    /* Very dark navy */
+        #000000 100%    /* Full black */
+    );
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e8f9ff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* LOGIN CARD */
+.login-card {
+    width: 420px;
+    background: rgba(0, 35, 60, 0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 150, 199, 0.35);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 25px rgba(0, 150, 199, 0.25);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* TITLE */
+.login-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+    background: linear-gradient(90deg, #00b4d8, #0096c7, #48cae4);
+    background-clip: text;        /* Standard property */
+    -webkit-background-clip: text; /* Safari/Chrome fallback */
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+}
+
+/* INPUT STYLE */
+.form-control {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid #005f73;
+    color: #e8f9ff;
+}
+
+.form-control:focus {
+    border-color: #00b4d8;
+    box-shadow: 0 0 8px #00b4d8;
+    background-color: rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+}
+
+/* BUTTON */
+.btn-ocean {
+    background: linear-gradient(90deg, #0077b6, #0096c7);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.btn-ocean:hover {
+    background: linear-gradient(90deg, #0096c7, #00b4d8);
+    box-shadow: 0 0 10px #00b4d8;
+}
+
+/* FADE IN ANIMATION */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
