@@ -1,72 +1,160 @@
-/* OCEAN DARK BACKGROUND */
+/* OCEAN DARK BACKGROUND*/
 body {
-    background: radial-gradient(circle at top,
-        #003049 0%,     /* Deep ocean blue */
-        #001219 40%,    /* Very dark navy */
-        #000000 100%    /* Full black */
-    );
+    background: radial-gradient(circle at top, #003049 0%, #001219 40%, #000000 100%);
     height: 100vh;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #e8f9ff;
     font-family: 'Poppins', sans-serif;
 }
 
-/* LOGIN CARD */
+
+
+/*WRAPPER*/
+.login-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+/*GLASS LOGIN CARD*/
 .login-card {
     width: 420px;
-    background: rgba(0, 35, 60, 0.55);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(0, 150, 199, 0.35);
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 0 25px rgba(0, 150, 199, 0.25);
-    animation: fadeIn 0.8s ease-in-out;
+    padding: 40px;
+    border-radius: 18px;
+
+    background: rgba(0, 45, 80, 0.6);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(0, 180, 220, 0.40);
+    box-shadow:
+        0 0 40px rgba(0, 180, 220, 0.25),
+        0 0 120px rgba(0, 180, 220, 0.18);
+
+    animation: fadeIn 1s ease-in-out;
+    transition: 0.4s;
 }
 
-/* TITLE */
+.login-card:hover {
+    border-color: rgba(0, 210, 255, 0.75);
+    box-shadow:
+        0 0 55px rgba(0, 210, 255, 0.45),
+        0 0 150px rgba(0, 210, 255, 0.22);
+}
+
+
+
+/*TITLE + ICON*/
+.login-title-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.login-title-icon {
+    font-size: 2.3rem;
+    color: #48cae4;
+    text-shadow: 0 0 12px rgba(0, 180, 220, 0.6);
+}
+
 .login-title {
-    font-size: 1.7rem;
+    font-size: 2rem;
     font-weight: 700;
-    text-align: center;
+    margin: 0;
+
     background: linear-gradient(90deg, #00b4d8, #0096c7, #48cae4);
-    background-clip: text;        /* Standard property */
-    -webkit-background-clip: text; /* Safari/Chrome fallback */
+    background-clip: text;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 15px;
+    
 }
 
-/* INPUT STYLE */
-.form-control {
-    background-color: rgba(0, 0, 0, 0.35);
-    border: 1px solid #005f73;
-    color: #e8f9ff;
+
+
+/*BETTER LABEL VISIBILITY*/
+.form-label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #b8eefe !important;
 }
 
-.form-control:focus {
-    border-color: #00b4d8;
-    box-shadow: 0 0 8px #00b4d8;
-    background-color: rgba(0, 0, 0, 0.45);
-    color: #ffffff;
+
+
+/*INPUT FIELD*/
+.input-field {
+    position: relative;
+    width: 100%;
 }
 
-/* BUTTON */
-.btn-ocean {
-    background: linear-gradient(90deg, #0077b6, #0096c7);
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #a7e6ff;
+    pointer-events: none;
+}
+
+.ocean-input {
+    width: 100%;
+    height: 44px;
+    border-radius: 10px;
     border: none;
-    color: #fff;
+    padding-left: 45px;
+    background: rgba(0, 0, 0, 0.40);
+    color: #e8f9ff;
+    font-size: 0.95rem;
+    transition: 0.25s;
+}
+
+.ocean-input:focus {
+    background: rgba(0, 0, 0, 0.55);
+    outline: none;
+    box-shadow: 0 0 12px rgba(0, 180, 220, 0.35);
+}
+
+.ocean-input::placeholder {
+    color: #8acfe3;
+}
+
+
+
+/*LOGIN BUTTON */
+.btn-ocean {
+    background: linear-gradient(90deg, #0096c7, #00b4d8);
+    color: white;
     font-weight: 600;
-    border-radius: 8px;
+    border-radius: 10px;
+    border: none;
+    transition: 0.25s;
+    margin-top: 18px;
+    font-size: 1rem;
 }
 
 .btn-ocean:hover {
-    background: linear-gradient(90deg, #0096c7, #00b4d8);
-    box-shadow: 0 0 10px #00b4d8;
+    background: linear-gradient(90deg, #00b4d8, #00d4ff);
+    box-shadow: 0 0 18px rgba(0, 180, 220, 0.45);
+    transform: translateY(-2px);
 }
 
-/* FADE IN ANIMATION */
+
+
+/*FADE IN ANIMATION */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.ocean-input:-webkit-autofill,
+.ocean-input:-webkit-autofill:hover,
+.ocean-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px rgba(0, 26, 46, 0.6) inset !important;
+    -webkit-text-fill-color: #e8f9ff !important;
+    transition: background-color 9999s ease-out;
 }

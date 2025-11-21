@@ -8,43 +8,71 @@
     <!-- BOOTSTRAP CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- CUSTOM OCEAN DARK CSS -->
+    <!-- BOOTSRAP ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="{{ asset('css/admin-login.css') }}">
+
 </head>
 
 <body>
 
-<div class="login-card">
+<div class="login-wrapper">
+    <div class="login-card">
 
-    <h2 class="login-title">Pungut-in Admin</h2>
-
-    {{-- ERROR MESSAGE --}}
-    @if(session('error'))
-        <div class="alert alert-danger py-2">{{ session('error') }}</div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger py-2">
-            {{ $errors->first() }}
-        </div>
-    @endif
-
-    {{-- FORM --}}
-    <form method="POST" action="{{ route('admin.login.submit') }}">
-        @csrf
-        <div class="mb-3">
-            <label class="form-label" >Email:</label>
-            <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+        <div class="login-title-wrap">
+            <i class="bi bi-person-circle login-title-icon"></i>
+            <h2 class="login-title">admin</h2>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Password:</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
+        {{-- ERROR MESSAGE --}}
+        @if(session('error'))
+            <div class="alert alert-danger py-2">{{ session('error') }}</div>
+        @endif
 
-        <button type="submit" class="btn btn-ocean w-100 py-2">Login</button>
-    </form>
+        @if ($errors->any())
+            <div class="alert alert-danger py-2">
+                {{ $errors->first() }}
+            </div>
+        @endif
 
+        <form method="POST" action="{{ route('admin.login.submit') }}">
+            @csrf
+
+            <!--EMAIL-->
+            <div class="mb-3">
+
+                <div class="input-field">
+                    <i class="bi bi-envelope-fill input-icon"></i>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="ocean-input" 
+                        placeholder="Enter your email"
+                        required>
+                </div>
+            </div>
+        
+            <!--PASSWORD-->
+            <div class="mb-3">
+
+                <div class="input-field">
+                    <i class="bi bi-envelope-fill input-icon"></i>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="ocean-input" 
+                        placeholder="Enter your password"
+                        required>
+                </div>
+            </div>
+        
+            <button type="submit" class="btn btn-ocean w-100 py-2">Login</button>
+    
+        </form>
+
+    </div>
 </div>
 
 </body>
