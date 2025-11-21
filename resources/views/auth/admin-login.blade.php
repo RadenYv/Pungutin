@@ -58,7 +58,7 @@
             <div class="mb-3">
 
                 <div class="input-field">
-                    <i class="bi bi-envelope-fill input-icon"></i>
+                    <i class="bi bi-lock-fill input-icon"></i>
                     <input 
                         type="password" 
                         name="password" 
