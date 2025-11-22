@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\UserLoginController;
+use App\Http\Controllers\Auth\PetugasLoginController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PetugasController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Admin\KategoriSampahController;
 use App\Http\Controllers\Admin\TransaksiSampahController;
 use App\Http\Controllers\User\UserDashController;
 use App\Http\Controllers\User\UserTransaksiController;
+
 
 
 // AUTH ADMIN
@@ -57,3 +59,9 @@ Route::middleware('auth:web')->group(function () {
             ->only(['index', 'create', 'store', 'show']);
     });
 });
+
+
+// AUTH PETUGAS
+Route::get('/petugas', [PetugasLoginController::class, 'showLoginForm'])->name('petugas.login');
+Route::post('/petugas', [PetugasLoginController::class, 'login'])->name('petugas.login.submit');
+Route::post('/logout-petugas', [PetugasLoginController::class, 'logout'])->name('petugas.logout');

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'User Dashboard')</title>
+    <title>@yield('title', 'Petugas Dashboard')</title>
 </head>
 <body>
-
-    <h1>Pungut-In User</h1>
+    
+    <h1>petugas dashboard</h1>
 
     <nav>
-        <a href="{{ route('user.dashboard') }}">Dashboard</a> |
-        <a href="{{ route('user.transaksi.create') }}">Minta Penjemputan</a> |
+        <a href="{{ route('placeholder.route') }}">Cuming Soon</a>
+        <a href="{{ route('placeholder.route') }}">Cuming Soon</a>
         <form action="{{ route('user.logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit">Logout</button>
@@ -26,4 +26,3 @@
 
 </body>
 </html>
-    
