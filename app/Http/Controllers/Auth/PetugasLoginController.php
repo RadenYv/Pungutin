@@ -20,7 +20,7 @@ class PetugasLoginController extends Controller
         if (Auth::guard('petugas')->attempt($credentials)) {
             $request->session()->regenerate();
             session()->flash('success', 'Selamat Anda Max Versteppen!');
-            //return redirect()->route('cuming soon');
+            return redirect()->route('petugas.dashboard');
         }
 
         return back()->withErrors([

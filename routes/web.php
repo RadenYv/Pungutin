@@ -11,7 +11,8 @@ use App\Http\Controllers\Admin\KategoriSampahController;
 use App\Http\Controllers\Admin\TransaksiSampahController;
 use App\Http\Controllers\User\UserDashController;
 use App\Http\Controllers\User\UserTransaksiController;
-
+use App\Http\Controllers\Petugas\PetugasDashController;
+use App\Http\Controllers\Petugas\PenjemputanController;
 
 
 // AUTH ADMIN
@@ -65,3 +66,19 @@ Route::middleware('auth:web')->group(function () {
 Route::get('/petugas', [PetugasLoginController::class, 'showLoginForm'])->name('petugas.login');
 Route::post('/petugas', [PetugasLoginController::class, 'login'])->name('petugas.login.submit');
 Route::post('/logout-petugas', [PetugasLoginController::class, 'logout'])->name('petugas.logout');
+
+// PETUGAS AREA 
+Route::middleware('auth:petugas')->prefix('petugas')->name('petugas.')->group(function () {
+
+        // Dashboard
+        Route::get('/dashboard', [PetugasDashController::class, 'index'])
+            ->name('dashboard');
+
+        // Daftar penjemputan
+        Route::get('/penjemputan', [PetugasPenjemputanController::class, 'index'])
+            ->name('penjemputan.index');
+
+        // Update berat akhir
+        Route::resource('penjemputan', PenjemputanController::class)
+            ->only(['index', 'show', 'update']);
+});

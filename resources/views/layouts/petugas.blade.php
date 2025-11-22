@@ -10,9 +10,9 @@
     <h1>petugas dashboard</h1>
 
     <nav>
-        <a href="{{ route('placeholder.route') }}">Cuming Soon</a>
-        <a href="{{ route('placeholder.route') }}">Cuming Soon</a>
-        <form action="{{ route('user.logout') }}" method="POST" style="display:inline;">
+        <a href="{{ route('petugas.dashboard') }}">Cuming Soon</a>
+        <a href="{{ route('petugas.penjemputan.index') }}">Cuming Soon</a>
+        <form action="{{ route('petugas.logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit">Logout</button>
         </form>

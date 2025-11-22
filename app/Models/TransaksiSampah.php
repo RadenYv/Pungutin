@@ -15,6 +15,7 @@ class TransaksiSampah extends Model
         'id_petugas',
         'id_kategori',
         'berat_kg',
+        'berat_kg_final',
         'total_uang',
         'poin_didapat',
         'alamat',
