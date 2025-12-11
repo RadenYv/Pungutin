@@ -15,8 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_team')->nullable(); 
 
             $table->date('tanggal');
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->enum('pickup_window', ['09:00-12:00', '13:00-16:00', '17:00-20:00']);
 
             $table->enum('status', ['pending', 'ditugaskan', 'berjalan', 'selesai'])
                     ->default('pending');

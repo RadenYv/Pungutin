@@ -3,32 +3,32 @@
 @section('title', 'Daftar Batch')
 
 @section('content')
-<div class="page-container">
+<div class="d-flex flex-column gap-4">
     {{-- Page Header --}}
-    <div class="page-header">
-        <div class="page-header-content">
-            <h2 class="page-heading">
+    <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+            <h2 class="page-heading fs-4 fw-semibold mb-1">
                 <i class="bi bi-collection me-2"></i>Daftar Batch
             </h2>
-            <p class="page-description">Kelola batch pengambilan sampah</p>
+            <p class="page-description text-secondary mb-0">Kelola batch pengambilan sampah</p>
         </div>
-        <a href="{{ route('admin.batches.create') }}" class="btn-add">
+        <a href="{{ route('admin.batches.create') }}" class="btn btn-primary d-inline-flex align-items-center gap-2">
             <i class="bi bi-plus-lg"></i>
             <span>Buat Batch</span>
         </a>
     </div>
 
     {{-- Data Table Card --}}
-    <div class="card data-card">
-        <div class="card-header">
-            <h5 class="card-title">
+    <div class="card data-card rounded-3">
+        <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
                 <i class="bi bi-table me-2"></i>Daftar Batch
             </h5>
             <span class="badge-count">{{ $batches->count() }} Batches</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table data-table">
+                <table class="table data-table mb-0">
                     <thead>
                         <tr>
                             <th>ID Batch</th>
@@ -45,16 +45,16 @@
                         @forelse ($batches as $b)
                             <tr>
                                 <td><code>#{{ $b->id_batch }}</code></td>
-                                <td><span class="text-muted">{{ $b->tanggal }}</span></td>
+                                <td><span class="text-secondary">{{ $b->tanggal }}</span></td>
                                 <td>
                                     <span class="time-badge">
                                         <i class="bi bi-clock"></i>
-                                        {{ $b->start_time }} - {{ $b->end_time }}
+                                        {{ $b->pickup_window }}
                                     </span>
                                 </td>
                                 <td>
                                     @if($b->truck)
-                                        <div class="truck-cell">
+                                        <div class="d-flex align-items-center gap-2">
                                             <i class="bi bi-truck text-primary"></i>
                                             <span>{{ $b->truck->nama }}</span>
                                             <code>{{ $b->truck->plat_nomor }}</code>
@@ -75,7 +75,7 @@
                                             </div>
                                         @endforeach
                                     @else
-                                        <span class="text-muted">-</span>
+                                        <span class="text-secondary">-</span>
                                     @endif
                                 </td>
                                 <td>
@@ -101,12 +101,12 @@
                                     <span class="badge bg-secondary">{{ $b->transaksi->count() }} transaksi</span>
                                 </td>
                                 <td>
-                                    <div class="action-group">
+                                    <div class="d-flex flex-column gap-2">
                                         {{-- Assign Team (only if pending) --}}
                                         @if($b->status === 'pending')
-                                            <form action="{{ route('admin.batches.assignTeam', $b->id_batch) }}" method="POST" class="batch-form">
+                                            <form action="{{ route('admin.batches.assignTeam', $b->id_batch) }}" method="POST" class="d-flex align-items-center gap-2">
                                                 @csrf
-                                                <select name="id_team" class="form-select-sm">
+                                                <select name="id_team" class="form-select form-select-sm">
                                                     <option value="">Pilih Team</option>
                                                     @foreach($teams as $t)
                                                         <option value="{{ $t->id_team }}">
@@ -114,24 +114,22 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                <button type="submit" class="btn-action-sm btn-primary-sm" title="Assign Team">
+                                                <button type="submit" class="btn btn-primary btn-sm" title="Assign Team">
                                                     <i class="bi bi-check"></i>
                                                 </button>
-                                                </button>
-                                                <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn-action-sm btn-info-sm ms-1" title="Lihat Transaksi">
+                                                <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn btn-outline-info btn-sm" title="Lihat Transaksi">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                             </form>
                                         @endif
                                         {{-- Start Batch (only if ditugaskan) --}}
                                         @if($b->status === 'ditugaskan')
-                                            <form action="{{ route('admin.batches.start', $b->id_batch) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('admin.batches.start', $b->id_batch) }}" method="POST" class="d-flex align-items-center gap-2">
                                                 @csrf
-                                                <button type="submit" class="btn-action-sm btn-success-sm" title="Mulai Batch">
+                                                <button type="submit" class="btn btn-success btn-sm" title="Mulai Batch">
                                                     <i class="bi bi-play-fill"></i> Mulai
                                                 </button>
-                                                </button>
-                                                <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn-action-sm btn-info-sm ms-1" title="Lihat Transaksi">
+                                                <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn btn-outline-info btn-sm" title="Lihat Transaksi">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                             </form>
@@ -139,12 +137,12 @@
 
                                         {{-- Finish Batch (only if berjalan) --}}
                                         @if($b->status === 'berjalan')
-                                            <form action="{{ route('admin.batches.selesai', $b->id_batch) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('admin.batches.selesai', $b->id_batch) }}" method="POST" class="d-flex align-items-center gap-2">
                                                 @csrf
-                                                <button type="submit" class="btn-action-sm btn-warning-sm" title="Selesaikan Batch">
+                                                <button type="submit" class="btn btn-warning btn-sm" title="Selesaikan Batch">
                                                     <i class="bi bi-check-circle"></i>
                                                 </button>
-                                                <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn-action-sm btn-info-sm ms-1" title="Lihat Transaksi">
+                                                <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn btn-outline-info btn-sm" title="Lihat Transaksi">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                             </form>
@@ -154,8 +152,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="empty-state">
-                                    <i class="bi bi-inbox"></i>
+                                <td colspan="8" class="text-center py-5 text-secondary">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
                                     <span>Belum ada batch</span>
                                 </td>
                             </tr>

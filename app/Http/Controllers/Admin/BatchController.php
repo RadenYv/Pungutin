@@ -30,14 +30,16 @@ class BatchController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_truck' => 'required|exists:pickup_truck,id_truck',
-            'tanggal'  => 'required|date'
+            'id_truck'      => 'nullable|exists:pickup_truck,id_truck',
+            'tanggal'       => 'required|date',
+            'pickup_window' => 'required|in:09:00-12:00,13:00-16:00,17:00-20:00'
         ]);
 
         $batch = Batch::create([
-            'id_truck' => $validated['id_truck'],
-            'tanggal'  => $validated['tanggal'],
-            'status'   => 'pending',
+            'id_truck'      => $validated['id_truck'] ?? null,
+            'tanggal'       => $validated['tanggal'],
+            'pickup_window' => $validated['pickup_window'],
+            'status'        => 'pending',
         ]);
 
         return redirect()->route('admin.batches.index')
@@ -82,7 +84,6 @@ class BatchController extends Controller
 
         // Set batch to berjalan
         $batch->status = 'berjalan';
-        $batch->start_time = now()->format('H:i:s');
         $batch->save();
 
         // Update truck status to penjemputan (if not already)
@@ -104,7 +105,6 @@ class BatchController extends Controller
 
         // Complete batch
         $batch->status = 'selesai';
-        $batch->end_time = now()->format('H:i:s');
         $batch->save();
 
         // Free the truck back to idle

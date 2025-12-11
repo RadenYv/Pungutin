@@ -8,7 +8,7 @@
     <title>@yield('title', 'Pungut-In Admin')</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <!-- Dashboard CSS -->
@@ -20,13 +20,13 @@
 
 <body>
 
-<div class="admin-wrapper">
+<div class="admin-wrapper d-flex min-vh-100">
 
     {{-- ============ SIDEBAR ============ --}}
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar d-flex flex-column" id="sidebar">
 
         {{-- Brand --}}
-        <div class="sidebar-brand">
+        <div class="sidebar-brand d-flex align-items-center">
             <i class="bi bi-recycle brand-icon"></i>
             <span class="brand-text">Pungut-in</span>
         </div>
@@ -125,7 +125,7 @@
         <div class="sidebar-footer">
             <form action="{{ route('admin.logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn-logout">
+                <button type="submit" class="btn-logout d-flex align-items-center justify-content-center gap-2 w-100">
                     <i class="bi bi-box-arrow-left"></i>
                     <span>Logout</span>
                 </button>
@@ -138,19 +138,17 @@
     <main class="main-content">
 
         {{-- Top Header Bar --}}
-        <header class="top-header">
-            <div class="header-left">
+        <header class="top-header d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
                 <button class="btn-menu-toggle d-lg-none" type="button" onclick="toggleSidebar()">
                     <i class="bi bi-list"></i>
                 </button>
-                <h1 class="page-title">@yield('title', 'Dashboard')</h1>
+                <h1 class="page-title mb-0 fs-5 fw-semibold">@yield('title', 'Dashboard')</h1>
             </div>
-            <div class="header-right">
-                <div class="user-dropdown">
-                    <span class="user-name">{{ auth('admin')->user()->nama ?? 'Admin' }}</span>
-                    <div class="user-avatar">
-                        <i class="bi bi-person-circle"></i>
-                    </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-secondary small">{{ auth('admin')->user()->nama ?? 'Admin' }}</span>
+                <div class="user-avatar">
+                    <i class="bi bi-person-circle"></i>
                 </div>
             </div>
         </header>

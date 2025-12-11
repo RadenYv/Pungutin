@@ -13,8 +13,7 @@ class Batch extends Model
         'id_truck',
         'id_team',
         'tanggal',
-        'start_time',
-        'end_time',
+        'pickup_window',
         'status'
     ];
 

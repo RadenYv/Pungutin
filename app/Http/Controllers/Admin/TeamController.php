@@ -34,6 +34,15 @@ class TeamController extends Controller
             'co_driver' => 'required|exists:petugas,id_petugas|different:driver',
         ]);
 
+        // Check if truck is already assigned to another team on the same date
+        $existingTeam = Team::where('id_truck', $validated['id_truck'])
+            ->where('tanggal', $validated['tanggal'])
+            ->first();
+
+        if ($existingTeam) {
+            return back()->withErrors(['id_truck' => 'Truck ini sudah digunakan oleh team lain pada tanggal tersebut.'])->withInput();
+        }
+
         $team = Team::create([
             'id_truck' => $validated['id_truck'],
             'tanggal'  => $validated['tanggal'],

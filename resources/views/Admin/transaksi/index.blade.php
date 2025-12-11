@@ -3,35 +3,35 @@
 @section('title', 'Data Transaksi')
 
 @section('content')
-<div class="page-container">
+<div class="d-flex flex-column gap-4">
     {{-- Page Header --}}
-    <div class="page-header">
-        <div class="page-header-content">
-            <h2 class="page-heading">
+    <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+            <h2 class="page-heading fs-4 fw-semibold mb-1">
                 <i class="bi bi-box-seam me-2"></i>Data Transaksi
             </h2>
-            <p class="page-description">Kelola transaksi pengambilan sampah</p>
+            <p class="page-description text-secondary mb-0">Kelola transaksi pengambilan sampah</p>
         </div>
     </div>
 
     {{-- Alert Messages --}}
     @if (session('success'))
-        <div class="alert-success">
+        <div class="alert alert-success d-flex align-items-center" role="alert">
             <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
         </div>
     @endif
 
     {{-- Data Table Card --}}
-    <div class="card data-card">
-        <div class="card-header">
-            <h5 class="card-title">
+    <div class="card data-card rounded-3">
+        <div class="card-header d-flex align-items-center justify-content-between py-3">
+            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
                 <i class="bi bi-table me-2"></i>Daftar Transaksi
             </h5>
             <span class="badge-count">{{ $transaksi->count() }} Transaksi</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table data-table">
+                <table class="table data-table mb-0">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -50,7 +50,7 @@
                             <tr>
                                 <td><code>#{{ $item->id_transaksi }}</code></td>
                                 <td>
-                                    <div class="user-cell">
+                                    <div class="d-flex align-items-center gap-2">
                                         <div class="avatar-sm">
                                             <i class="bi bi-person"></i>
                                         </div>
@@ -69,12 +69,12 @@
                                 <td>
                                     @php
                                         $statusMap = [
-                                            'menunggu' => ['class' => 'badge-warning', 'icon' => 'bi-hourglass-split'],
-                                            'dalam_batch' => ['class' => 'badge-secondary', 'icon' => 'bi-box'],
-                                            'dijemput' => ['class' => 'badge-primary', 'icon' => 'bi-truck'],
-                                            'selesai' => ['class' => 'badge-success', 'icon' => 'bi-check-circle'],
+                                            'menunggu' => ['class' => 'status-warning', 'icon' => 'bi-hourglass-split'],
+                                            'dalam_batch' => ['class' => 'status-secondary', 'icon' => 'bi-box'],
+                                            'dijemput' => ['class' => 'status-primary', 'icon' => 'bi-truck'],
+                                            'selesai' => ['class' => 'status-success', 'icon' => 'bi-check-circle'],
                                         ];
-                                        $badge = $statusMap[$item->status] ?? ['class' => 'badge-secondary', 'icon' => 'bi-question'];
+                                        $badge = $statusMap[$item->status] ?? ['class' => 'status-secondary', 'icon' => 'bi-question'];
                                     @endphp
                                     <span class="status-badge {{ $badge['class'] }}">
                                         <i class="bi {{ $badge['icon'] }}"></i>
@@ -84,16 +84,16 @@
                                 <td>
                                     @if ($item->batch)
                                         <code>Batch #{{ $item->batch->id_batch }}</code>
-                                        <small class="text-muted d-block">{{ $item->batch->start_time }} - {{ $item->batch->end_time }}</small>
+                                        <small class="text-secondary d-block">{{ $item->batch->start_time }} - {{ $item->batch->end_time }}</small>
                                     @else
-                                        <span class="text-muted">-</span>
+                                        <span class="text-secondary">-</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($item->status == 'menunggu')
-                                        <form action="{{ route('admin.transaksi.assignBatch', $item->id_transaksi) }}" method="POST" class="batch-form">
+                                        <form action="{{ route('admin.transaksi.assignBatch', $item->id_transaksi) }}" method="POST" class="d-flex align-items-center gap-2">
                                             @csrf
-                                            <select name="id_batch" class="form-select-sm" required>
+                                            <select name="id_batch" class="form-select form-select-sm" required>
                                                 <option value="">Pilih Batch</option>
                                                 @foreach($batches as $b)
                                                     <option value="{{ $b->id_batch }}">
@@ -101,14 +101,14 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="btn-action-sm btn-primary-sm">
+                                            <button type="submit" class="btn btn-primary btn-sm">
                                                 <i class="bi bi-plus"></i>
                                             </button>
                                         </form>
                                     @elseif ($item->status == 'dalam_batch')
-                                        <form action="{{ route('admin.transaksi.assignBatch', $item->id_transaksi) }}" method="POST" class="batch-form">
+                                        <form action="{{ route('admin.transaksi.assignBatch', $item->id_transaksi) }}" method="POST" class="d-flex align-items-center gap-2">
                                             @csrf
-                                            <select name="id_batch" class="form-select-sm" required>
+                                            <select name="id_batch" class="form-select form-select-sm" required>
                                                 <option value="">Pindah ke</option>
                                                 @foreach($batches as $b)
                                                     <option value="{{ $b->id_batch }}">
@@ -116,19 +116,19 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="btn-action-sm btn-warning-sm">
+                                            <button type="submit" class="btn btn-warning btn-sm">
                                                 <i class="bi bi-arrow-right"></i>
                                             </button>
                                         </form>
                                     @else
-                                        <span class="text-muted">-</span>
+                                        <span class="text-secondary">-</span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="empty-state">
-                                    <i class="bi bi-inbox"></i>
+                                <td colspan="9" class="text-center py-5 text-secondary">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
                                     <span>Belum ada transaksi</span>
                                 </td>
                             </tr>

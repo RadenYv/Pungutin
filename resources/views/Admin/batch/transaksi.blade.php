@@ -6,7 +6,7 @@
 <h2>Transaksi Dalam Batch {{ $batch->id_batch }}</h2>
 
 <p><strong>Tanggal:</strong> {{ $batch->tanggal }}</p>
-<p><strong>Waktu:</strong> {{ $batch->start_time }} - {{ $batch->end_time }}</p>
+<p><strong>Waktu:</strong> {{ $batch->pickup_window }}</p>
 
 <h4>Petugas Batch:</h4>
 <ul>

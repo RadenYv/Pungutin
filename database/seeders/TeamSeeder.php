@@ -12,7 +12,7 @@ class TeamSeeder extends Seeder
     {
         // Example: create 3 teams for 3 trucks for today's date
 
-        $trucks = PickupTruck::take(3)->get();  // adjust count if needed
+        $trucks = PickupTruck::take(8)->get();  // adjust count if needed
 
         foreach ($trucks as $truck) {
             Team::create([

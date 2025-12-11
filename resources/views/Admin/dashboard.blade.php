@@ -4,18 +4,18 @@
 
 @section('content')
 
-<div class="dashboard-container">
+<div class="d-flex flex-column gap-4">
 
     {{-- Welcome Card --}}
-    <div class="row g-4 mb-4">
+    <div class="row g-4">
         <div class="col-12">
-            <div class="card welcome-card">
-                <div class="card-body">
-                    <div class="welcome-content">
-                        <div class="welcome-text">
-                            <h2>Hello, {{ auth('admin')->user()->nama }}! 👋</h2>
-                            <p>Hari ini kamu memiliki <strong>{{ $transaksiMenunggu }}</strong> pesanan baru!</p>
-                            <p class="text-muted">Pesan menunggu untuk ditindak lanjuti.</p>
+            <div class="card welcome-card rounded-3">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div>
+                            <h2 class="fs-4 fw-semibold mb-2">Hello, {{ auth('admin')->user()->nama }}! 👋</h2>
+                            <p class="mb-1">Hari ini kamu memiliki <strong class="text-primary fs-5">{{ $transaksiMenunggu }}</strong> pesanan baru!</p>
+                            <p class="text-secondary mb-0 small">Pesan menunggu untuk ditindak lanjuti.</p>
                         </div>
                         <div class="welcome-illustration">
                             <i class="bi bi-clipboard-data"></i>
@@ -27,12 +27,12 @@
     </div>
 
     {{-- Stats Row with Donut Chart --}}
-    <div class="row g-4 mb-4">
+    <div class="row g-4">
         {{-- Donut Chart Card --}}
         <div class="col-lg-4">
-            <div class="card chart-card">
-                <div class="card-header">
-                    <h5 class="card-title">
+            <div class="card chart-card rounded-3 h-100">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
                         <i class="bi bi-pie-chart me-2"></i>Order Status
                     </h5>
                 </div>
@@ -143,9 +143,9 @@
         <div class="col-lg-8">
 
             {{-- History Transaksi Table --}}
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">
+            <div class="card rounded-3">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
                         <i class="bi bi-clock-history me-2"></i>History Transaksi
                     </h5>
                 </div>
@@ -215,8 +215,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <a href="{{ route('admin.transaksi.index') }}" class="view-more-link">
+                <div class="card-footer text-end">
+                    <a href="{{ route('admin.transaksi.index') }}" class="text-primary text-decoration-none d-inline-flex align-items-center gap-2 small fw-medium">
                         View All Transactions
                         <i class="bi bi-arrow-right"></i>
                     </a>
@@ -229,14 +229,14 @@
         <div class="col-lg-4">
 
             {{-- Calendar Widget --}}
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="card-title">
+            <div class="card rounded-3 mb-4">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
                         <i class="bi bi-calendar3 me-2"></i>Personal Calendar
                     </h5>
-                    <div class="calendar-nav">
-                        <button class="btn-icon" type="button"><i class="bi bi-chevron-left"></i></button>
-                        <button class="btn-icon" type="button"><i class="bi bi-chevron-right"></i></button>
+                    <div class="d-flex gap-1">
+                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-left"></i></button>
+                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-right"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -268,20 +268,20 @@
             </div>
 
             {{-- Profile Card --}}
-            <div class="card profile-card">
+            <div class="card profile-card rounded-3">
                 <div class="card-body">
-                    <div class="profile-header">
+                    <div class="d-flex align-items-start gap-3 mb-3">
                         <div class="profile-avatar">
                             <i class="bi bi-person-circle"></i>
                         </div>
-                        <div class="profile-info">
-                            <h5>{{ auth('admin')->user()->nama }}</h5>
+                        <div class="flex-grow-1">
+                            <h5 class="fs-6 fw-semibold mb-1">{{ auth('admin')->user()->nama }}</h5>
                             <span class="role-badge">Administrator</span>
                         </div>
-                        <button class="btn-icon"><i class="bi bi-three-dots"></i></button>
+                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-three-dots"></i></button>
                     </div>
 
-                    <div class="profile-actions">
+                    <div class="d-flex gap-2 mb-4">
                         <button class="btn-action" title="Call">
                             <i class="bi bi-telephone"></i>
                         </button>
@@ -293,7 +293,7 @@
                         </button>
                     </div>
 
-                    <div class="profile-details">
+                    <div class="border-top pt-3">
                         <div class="detail-row">
                             <span class="detail-label">Company</span>
                             <span class="detail-value">Pungut-in</span>
