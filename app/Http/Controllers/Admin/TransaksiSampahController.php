@@ -3,36 +3,106 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\TransaksiSampah;
-use App\Models\Petugas;
+use App\Models\Batch;
+use App\Models\KategoriSampah;
+use Illuminate\Http\Request;
 
 class TransaksiSampahController extends Controller
 {
-    // Menampilkan semua transaksi
-    public function index()
+    public function index(Request $request)
     {
-        $transaksi = TransaksiSampah::with(['user', 'petugas', 'kategori'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = TransaksiSampah::with(['user', 'kategori', 'batch.team', 'batch.truck']);
 
-        $petugas = Petugas::all();
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
 
-        return view('admin.transaksi.index', compact('transaksi', 'petugas'));
+        $transaksi = $query->orderBy('id_transaksi', 'DESC')->get();
+
+        $batches = Batch::where('status', 'pending')->orderBy('tanggal')->get();
+
+        return view('Admin.transaksi.index', compact('transaksi', 'batches'));
     }
 
-    // Assign petugas ke transaksi
-    public function assign(Request $request, $id)
+    // show() removed per requirements
+
+    public function edit($id)
     {
-        $request->validate([
-            'id_petugas' => ['required', 'exists:petugas,id_petugas'],
+        $transaksi = TransaksiSampah::findOrFail($id);
+        $kategori = KategoriSampah::all();
+        $batches = Batch::with('truck', 'team')->get();
+
+        return view('Admin.transaksi.edit', compact('transaksi', 'kategori', 'batches'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $transaksi = TransaksiSampah::findOrFail($id);
+
+        $validated = $request->validate([
+            'id_kategori'    => 'sometimes|exists:kategori_sampah,id_kategori',
+            'id_batch'       => 'sometimes|nullable|exists:batches,id_batch',
+            'tanggal_pickup' => 'sometimes|date',
+            'pickup_window'  => 'sometimes|string',
+            'alamat'         => 'sometimes|string',
+            'no_hp'          => 'sometimes|string',
+            'catatan'        => 'nullable|string',
+            'status'         => 'sometimes|in:menunggu,dalam_batch,dijemput,selesai'
         ]);
 
+        $transaksi->update($validated);
+
+        return redirect()->route('admin.transaksi.index')
+                         ->with('success', 'Transaksi berhasil diperbarui.');
+    }
+
+    public function moveToBatch(Request $request, $id)
+    {
+        $request->validate([
+            'id_batch' => 'required|exists:batches,id_batch'
+        ]);
+
+        $batch = Batch::withCount('transaksi')->findOrFail($request->id_batch);
+        if ($batch->transaksi_count >= 5) {
+            return back()->withErrors(['msg' => 'Batch sudah penuh (max 5 transaksi).']);
+        }
+
         $transaksi = TransaksiSampah::findOrFail($id);
-        $transaksi->id_petugas = $request->id_petugas;
-        $transaksi->status = 'dijemput';
+
+        $transaksi->id_batch = $batch->id_batch;
+        $transaksi->status = 'dalam_batch';
         $transaksi->save();
 
-        return redirect()->route('admin.transaksi.index')->with('success', 'Petugas berhasil di-assign.');
+        return back()->with('success', 'Transaksi berhasil dipindahkan ke batch.');
+    }
+
+    public function assignBatch(Request $request, $id)
+    {
+        $request->validate([
+            'id_batch' => 'required|exists:batches,id_batch'
+        ]);
+
+        $batch = Batch::withCount('transaksi')->findOrFail($request->id_batch);
+        if ($batch->transaksi_count >= 5) {
+            return back()->withErrors(['msg' => 'Batch sudah penuh (max 5 transaksi).']);
+        }
+
+        $transaksi = TransaksiSampah::findOrFail($id);
+        $transaksi->id_batch = $batch->id_batch;
+        $transaksi->status = 'dalam_batch';
+        $transaksi->save();
+
+        return back()->with('success', 'Transaksi dimasukkan ke batch.');
+    }
+
+    public function removeBatch($id)
+    {
+        $transaksi = TransaksiSampah::findOrFail($id);
+        $transaksi->id_batch = null;
+        $transaksi->status = 'menunggu';
+        $transaksi->save();
+
+        return back()->with('success', 'Transaksi dikeluarkan dari batch.');
     }
 }

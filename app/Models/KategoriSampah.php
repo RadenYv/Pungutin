@@ -16,7 +16,8 @@ class KategoriSampah extends Model
         'poin_per_kg',
     ];
 
-     public function transaksi()
+    //Belasi antar Table
+    public function transaksi()
     {
         return $this->hasMany(TransaksiSampah::class, 'id_kategori', 'id_kategori');
     }

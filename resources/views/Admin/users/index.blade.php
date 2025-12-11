@@ -3,49 +3,108 @@
 @section('title', 'Data User')
 
 @section('content')
-<h2>Data User</h2>
+<div class="page-container">
+    {{-- Page Header --}}
+    <div class="page-header">
+        <div class="page-header-content">
+            <h2 class="page-heading">
+                <i class="bi bi-people me-2"></i>Data User
+            </h2>
+            <p class="page-description">Kelola data pengguna aplikasi Pungut-in</p>
+        </div>
+        <a href="{{ route('admin.users.create') }}" class="btn-add">
+            <i class="bi bi-plus-lg"></i>
+            <span>Tambah User</span>
+        </a>
+    </div>
 
-@if (session('success'))
-    <p style="color:green;">{{ session('success') }}</p>
-@endif
+    {{-- Alert Messages --}}
+    @if (session('success'))
+        <div class="alert-success">
+            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+        </div>
+    @endif
 
-<a href="{{ route('admin.users.create') }}">+ Tambah User</a>
-<br><br>
-
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>No HP</th>
-            <th>Saldo</th>
-            <th>Poin</th>
-            <th>Dibuat</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse ($users as $u)
-            <tr>
-                <td>{{ $u->id_user }}</td>
-                <td>{{ $u->nama }}</td>
-                <td>{{ $u->email }}</td>
-                <td>{{ $u->no_hp ?? '-' }}</td>
-                <td>Rp {{ number_format($u->saldo_total) }}</td>
-                <td>{{ $u->poin_total }}</td>
-                <td>{{ $u->created_at ? $u->created_at->format('d-m-Y') : '-' }}</td>
-                <td>
-                    <a href="{{ route('admin.users.edit', $u->id_user) }}">Edit</a> |
-                <form action="{{ route('admin.users.destroy', $u->id_user) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" onclick="return confirm('Yakin ingin menghapus user ini?')">Hapus</button>
-                </td>
-            </tr>
-        @empty
-            <tr><td colspan="7" style="text-align:center;">Belum ada user</td></tr>
-        @endforelse
-    </tbody>
-</table>
+    {{-- Data Table Card --}}
+    <div class="card data-card">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="bi bi-table me-2"></i>Daftar User
+            </h5>
+            <span class="badge-count">{{ $users->count() }} Users</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>No HP</th>
+                            <th>Saldo</th>
+                            <th>Poin</th>
+                            <th>Dibuat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $u)
+                            @continue($u->role === 'admin')
+                            <tr>
+                                <td><code>#{{ $u->id_user }}</code></td>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="avatar-sm">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <span>{{ $u->nama }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $u->email }}</td>
+                                <td>{{ $u->no_hp ?? '-' }}</td>
+                                <td>
+                                    @if(($u->role ?? 'user') === 'admin')
+                                        -
+                                    @else
+                                        <span class="text-success">Rp {{ number_format($u->saldo_total) }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(($u->role ?? 'user') === 'admin')
+                                        -
+                                    @else
+                                        <span class="badge-poin">{{ $u->poin_total }} pts</span>
+                                    @endif
+                                </td>
+                                <td><span class="text-muted">{{ $u->created_at ? $u->created_at->format('d M Y') : '-' }}</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('admin.users.edit', $u->id_user) }}" class="btn-action-sm btn-edit" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="{{ route('admin.users.destroy', $u->id_user) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-action-sm btn-delete" title="Hapus" onclick="return confirm('Yakin ingin menghapus user ini?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="bi bi-inbox"></i>
+                                    <span>Belum ada user</span>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -1,0 +1,264 @@
+/* ============================================================
+   PUNGUT-IN - Chart Styles
+   Donut Chart & Statistics Cards
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. CHART CARD
+   ---------------------------------------------------------- */
+
+/* Chart card container */
+.chart-card {
+    background: #0d0d0d;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    height: 100%;
+}
+
+/* Disable default card hover effect for chart card */
+.chart-card:hover {
+    transform: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ----------------------------------------------------------
+   2. CHART CONTAINER
+   ---------------------------------------------------------- */
+
+/* Container that holds the canvas */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto 20px auto;
+    aspect-ratio: 1;
+}
+
+/* Ensure canvas fills container */
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ----------------------------------------------------------
+   3. CENTER TEXT OVERLAY
+   ---------------------------------------------------------- */
+
+/* Positioned in the center of donut hole */
+.chart-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;  /* Allow clicks to pass through */
+}
+
+/* "Total" label */
+.chart-center-text .center-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #6e7681;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Total value number */
+.chart-center-text .center-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+}
+
+/* ----------------------------------------------------------
+   4. CUSTOM LEGEND
+   ---------------------------------------------------------- */
+
+/* Legend container below chart */
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid #21262d;
+}
+
+/* Individual legend item */
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+/* Color indicator square */
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* Status label text */
+.legend-label {
+    flex: 1;
+    color: #8b949e;
+}
+
+/* Value count */
+.legend-value {
+    font-weight: 600;
+    color: #e6edf3;
+    min-width: 30px;
+    text-align: right;
+}
+
+/* ----------------------------------------------------------
+   5. STAT CARDS
+   ---------------------------------------------------------- */
+
+/* Stat card base */
+.stat-card {
+    background: #0d0d0d;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    height: 100%;
+    transition: all 150ms ease;
+}
+
+/* Hover effect */
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Card body layout */
+.stat-card .card-body {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+}
+
+/* Icon container */
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+/* Content container */
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Large value number */
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+}
+
+/* Label text */
+.stat-label {
+    font-size: 12px;
+    color: #6e7681;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ----------------------------------------------------------
+   6. STAT CARD COLOR VARIANTS
+   ---------------------------------------------------------- */
+
+/* Warning - Yellow (Menunggu) */
+.stat-warning .stat-icon {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+/* Secondary - Gray (Dalam Batch) */
+.stat-secondary .stat-icon {
+    background: rgba(108, 117, 125, 0.15);
+    color: #6c757d;
+}
+
+/* Primary - Blue (Dijemput) */
+.stat-primary .stat-icon {
+    background: rgba(13, 110, 253, 0.15);
+    color: #0d6efd;
+}
+
+/* Success - Green (Selesai) */
+.stat-success .stat-icon {
+    background: rgba(25, 135, 84, 0.15);
+    color: #198754;
+}
+
+/* ----------------------------------------------------------
+   7. RESPONSIVE ADJUSTMENTS
+   ---------------------------------------------------------- */
+
+/* Tablet breakpoint */
+@media (max-width: 992px) {
+    .stat-card .card-body {
+        padding: 16px;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .stat-value {
+        font-size: 20px;
+    }
+}
+
+/* Mobile breakpoint */
+@media (max-width: 576px) {
+    .chart-container {
+        max-width: 160px;
+    }
+    
+    .chart-center-text .center-value {
+        font-size: 22px;
+    }
+    
+    .legend-item {
+        font-size: 12px;
+    }
+    
+    .stat-card .card-body {
+        padding: 14px;
+        gap: 12px;
+    }
+    
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    .stat-value {
+        font-size: 18px;
+    }
+    
+    .stat-label {
+        font-size: 11px;
+    }
+}

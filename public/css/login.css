@@ -1,161 +1,63 @@
-/* OCEAN DARK BACKGROUND*/
-body {
-    background: radial-gradient(circle at top, #003049 0%, #001219 40%, #000000 100%);
-    height: 100vh;
+html, body {
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
     font-family: 'Poppins', sans-serif;
 }
 
-
-
-/*WRAPPER*/
 .login-wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+}
+
+.left-side {
+    height: 100%;
+    width: 70%;       
+    padding: 0;
+    margin: 0;
+}
+
+.left-img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.right-side {
+    width: 30%;      
+    padding: 30px;
+
     display: flex;
     justify-content: center;
-}
-
-
-
-/*GLASS LOGIN CARD*/
-.login-card {
-    width: 420px;
-    padding: 40px;
-    border-radius: 18px;
-
-    background: rgba(0, 45, 80, 0.6);
-    -webkit-backdrop-filter: blur(18px);
-    backdrop-filter: blur(18px);
-
-    border: 1px solid rgba(0, 180, 220, 0.40);
-    box-shadow:
-        0 0 40px rgba(0, 180, 220, 0.25),
-        0 0 120px rgba(0, 180, 220, 0.18);
-
-    animation: fadeIn 1s ease-in-out;
-    transition: 0.4s;
-}
-
-.login-card:hover {
-    border-color: rgba(0, 210, 255, 0.75);
-    box-shadow:
-        0 0 55px rgba(0, 210, 255, 0.45),
-        0 0 150px rgba(0, 210, 255, 0.22);
-}
-
-
-
-/*TITLE + ICON*/
-.login-title-wrap {
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 30px;
+
+    opacity: 1;
+    transform: translateX(0);
 }
 
-.login-title-icon {
-    font-size: 2.3rem;
-    color: #48cae4;
-    text-shadow: 0 0 12px rgba(0, 180, 220, 0.6);
+.login-content {
+    width: 80%;
 }
 
 .login-title {
-    font-size: 2rem;
+    font-size: 40px;
     font-weight: 700;
-    margin: 0;
-
-    background: linear-gradient(90deg, #00b4d8, #0096c7, #48cae4);
-    -webkit-background-clip: text;
+    text-align: center;
+    background: linear-gradient(90deg, #005eff, #00b4ff, #0099cc);
     background-clip: text;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    
+    margin-bottom: 30px;
 }
 
-
-
-/*BETTER LABEL VISIBILITY*/
-.form-label {
-    font-weight: 500;
-    margin-bottom: 6px;
-    color: #b8eefe !important;
-}
-
-
-
-/*INPUT FIELD*/
-.input-field {
-    position: relative;
-    width: 100%;
-}
-
-.input-icon {
-    position: absolute;
-    top: 50%;
-    left: 12px;
-    transform: translateY(-50%);
-    font-size: 1.2rem;
-    color: #a7e6ff;
-    pointer-events: none;
-}
-
-.ocean-input {
-    width: 100%;
-    height: 44px;
-    border-radius: 10px;
-    border: none;
-    padding-left: 45px;
-    background: rgba(0, 0, 0, 0.40);
-    color: #e8f9ff;
-    font-size: 0.95rem;
-    transition: 0.25s;
-}
-
-.ocean-input:focus {
-    background: rgba(0, 0, 0, 0.55);
-    outline: none;
-    box-shadow: 0 0 12px rgba(0, 180, 220, 0.35);
-}
-
-.ocean-input::placeholder {
-    color: #8acfe3;
-}
-
-
-
-/*LOGIN BUTTON */
-.btn-ocean {
-    background: linear-gradient(90deg, #0096c7, #00b4d8);
-    color: white;
-    font-weight: 600;
-    border-radius: 10px;
-    border: none;
-    transition: 0.25s;
-    margin-top: 18px;
-    font-size: 1rem;
-}
-
-.btn-ocean:hover {
-    background: linear-gradient(90deg, #00b4d8, #00d4ff);
-    box-shadow: 0 0 18px rgba(0, 180, 220, 0.45);
-    transform: translateY(-2px);
-}
-
-
-
-/*FADE IN ANIMATION */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.ocean-input:-webkit-autofill,
-.ocean-input:-webkit-autofill:hover,
-.ocean-input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px rgba(0, 26, 46, 0.6) inset !important;
-    -webkit-text-fill-color: #e8f9ff !important;
-    transition: background-color 9999s ease-out;
+.bottom-illustration {
+    width: 260px;
+    display: block;
+    margin: 30px auto 0;
 }

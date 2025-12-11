@@ -6,12 +6,23 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // Jalankan seeder lain di sini
-        $this->call([AdminSeeder::class,
-                PetugasSeeder::class,
-                UserSeeder::class,
+    $this->call([
+            UserSeeder::class,             
+            PetugasSeeder::class,
+            KategoriSampahSeeder::class,
+            PickupTrucksSeeder::class,
+
+            // TEAM SYSTEM
+            TeamSeeder::class,           // requires trucks
+            TeamPetugasSeeder::class,    // requires teams + petugas
+
+            // BATCHES
+            BatchesSeeder::class,        // requires teams + trucks
+
+            // TRANSAKSI
+            TransaksiSampahSeeder::class // requires users + kategori + batches
         ]);
     }
 }

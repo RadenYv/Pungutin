@@ -8,37 +8,36 @@ class TransaksiSampah extends Model
 {
     protected $table = 'transaksi_sampah';
     protected $primaryKey = 'id_transaksi';
-    public $incrementing = true;
 
     protected $fillable = [
         'id_user',
-        'id_petugas',
         'id_kategori',
+        'id_batch',
         'berat_kg',
         'berat_kg_final',
         'total_uang',
         'poin_didapat',
+        'tanggal_pickup',
+        'pickup_window',
         'alamat',
         'no_hp',
         'catatan',
-        'status',
+        'status'
     ];
 
-    // Relasi ke user
+    // Relations
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
-    // Relasi ke petugas
-    public function petugas()
-    {
-        return $this->belongsTo(Petugas::class, 'id_petugas', 'id_petugas');
-    }
-
-    // Relasi ke kategori
     public function kategori()
     {
         return $this->belongsTo(KategoriSampah::class, 'id_kategori', 'id_kategori');
+    }
+
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class, 'id_batch', 'id_batch');
     }
 }

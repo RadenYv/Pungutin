@@ -3,59 +3,103 @@
 @section('title', 'Data Petugas')
 
 @section('content')
-<h2>Data Petugas</h2>
+<div class="page-container">
+    {{-- Page Header --}}
+    <div class="page-header">
+        <div class="page-header-content">
+            <h2 class="page-heading">
+                <i class="bi bi-person-badge me-2"></i>Data Petugas
+            </h2>
+            <p class="page-description">Kelola data petugas pengambilan sampah</p>
+        </div>
+        <a href="{{ route('admin.petugas.create') }}" class="btn-add">
+            <i class="bi bi-plus-lg"></i>
+            <span>Tambah Petugas</span>
+        </a>
+    </div>
 
-@if (session('success'))
-    <p style="color:green;">{{ session('success') }}</p>
-@endif
+    {{-- Alert Messages --}}
+    @if (session('success'))
+        <div class="alert-success">
+            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+        </div>
+    @endif
 
-<a href="{{ route('admin.petugas.create') }}">+ Tambah Petugas</a>
-<br><br>
-
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>No HP</th>
-            <th>Status</th>
-            <th>Dibuat</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @forelse ($petugas as $p)
-            <tr>
-                <td>{{ $p->id_petugas }}</td>
-                <td>{{ $p->nama }}</td>
-                <td>{{ $p->email }}</td>
-                <td>{{ $p->no_hp ?? '-' }}</td>
-                <td>{{ $p->status }}</td>
-                <td>{{ $p->created_at ? $p->created_at->format('d-m-Y') : '-' }}</td>
-
-                <td>
-                    <a href="{{ route('admin.petugas.edit', $p->id_petugas) }}">Edit</a> |
-
-                    <form action="{{ route('admin.petugas.destroy', $p->id_petugas) }}" 
-                          method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit"
-                            onclick="return confirm('Yakin ingin menghapus petugas ini?')">
-                            Hapus
-                        </button>
-                    </form>
-                </td>
-            </tr>
-
-        @empty
-            <tr>
-                <td colspan="7" style="text-align:center;">Belum ada Petugas</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+    {{-- Data Table Card --}}
+    <div class="card data-card">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="bi bi-table me-2"></i>Daftar Petugas
+            </h5>
+            <span class="badge-count">{{ $petugas->count() }} Petugas</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>No HP</th>
+                            <th>Status</th>
+                            <th>Dibuat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($petugas as $p)
+                            <tr>
+                                <td><code>#{{ $p->id_petugas }}</code></td>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="avatar-sm">
+                                            <i class="bi bi-person-badge"></i>
+                                        </div>
+                                        <span>{{ $p->nama }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ $p->email }}</td>
+                                <td>{{ $p->no_hp ?? '-' }}</td>
+                                <td>
+                                    @if($p->status == 'aktif')
+                                        <span class="status-badge badge-success">
+                                            <i class="bi bi-check-circle"></i> Aktif
+                                        </span>
+                                    @else
+                                        <span class="status-badge badge-secondary">
+                                            <i class="bi bi-x-circle"></i> Nonaktif
+                                        </span>
+                                    @endif
+                                </td>
+                                <td><span class="text-muted">{{ $p->created_at ? $p->created_at->format('d M Y') : '-' }}</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{{ route('admin.petugas.edit', $p->id_petugas) }}" class="btn-action-sm btn-edit" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="{{ route('admin.petugas.destroy', $p->id_petugas) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-action-sm btn-delete" title="Hapus" onclick="return confirm('Yakin ingin menghapus petugas ini?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i class="bi bi-inbox"></i>
+                                    <span>Belum ada petugas</span>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

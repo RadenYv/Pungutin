@@ -17,6 +17,7 @@ class User extends Authenticatable
         'nama',
         'email',
         'password',
+        'role',
         'no_hp',
         'saldo_total',
         'poin_total',
@@ -27,9 +28,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // Relasi ke transaksi
+    // Relasi antar table
     public function transaksi()
     {
         return $this->hasMany(TransaksiSampah::class, 'id_user', 'id_user');
     }
+    
 }

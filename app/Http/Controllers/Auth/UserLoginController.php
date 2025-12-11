@@ -16,6 +16,7 @@ class UserLoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $credentials['role'] = 'user';
 
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();

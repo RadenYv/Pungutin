@@ -10,7 +10,8 @@
     <div>{{ session('success') }}</div>
 @endif
 
-<table border="1" width="100%">
+<div class="table-wrapper">
+<table class="admin-table">
     <thead>
         <tr>
             <th>ID</th>
@@ -55,5 +56,6 @@
         @endforelse
     </tbody>
 </table>
+</div>
 
 @endsection

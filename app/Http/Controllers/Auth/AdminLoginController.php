@@ -21,7 +21,15 @@ class AdminLoginController extends Controller
             'password' => 'required'
         ]);
 
+        // If the account exists but isn't admin, show 401 page
+        $candidate = \App\Models\User::where('email', $request->email)->first();
+        if ($candidate && ($candidate->role ?? 'user') !== 'admin') {
+            return response()->view('Errors.401', [], 401);
+        }
+
+        // Require role=admin on the shared users table
         $credentials = $request->only('email', 'password');
+        $credentials['role'] = 'admin';
 
         if (Auth::guard('admin')->attempt($credentials)) {
 

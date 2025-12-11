@@ -16,7 +16,7 @@
 <body>
 
     <h1>401 | Unauthorized</h1>
-    <p>Kamu bukan admin. Meow blocked 😼</p>
+    <p>Kamu bukan admin. blocked 😼</p>
 
     <img src="{{ asset('images/Error.jpg') }}" alt="Unauthorized Cat">
 

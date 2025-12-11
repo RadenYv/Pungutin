@@ -43,7 +43,7 @@ return [
 
     'admin' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'users',
         ],
 
     'petugas' => [
@@ -75,10 +75,7 @@ return [
             'model' => App\Models\User::class,
         ],
 
-    'admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
-        ],
+    // Admins now share the users provider via role-based auth
 
     'petugas' => [
             'driver' => 'eloquent',

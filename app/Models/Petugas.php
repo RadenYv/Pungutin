@@ -26,9 +26,19 @@ class Petugas extends Authenticatable
         'remember_token',
     ];
 
-    // Relasi ke transaksi
-    public function transaksi()
+    // Relasi
+    public function teamMemberships()
     {
-        return $this->hasMany(TransaksiSampah::class, 'id_petugas', 'id_petugas');
+        return $this->hasMany(TeamPetugas::class, 'id_petugas', 'id_petugas');
+    }
+
+    public function teams()
+    {
+        return $this->belongsToMany(
+            Team::class,
+            'team_petugas',
+            'id_petugas',
+            'id_team'
+        );
     }
 }

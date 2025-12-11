@@ -12,7 +12,6 @@ class UserDashController extends Controller
     {
         $user = Auth::user();
 
-        // Ambil transaksi user
         $transaksi = TransaksiSampah::where('id_user', $user->id_user)
             ->with(['kategori', 'petugas'])
             ->orderBy('created_at', 'desc')

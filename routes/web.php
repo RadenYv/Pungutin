@@ -9,8 +9,11 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PetugasController;
 use App\Http\Controllers\Admin\KategoriSampahController;
 use App\Http\Controllers\Admin\TransaksiSampahController;
+use App\Http\Controllers\Admin\PickupTruckController;
+use App\Http\Controllers\Admin\BatchController;
+use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\User\UserDashController;
-use App\Http\Controllers\User\UserTransaksiController;
+use App\Http\Controllers\User\TransaksiSampahController as UserTransaksiController;
 use App\Http\Controllers\Petugas\PetugasDashController;
 use App\Http\Controllers\Petugas\PenjemputanController;
 
@@ -21,23 +24,39 @@ Route::post('/', [AdminLoginController::class, 'login'])->name('admin.login.subm
 Route::post('/logout-admin', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 
-// ADMIN AREA (protected)
-Route::middleware('auth:admin')->group(function () {
-
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+// ADMIN AREA 
+Route::middleware(['auth:admin','role:admin'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
-        Route::resource('users', UserController::class);
-        Route::resource('petugas', PetugasController::class);
-        Route::resource('kategori', KategoriSampahController::class);
-        Route::resource('transaksi', TransaksiSampahController::class);
+        // Dashboard
+        Route::get('/dashboard', [AdminController::class, 'index'])
+            ->name('dashboard');
 
-        Route::post('/transaksi/{id}/assign', [TransaksiSampahController::class, 'assign'])
-            ->name('transaksi.assign');
+        // CRUD (exclude show pages)
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::resource('petugas', PetugasController::class)->except(['show']);
+        Route::resource('kategori', KategoriSampahController::class)->except(['show']);
+        Route::resource('trucks', PickupTruckController::class)->except(['show']);
 
-        Route::post('/transaksi/{id}/selesai', [TransaksiSampahController::class, 'selesai'])
-            ->name('transaksi.selesai');
+        // Teams, Batches limited to implemented actions
+        Route::resource('teams', TeamController::class)->only(['index', 'create', 'store']);
+        Route::resource('batches', BatchController::class)->only(['index', 'create', 'store']);
+        Route::post('/batches/{id_batch}/assign-team', [BatchController::class, 'assignTeam'])
+            ->name('batches.assignTeam');
+        Route::post('/batches/{id_batch}/start', [BatchController::class, 'start'])
+            ->name('batches.start');
+        Route::post('/batches/{id_batch}/selesai', [BatchController::class, 'selesai'])
+            ->name('batches.selesai');
+        Route::get('/batches/{id_batch}/transaksi', [BatchController::class, 'transaksi'])
+            ->name('batches.transaksi');
+
+        // Transaksi listing and edit/update; plus batch operations
+        Route::resource('transaksi', TransaksiSampahController::class)->only(['index', 'edit', 'update']);
+        Route::post('/transaksi/{id}/assign-batch', [TransaksiSampahController::class, 'assignBatch'])
+            ->name('transaksi.assignBatch');
+        Route::post('/transaksi/{id}/remove-batch', [TransaksiSampahController::class, 'removeBatch'])
+            ->name('transaksi.removeBatch');
     });
 
 });
@@ -50,14 +69,14 @@ Route::post('/logout-user', [UserLoginController::class, 'logout'])->name('user.
 
 
 // USER AREA (protected)
-Route::middleware('auth:web')->group(function () {
+Route::middleware(['auth:web','role:user'])->group(function () {
 
     Route::prefix('user')->name('user.')->group(function () {
 
         Route::get('/dashboard', [UserDashController::class, 'index'])->name('dashboard');
 
         Route::resource('transaksi', UserTransaksiController::class)
-            ->only(['index', 'create', 'store', 'show']);
+            ->only(['index', 'create', 'store']);
     });
 });
 
@@ -74,11 +93,11 @@ Route::middleware('auth:petugas')->prefix('petugas')->name('petugas.')->group(fu
         Route::get('/dashboard', [PetugasDashController::class, 'index'])
             ->name('dashboard');
 
-        // Daftar penjemputan
-        Route::get('/penjemputan', [PetugasPenjemputanController::class, 'index'])
+        // Penjemputan daftar dan aksi
+        Route::get('/penjemputan', [PenjemputanController::class, 'index'])
             ->name('penjemputan.index');
-
-        // Update berat akhir
-        Route::resource('penjemputan', PenjemputanController::class)
-            ->only(['index', 'show', 'update']);
+        Route::post('/penjemputan/{id}/berat', [PenjemputanController::class, 'updateBerat'])
+            ->name('penjemputan.updateBerat');
+        Route::post('/penjemputan/{id}/selesai', [PenjemputanController::class, 'selesaikan'])
+            ->name('penjemputan.selesaikan');
 });

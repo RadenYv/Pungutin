@@ -3,88 +3,140 @@
 @section('title', 'Data Transaksi')
 
 @section('content')
-<h2>Data Transaksi</h2>
+<div class="page-container">
+    {{-- Page Header --}}
+    <div class="page-header">
+        <div class="page-header-content">
+            <h2 class="page-heading">
+                <i class="bi bi-box-seam me-2"></i>Data Transaksi
+            </h2>
+            <p class="page-description">Kelola transaksi pengambilan sampah</p>
+        </div>
+    </div>
 
-@if(session('success'))
-    <p style="color: green;">{{ session('success') }}</p>
-@endif
+    {{-- Alert Messages --}}
+    @if (session('success'))
+        <div class="alert-success">
+            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+        </div>
+    @endif
 
-<table border="1" cellpadding="8" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>User</th>
-            <th>Petugas</th>
-            <th>Kategori</th>
-            <th>Berat (kg)</th>
-            <th>Total Uang</th>
-            <th>Poin</th>
-            <th>Status</th>
-            <th>Tanggal</th>
-            <th>Assign</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @forelse ($transaksi as $item)
-        <tr>
-            <td>{{ $item->id_transaksi }}</td>
-
-            <td>{{ $item->user->nama ?? '-' }}</td>
-
-            <td>
-                @if ($item->id_petugas)
-                    {{ $item->petugas->nama }}
-                @else
-                    -
-                @endif
-            </td>
-
-            <td>{{ $item->kategori->nama_kategori ?? '-' }}</td>
-
-            <td>{{ number_format($item->berat_kg, 2) }}</td>
-
-            <td>Rp {{ number_format($item->total_uang, 0, ',', '.') }}</td>
-
-            <td>{{ $item->poin_didapat }}</td>
-
-            <td>
-                @if ($item->status == 'menunggu')
-                    <span style="color: orange;">Menunggu</span>
-                @elseif ($item->status == 'dijemput')
-                    <span style="color: blue;">Dijemput</span>
-                @else
-                    <span style="color: green;">Selesai</span>
-                @endif
-            </td>
-
-            <td>{{ $item->created_at->format('d-m-Y H:i') }}</td>
-
-            <td>
-                @if(!$item->id_petugas)
-                    <form action="{{ route('admin.transaksi.assign', $item->id_transaksi) }}" method="POST">
-                        @csrf
-                        <select name="id_petugas" required>
-                            <option value="">Pilih</option>
-                            @foreach($petugas as $p)
-                                <option value="{{ $p->id_petugas }}">{{ $p->nama }}</option>
-                            @endforeach
-                        </select>
-                        <button type="submit">Assign</button>
-                    </form>
-
-                @else
-                
-                @endif
-            </td>
-
-        </tr>
-        @empty
-        <tr>
-            <td colspan="11" style="text-align:center;">Belum ada transaksi</td>
-        </tr>
-        @endforelse
-    </tbody>
-</table>
-
+    {{-- Data Table Card --}}
+    <div class="card data-card">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="bi bi-table me-2"></i>Daftar Transaksi
+            </h5>
+            <span class="badge-count">{{ $transaksi->count() }} Transaksi</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Kategori</th>
+                            <th>Berat</th>
+                            <th>Total</th>
+                            <th>Poin</th>
+                            <th>Status</th>
+                            <th>Batch</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($transaksi as $item)
+                            <tr>
+                                <td><code>#{{ $item->id_transaksi }}</code></td>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="avatar-sm">
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <span>{{ $item->user->nama ?? '-' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="kategori-tag">
+                                        <i class="bi bi-recycle"></i>
+                                        {{ $item->kategori->nama_kategori ?? '-' }}
+                                    </span>
+                                </td>
+                                <td>{{ number_format($item->berat_kg, 2) }} kg</td>
+                                <td><span class="text-success">Rp {{ number_format($item->total_uang, 0, ',', '.') }}</span></td>
+                                <td><span class="badge-poin">{{ $item->poin_didapat }} pts</span></td>
+                                <td>
+                                    @php
+                                        $statusMap = [
+                                            'menunggu' => ['class' => 'badge-warning', 'icon' => 'bi-hourglass-split'],
+                                            'dalam_batch' => ['class' => 'badge-secondary', 'icon' => 'bi-box'],
+                                            'dijemput' => ['class' => 'badge-primary', 'icon' => 'bi-truck'],
+                                            'selesai' => ['class' => 'badge-success', 'icon' => 'bi-check-circle'],
+                                        ];
+                                        $badge = $statusMap[$item->status] ?? ['class' => 'badge-secondary', 'icon' => 'bi-question'];
+                                    @endphp
+                                    <span class="status-badge {{ $badge['class'] }}">
+                                        <i class="bi {{ $badge['icon'] }}"></i>
+                                        {{ str_replace('_', ' ', ucfirst($item->status)) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if ($item->batch)
+                                        <code>Batch #{{ $item->batch->id_batch }}</code>
+                                        <small class="text-muted d-block">{{ $item->batch->start_time }} - {{ $item->batch->end_time }}</small>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($item->status == 'menunggu')
+                                        <form action="{{ route('admin.transaksi.assignBatch', $item->id_transaksi) }}" method="POST" class="batch-form">
+                                            @csrf
+                                            <select name="id_batch" class="form-select-sm" required>
+                                                <option value="">Pilih Batch</option>
+                                                @foreach($batches as $b)
+                                                    <option value="{{ $b->id_batch }}">
+                                                        Batch #{{ $b->id_batch }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="btn-action-sm btn-primary-sm">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </form>
+                                    @elseif ($item->status == 'dalam_batch')
+                                        <form action="{{ route('admin.transaksi.assignBatch', $item->id_transaksi) }}" method="POST" class="batch-form">
+                                            @csrf
+                                            <select name="id_batch" class="form-select-sm" required>
+                                                <option value="">Pindah ke</option>
+                                                @foreach($batches as $b)
+                                                    <option value="{{ $b->id_batch }}">
+                                                        Batch #{{ $b->id_batch }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="btn-action-sm btn-warning-sm">
+                                                <i class="bi bi-arrow-right"></i>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="9" class="empty-state">
+                                    <i class="bi bi-inbox"></i>
+                                    <span>Belum ada transaksi</span>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

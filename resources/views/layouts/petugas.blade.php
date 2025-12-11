@@ -10,7 +10,7 @@
     <h1>petugas dashboard</h1>
 
     <nav>
-        <a href="{{ route('petugas.dashboard') }}">Cuming Soon</a>
+        <a href="{{ route('petugas.dashboard') }}">Cuming Soon</a> |
         <a href="{{ route('petugas.penjemputan.index') }}">Cuming Soon</a>
         <form action="{{ route('petugas.logout') }}" method="POST" style="display:inline;">
             @csrf

@@ -8,14 +8,40 @@ use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        DB::table('users')->insert([
-            'nama' => 'Letoy',
-            'email' => 'user@gmail.com',
-            'password' => Hash::make('user123'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $users = [
+            [
+                'nama' => 'Rizki',
+                'email' => 'rizki1@gmail.com',
+                'password' => Hash::make('user123'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Wati',
+                'email' => 'wati1@gmail.com',
+                'password' => Hash::make('user123'),
+                'role' => 'user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nama' => 'Raden',
+                'email' => 'raden1@gmail.com',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+
+        foreach ($users as $u) {
+            DB::table('users')->updateOrInsert(
+                ['email' => $u['email']],
+                $u
+            );
+        }
     }
 }

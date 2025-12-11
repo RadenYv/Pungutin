@@ -9,9 +9,10 @@ return new class extends Migration {
     {
         Schema::create('kategori_sampah', function (Blueprint $table) {
             $table->id('id_kategori');
+            
             $table->string('nama_kategori')->unique();
-            $table->decimal('harga_per_kg', 10, 2); // lebih presisi untuk harga non-bulat
-            $table->integer('poin_per_kg')->default(10);
+            $table->decimal('harga_per_kg', 10, 2); 
+            $table->integer('poin_per_kg')->default(1);
             $table->timestamps();
     });
 
