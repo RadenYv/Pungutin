@@ -10,13 +10,13 @@
 
     <!-- BOOTSRAP ICONS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 
 <body>
-    
+
 <div class="login-wrapper">
     <div class="login-card">
 
@@ -44,31 +44,31 @@
 
                 <div class="input-field">
                     <i class="bi bi-envelope-fill input-icon"></i>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        class="ocean-input" 
+                    <input
+                        type="email"
+                        name="email"
+                        class="ocean-input"
                         placeholder="Enter your email"
                         required>
                 </div>
             </div>
-        
+
             <!--PASSWORD-->
             <div class="mb-3">
 
                 <div class="input-field">
                     <i class="bi bi-lock-fill input-icon"></i>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        class="ocean-input" 
+                    <input
+                        type="password"
+                        name="password"
+                        class="ocean-input"
                         placeholder="Enter your password"
                         required>
                 </div>
             </div>
-        
+
             <button type="submit" class="btn btn-ocean w-100 py-2">Login</button>
-    
+
         </form>
 
     </div>
