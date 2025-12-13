@@ -3,76 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PUNGUT.in | Admin Login</title>
+    <title>Admin Login</title>
 
-    <!-- BOOTSTRAP CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- BOOTSRAP ICONS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
-    <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-
 </head>
 
 <body>
 
 <div class="login-wrapper">
-    <div class="login-card">
 
-        <div class="login-title-wrap">
-            <i class="bi bi-person-circle login-title-icon"></i>
-            <h2 class="login-title">admin</h2>
+    <!-- LEFT SIDE IMAGE -->
+    <div class="left-side">
+        <img src="/images/BitchTurtle.jpg" class="left-img" alt="Login Image">
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-side">
+
+        <div class="login-content">
+
+            <h1 class="login-title">Login Admin</h1>
+
+            <form method="POST" action="{{ route('admin.login.submit') }}">
+                @csrf
+
+                <!-- USERNAME -->
+                <label class="form-label small">Email</label>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="email" placeholder="Email">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                </div>
+
+                <!-- PASSWORD -->
+                <label class="form-label small">Password</label>
+                <div class="input-group mb-4">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                </div>
+
+                <!-- LOGIN BUTTON -->
+                <button class="btn btn-primary w-100 mb-2" type="submit">Login</button>
+
+                <!-- FORGOT PASSWORD -->
+                <p class="small text-center mt-1">
+                    Lupa Password?
+                    <a href="#" class="text-decoration-none">klik disini</a>
+                </p>
+            </form>
+
+            <!-- BOTTOM ILLUSTRATION -->
+            <img src="/images/working.png" class="bottom-illustration" alt="Wong Gaweh">
+
         </div>
 
-        {{-- ERROR MESSAGE --}}
-        @if(session('error'))
-            <div class="alert alert-danger py-2">{{ session('error') }}</div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger py-2">
-                {{ $errors->first() }}
-            </div>
-        @endif
-
-        <form method="POST" action="{{ route('admin.login.submit') }}">
-            @csrf
-
-            <!--EMAIL-->
-            <div class="mb-3">
-
-                <div class="input-field">
-                    <i class="bi bi-envelope-fill input-icon"></i>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        class="ocean-input" 
-                        placeholder="Enter your email"
-                        required>
-                </div>
-            </div>
-        
-            <!--PASSWORD-->
-            <div class="mb-3">
-
-                <div class="input-field">
-                    <i class="bi bi-lock-fill input-icon"></i>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        class="ocean-input" 
-                        placeholder="Enter your password"
-                        required>
-                </div>
-            </div>
-        
-            <button type="submit" class="btn btn-ocean w-100 py-2">Login</button>
-    
-        </form>
-
     </div>
+
 </div>
 
 </body>
