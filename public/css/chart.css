@@ -125,7 +125,6 @@
     background: #0d0d0d;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    height: 100%;
     transition: all 150ms ease;
 }
 
@@ -205,6 +204,18 @@
 .stat-success .stat-icon {
     background: rgba(25, 135, 84, 0.15);
     color: #198754;
+}
+
+/* Info - Cyan (Users) */
+.stat-info .stat-icon {
+    background: rgba(13, 202, 240, 0.15);
+    color: #0dcaf0;
+}
+
+/* Purple - (Petugas) */
+.stat-purple .stat-icon {
+    background: rgba(163, 113, 247, 0.15);
+    color: #a371f7;
 }
 
 /* ----------------------------------------------------------

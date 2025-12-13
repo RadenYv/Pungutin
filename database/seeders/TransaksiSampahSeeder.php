@@ -13,7 +13,7 @@ class TransaksiSampahSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::all();
+        $users = User::where('role', 'user')->get();
         $kategoriList = KategoriSampah::all();
         $batches = Batch::all();
 

@@ -137,6 +137,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $transaksi->links() }}
+        </div>
     </div>
 </div>
 @endsection

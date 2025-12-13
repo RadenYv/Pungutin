@@ -86,6 +86,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $kategori->links() }}
+        </div>
     </div>
 </div>
 @endsection

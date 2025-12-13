@@ -10,7 +10,7 @@ class KategoriSampahController extends Controller
 {
     public function index()
     {
-        $kategori = KategoriSampah::all();
+        $kategori = KategoriSampah::orderBy('nama_kategori')->paginate(10);
         return view('Admin.kategori.index', compact('kategori'));
     }
 

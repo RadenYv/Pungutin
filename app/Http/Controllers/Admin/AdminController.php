@@ -15,14 +15,17 @@ class AdminController extends Controller
 {
     public function index()
     {
-    $recentTransaksi = TransaksiSampah::with([
-        'batch.truck',
-        'batch.team.members.petugas'
-    ])
-    ->orderBy('id_transaksi', 'DESC')->take(20)->get();
+        $recentTransaksi = TransaksiSampah::with([
+            'batch.truck',
+            'batch.team.members.petugas'
+        ])
+        ->where('status', 'selesai')
+        ->orderBy('id_transaksi', 'DESC')
+        ->take(9)
+        ->get();
     
         return view('Admin.dashboard', [
-            'totalUsers'        => User::count(),
+            'totalUsers'        => User::where('role', 'user')->count(),
             'totalPetugas'      => Petugas::count(),
             'totalTrucks'       => PickupTruck::count(),
             'recentTransaksi'   => $recentTransaksi,

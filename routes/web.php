@@ -33,17 +33,19 @@ Route::middleware(['auth:admin','role:admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])
             ->name('dashboard');
 
-        // CRUD (exclude show pages)
-        Route::resource('users', UserController::class)->except(['show']);
-        Route::resource('petugas', PetugasController::class)->except(['show']);
-        Route::resource('kategori', KategoriSampahController::class)->except(['show']);
-        Route::resource('trucks', PickupTruckController::class)->except(['show']);
+        // CRUD Resources
+        Route::resource('users', UserController::class);
+        Route::resource('petugas', PetugasController::class);
+        Route::resource('kategori', KategoriSampahController::class);
+        Route::resource('trucks', PickupTruckController::class);
 
-        // Teams, Batches limited to implemented actions
-        Route::resource('teams', TeamController::class)->only(['index', 'create', 'store']);
+        // Teams, Batches
+        Route::resource('teams', TeamController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::resource('batches', BatchController::class)->only(['index', 'create', 'store']);
         Route::post('/batches/{id_batch}/assign-team', [BatchController::class, 'assignTeam'])
             ->name('batches.assignTeam');
+        Route::post('/batches/{id_batch}/cancel', [BatchController::class, 'cancel'])
+            ->name('batches.cancel');
         Route::post('/batches/{id_batch}/start', [BatchController::class, 'start'])
             ->name('batches.start');
         Route::post('/batches/{id_batch}/selesai', [BatchController::class, 'selesai'])

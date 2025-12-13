@@ -11,7 +11,7 @@ class PetugasController extends Controller
 {
     public function index()
     {
-        $petugas = Petugas::all();
+        $petugas = Petugas::orderBy('created_at', 'desc')->paginate(10);
         return view('Admin.petugas.index', compact('petugas'));
     }
 

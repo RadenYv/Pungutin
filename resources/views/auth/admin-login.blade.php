@@ -12,19 +12,19 @@
 
 <body>
 
-<div class="login-wrapper">
+<div class="login-wrapper d-flex vw-100 vh-100 overflow-hidden p-0 m-0">
 
     <!-- LEFT SIDE IMAGE -->
-    <div class="left-side">
-        <img src="/images/BitchTurtle.jpg" class="left-img" alt="Login Image">
+    <div class="left-side h-100 p-0">
+        <img src="/images/Swordfish.jpg" class="left-img" alt="Login Image">
     </div>
 
     <!-- RIGHT SIDE -->
-    <div class="right-side">
+    <div class="right-side d-flex align-items-center justify-content-center h-100">
 
         <div class="login-content">
 
-            <h1 class="login-title">Login Admin</h1>
+            <h1 class="login-title text-center fw-bold mb-4">Login Admin</h1>
 
             <form method="POST" action="{{ route('admin.login.submit') }}">
                 @csrf
@@ -54,7 +54,7 @@
             </form>
 
             <!-- BOTTOM ILLUSTRATION -->
-            <img src="/images/working.png" class="bottom-illustration" alt="Wong Gaweh">
+            <img src="/images/working.png" class="bottom-illustration d-block mx-auto mt-4" alt="Wong Gaweh">
 
         </div>
 

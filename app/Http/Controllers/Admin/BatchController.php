@@ -14,7 +14,7 @@ class BatchController extends Controller
     {
         $batches = Batch::with(['truck', 'team.members.petugas', 'transaksi'])
             ->orderBy('tanggal', 'desc')
-            ->get();
+            ->paginate(10);
 
         $teams = Team::withCount('members')->get();
 
@@ -48,11 +48,16 @@ class BatchController extends Controller
 
     public function assignTeam(Request $request, $id_batch)
     {
-        $batch = Batch::with('truck')->findOrFail($id_batch);
+        $batch = Batch::with('truck')->withCount('transaksi')->findOrFail($id_batch);
 
         $request->validate([
             'id_team' => 'required|integer|exists:teams,id_team'
         ]);
+
+        // Check if batch has at least 1 transaction
+        if ($batch->transaksi_count === 0) {
+            return back()->withErrors(['msg' => 'Batch harus memiliki minimal 1 transaksi sebelum assign team']);
+        }
 
         $team = Team::with('truck')->withCount('members')->findOrFail($request->id_team);
 
@@ -60,15 +65,16 @@ class BatchController extends Controller
             return back()->withErrors(['msg' => 'Team harus memiliki tepat 2 petugas']);
         }
 
-        // Assign team to batch
+        // Assign team and truck to batch
         $batch->id_team = $team->id_team;
+        $batch->id_truck = $team->id_truck; // Also assign the team's truck
         $batch->status = 'ditugaskan';
         $batch->save();
 
         // Update truck status from idle to penjemputan
-        if ($batch->truck) {
-            $batch->truck->status = 'penjemputan';
-            $batch->truck->save();
+        if ($team->truck) {
+            $team->truck->status = 'penjemputan';
+            $team->truck->save();
         }
 
         // Update all transaksi in this batch to 'dalam_batch'
@@ -76,6 +82,33 @@ class BatchController extends Controller
 
         return redirect()->route('admin.batches.index')
                          ->with('success', 'Team berhasil diassign ke batch. Truck dalam penjemputan.');
+    }
+
+    public function cancel($id_batch)
+    {
+        $batch = Batch::with(['truck', 'team', 'transaksi'])->findOrFail($id_batch);
+
+        if ($batch->status !== 'ditugaskan') {
+            return back()->withErrors(['msg' => 'Hanya batch dengan status ditugaskan yang bisa dibatalkan']);
+        }
+
+        // Return truck to idle
+        if ($batch->truck) {
+            $batch->truck->status = 'idle';
+            $batch->truck->save();
+        }
+
+        // Update all transaksi back to menunggu
+        $batch->transaksi()->where('status', 'dalam_batch')->update(['status' => 'menunggu']);
+
+        // Reset batch to pending and remove truck assignment
+        $batch->id_team = null;
+        $batch->id_truck = null;
+        $batch->status = 'pending';
+        $batch->save();
+
+        return redirect()->route('admin.batches.index')
+                         ->with('success', 'Batch berhasil dibatalkan.');
     }
 
     public function start($id_batch)

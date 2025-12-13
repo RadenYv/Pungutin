@@ -15,6 +15,20 @@ class PetugasLoginController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // Check if email exists in petugas table
+        $petugas = \App\Models\Petugas::where('email', $request->email)->first();
+        
+        if (!$petugas) {
+            return back()->withErrors([
+                'email' => 'Email belum terdaftar sebagai petugas.',
+            ])->withInput();
+        }
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('petugas')->attempt($credentials)) {
@@ -24,7 +38,7 @@ class PetugasLoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            'email' => 'Password salah.',
         ])->withInput();
     }
 

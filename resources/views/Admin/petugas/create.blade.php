@@ -3,32 +3,46 @@
 @section('title', 'Tambah Petugas')
 
 @section('content')
-<h2>Tambah Petugas</h2>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Tambah Petugas</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.petugas.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
 
-<form action="{{ route('admin.petugas.store') }}" method="POST">
-    @csrf
-    <label>Nama:</label><br>
-    <input type="text" name="nama" required><br><br>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
 
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
 
-    <label>Password:</label><br>
-    <input type="password" name="password" required><br><br>
+                <div class="mb-3">
+                    <label for="no_hp" class="form-label">No HP</label>
+                    <input type="text" class="form-control" id="no_hp" name="no_hp">
+                </div>
 
-    <label>No HP:</label><br>
-    <input type="text" name="no_hp"><br><br>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="aktif">Aktif</option>
+                        <option value="nonaktif">Nonaktif</option>
+                    </select>
+                </div>
 
-    <label>Status:</label><br>
-    <select name="status" required>
-        <option value="aktif">Aktif</option>
-        <option value="nonaktif">Nonaktif</option>
-    </select><br><br>
-
-    <button type="submit">Simpan</button>
-</form>
-
-
-<br>
-<a href="{{ route('admin.petugas.index') }}">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <a href="{{ route('admin.petugas.index') }}" class="btn btn-secondary">Kembali</a>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

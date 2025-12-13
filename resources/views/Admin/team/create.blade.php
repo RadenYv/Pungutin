@@ -3,52 +3,64 @@
 @section('title', 'Buat Team')
 
 @section('content')
-<h2>Buat Team</h2>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Buat Team</h2>
+        </div>
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-@if ($errors->any())
-    <div style="color:red;">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+            <form action="{{ route('admin.teams.store') }}" method="POST">
+                @csrf
+
+                <div class="mb-3">
+                    <label for="id_truck" class="form-label">Truck</label>
+                    <select name="id_truck" id="id_truck" class="form-select" required>
+                        <option value="">Pilih Truck</option>
+                        @foreach($trucks as $t)
+                            <option value="{{ $t->id_truck }}">{{ $t->nama }} ({{ $t->plat_nomor }})</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="tanggal" class="form-label">Tanggal</label>
+                    <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="driver" class="form-label">Driver</label>
+                    <select name="driver" id="driver" class="form-select" required>
+                        <option value="">Pilih Driver</option>
+                        @foreach($petugas as $p)
+                            <option value="{{ $p->id_petugas }}">{{ $p->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="co_driver" class="form-label">Co-Driver</label>
+                    <select name="co_driver" id="co_driver" class="form-select" required>
+                        <option value="">Pilih Co-Driver</option>
+                        @foreach($petugas as $p)
+                            <option value="{{ $p->id_petugas }}">{{ $p->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <a href="{{ route('admin.teams.index') }}" class="btn btn-secondary">Kembali</a>
+            </form>
+        </div>
     </div>
-@endif
-
-<form action="{{ route('admin.teams.store') }}" method="POST">
-    @csrf
-
-    <label>Truck:</label>
-    <select name="id_truck" required>
-        <option value="">Pilih Truck</option>
-        @foreach($trucks as $t)
-            <option value="{{ $t->id_truck }}">{{ $t->nama }} ({{ $t->plat_nomor }})</option>
-        @endforeach
-    </select>
-    <br><br>
-
-    <label>Tanggal:</label>
-    <input type="date" name="tanggal" required>
-    <br><br>
-
-    <label>Driver:</label>
-    <select name="driver" required>
-        <option value="">Pilih Driver</option>
-        @foreach($petugas as $p)
-            <option value="{{ $p->id_petugas }}">{{ $p->nama }}</option>
-        @endforeach
-    </select>
-    <br><br>
-
-    <label>Co-Driver:</label>
-    <select name="co_driver" required>
-        <option value="">Pilih Co-Driver</option>
-        @foreach($petugas as $p)
-            <option value="{{ $p->id_petugas }}">{{ $p->nama }}</option>
-        @endforeach
-    </select>
-    <br><br>
-
-    <button type="submit">Simpan</button>
-</form>
+</div>
 @endsection

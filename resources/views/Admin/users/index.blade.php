@@ -31,7 +31,7 @@
             <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
                 <i class="bi bi-table me-2"></i>Daftar User
             </h5>
-            <span class="badge-count">{{ $users->count() }} Users</span>
+            <span class="badge-count">{{ $users->where('role', '!=', 'admin')->count() }} Users</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -66,15 +66,15 @@
                                 <td>
                                     @if(($u->role ?? 'user') === 'admin')
                                         -
-                                    @else
-                                        <span class="text-success">Rp {{ number_format($u->saldo_total) }}</span>
+                                     @else
+                                       {{-- <span class="text-success">Rp {{ number_format($u->saldo_total) }}</span> --}}
                                     @endif
                                 </td>
                                 <td>
                                     @if(($u->role ?? 'user') === 'admin')
                                         -
                                     @else
-                                        <span class="badge-poin">{{ $u->poin_total }} pts</span>
+                                        {{-- <span class="badge-poin">{{ $u->poin_total }} pts</span> --}}
                                     @endif
                                 </td>
                                 <td><span class="text-secondary small">{{ $u->created_at ? $u->created_at->format('d M Y') : '-' }}</span></td>
@@ -104,6 +104,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="card-footer">
+            {{ $users->links() }}
         </div>
     </div>
 </div>

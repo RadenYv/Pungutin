@@ -80,7 +80,10 @@
 
         {{-- Quick Stats Cards --}}
         <div class="col-lg-8">
-            <div class="row g-4 h-100">
+            
+            {{-- Section: Transaksi --}}
+            <h6 class="text-muted text-uppercase small fw-bold mb-3">Transaksi</h6>
+            <div class="row g-4 mb-4">
                 <div class="col-sm-6 col-md-3">
                     <div class="card stat-card stat-warning">
                         <div class="card-body">
@@ -134,6 +137,37 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Section: Accounts --}}
+            <h6 class="text-muted text-uppercase small fw-bold mb-3">Accounts</h6>
+            <div class="row g-4">
+                <div class="col-sm-6 col-md-6">
+                    <div class="card stat-card stat-info">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value">{{ $totalUsers }}</span>
+                                <span class="stat-label">Total Users</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <div class="card stat-card stat-purple">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="bi bi-person-badge"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value">{{ $totalPetugas }}</span>
+                                <span class="stat-label">Total Petugas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -146,7 +180,7 @@
             <div class="card rounded-3">
                 <div class="card-header d-flex align-items-center justify-content-between py-3">
                     <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-clock-history me-2"></i>History Transaksi
+                        <i class="bi bi-clock-history me-2"></i>Transaksi selesai
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -207,7 +241,7 @@
                                 <tr>
                                     <td colspan="4" class="text-center text-muted py-4">
                                         <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                        Belum ada transaksi
+                                        Belum ada transaksi yang selesai.
                                     </td>
                                 </tr>
                                 @endforelse
@@ -228,47 +262,8 @@
         {{-- RIGHT COLUMN --}}
         <div class="col-lg-4">
 
-            {{-- Calendar Widget --}}
-            <div class="card rounded-3 mb-4">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-calendar3 me-2"></i>Personal Calendar
-                    </h5>
-                    <div class="d-flex gap-1">
-                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-left"></i></button>
-                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-right"></i></button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="calendar-month">{{ now()->format('F Y') }}</div>
-                    <div class="calendar-grid">
-                        <div class="cal-header">Sun</div>
-                        <div class="cal-header">Mon</div>
-                        <div class="cal-header">Tue</div>
-                        <div class="cal-header">Wed</div>
-                        <div class="cal-header">Thu</div>
-                        <div class="cal-header">Fri</div>
-                        <div class="cal-header">Sat</div>
-                        @php
-                            $firstDay = now()->startOfMonth()->dayOfWeek;
-                            $daysInMonth = now()->daysInMonth;
-                        @endphp
-                        @for($i = 0; $i < $firstDay; $i++)
-                            <div class="cal-cell empty"></div>
-                        @endfor
-                        @for($i = 1; $i <= $daysInMonth; $i++)
-                            <div class="cal-cell {{ $i == now()->day ? 'is-today' : '' }}">{{ $i }}</div>
-                        @endfor
-                    </div>
-                    <div class="calendar-legend">
-                        <span><i class="bi bi-circle-fill text-danger"></i> Holiday</span>
-                        <span><i class="bi bi-circle-fill text-primary"></i> Leave</span>
-                    </div>
-                </div>
-            </div>
-
             {{-- Profile Card --}}
-            <div class="card profile-card rounded-3">
+            <div class="card profile-card rounded-3 mb-4">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-3 mb-3">
                         <div class="profile-avatar">
@@ -306,6 +301,45 @@
                             <span class="detail-label">Active Projects</span>
                             <span class="detail-value highlight">{{ $transaksiBatch }} Active</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Calendar Widget --}}
+            <div class="card rounded-3">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
+                        <i class="bi bi-calendar3 me-2"></i>Personal Calendar
+                    </h5>
+                    <div class="d-flex gap-1">
+                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-left"></i></button>
+                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="calendar-month">{{ now()->format('F Y') }}</div>
+                    <div class="calendar-grid">
+                        <div class="cal-header">Sun</div>
+                        <div class="cal-header">Mon</div>
+                        <div class="cal-header">Tue</div>
+                        <div class="cal-header">Wed</div>
+                        <div class="cal-header">Thu</div>
+                        <div class="cal-header">Fri</div>
+                        <div class="cal-header">Sat</div>
+                        @php
+                            $firstDay = now()->startOfMonth()->dayOfWeek;
+                            $daysInMonth = now()->daysInMonth;
+                        @endphp
+                        @for($i = 0; $i < $firstDay; $i++)
+                            <div class="cal-cell empty"></div>
+                        @endfor
+                        @for($i = 1; $i <= $daysInMonth; $i++)
+                            <div class="cal-cell {{ $i == now()->day ? 'is-today' : '' }}">{{ $i }}</div>
+                        @endfor
+                    </div>
+                    <div class="calendar-legend">
+                        <span><i class="bi bi-circle-fill text-danger"></i> Holiday</span>
+                        <span><i class="bi bi-circle-fill text-primary"></i> Leave</span>
                     </div>
                 </div>
             </div>

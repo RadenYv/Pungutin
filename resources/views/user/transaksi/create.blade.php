@@ -4,31 +4,48 @@
 
 @section('content')
 
-<h2>Buat Permintaan Penjemputan</h2>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Buat Permintaan Penjemputan</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('user.transaksi.store') }}" method="POST">
+                @csrf
 
-<form action="{{ route('user.transaksi.store') }}" method="POST">
-    @csrf
+                <div class="mb-3">
+                    <label for="berat_kg" class="form-label">Perkiraan Berat (kg)</label>
+                    <input type="number" step="0.1" class="form-control" id="berat_kg" name="berat_kg" required>
+                </div>
 
-    <label>Perkiraan Berat (kg)</label><br>
-    <input type="number" step="0.1" name="berat_kg" required><br><br>
+                <div class="mb-3">
+                    <label for="id_kategori" class="form-label">Kategori Sampah</label>
+                    <select name="id_kategori" id="id_kategori" class="form-select" required>
+                        @foreach ($kategori as $k)
+                            <option value="{{ $k->id_kategori }}">{{ $k->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-    <label>Kategori Sampah</label><br>
-    <select name="id_kategori" required>
-        @foreach ($kategori as $k)
-            <option value="{{ $k->id_kategori }}">{{ $k->nama_kategori }}</option>
-        @endforeach
-    </select><br><br>
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat" required></textarea>
+                </div>
 
-    <label>Alamat</label><br>
-    <textarea name="alamat" required></textarea><br><br>
+                <div class="mb-3">
+                    <label for="no_hp" class="form-label">No HP</label>
+                    <input type="text" class="form-control" id="no_hp" name="no_hp" required>
+                </div>
 
-    <label>No HP</label><br>
-    <input type="text" name="no_hp" required><br><br>
+                <div class="mb-3">
+                    <label for="catatan" class="form-label">Catatan (optional)</label>
+                    <textarea class="form-control" id="catatan" name="catatan"></textarea>
+                </div>
 
-    <label>Catatan (optional)</label><br>
-    <textarea name="catatan"></textarea><br><br>
-
-    <button type="submit">Kirim Permintaan</button>
-</form>
+                <button type="submit" class="btn btn-primary">Kirim Permintaan</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 @endsection

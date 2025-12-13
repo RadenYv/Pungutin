@@ -77,6 +77,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $teams->links() }}
+        </div>
     </div>
 </div>
 @endsection

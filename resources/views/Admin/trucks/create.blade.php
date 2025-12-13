@@ -3,30 +3,48 @@
 @section('title', 'Tambah Truck')
 
 @section('content')
-<h2>Tambah Truck</h2>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Tambah Truck</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.trucks.store') }}" method="POST">
+                @csrf
 
-<form action="{{ route('admin.trucks.store') }}" method="POST">
-    @csrf
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
 
-    <label>Nama:</label>
-    <input type="text" name="nama" required><br><br>
+                <div class="mb-3">
+                    <label for="plat_nomor" class="form-label">Plat Nomor</label>
+                    <input type="text" class="form-control" id="plat_nomor" name="plat_nomor" required>
+                </div>
 
-    <label>Plat Nomor:</label>
-    <input type="text" name="plat_nomor" required><br><br>
+                <div class="mb-3">
+                    <label for="kapasitas" class="form-label">Kapasitas (kg)</label>
+                    <input type="number" class="form-control" id="kapasitas" name="kapasitas" required>
+                </div>
 
-    <label>Kapasitas (kg):</label>
-    <input type="number" name="kapasitas" required><br><br>
+                <div class="mb-3">
+                    <label for="warehouse" class="form-label">Warehouse</label>
+                    <input type="text" class="form-control" id="warehouse" name="warehouse" required>
+                </div>
 
-    <label>Warehouse:</label>
-    <input type="text" name="warehouse" required><br><br>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="idle">Idle</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="penjemputan">Penjemputan</option>
+                    </select>
+                </div>
 
-    <label>Status:</label>
-    <select name="status" required>
-        <option value="idle">Idle</option>
-        <option value="maintenance">Maintenance</option>
-        <option value="penjemputan">Penjemputan</option>
-    </select><br><br>
-
-    <button type="submit">Simpan</button>
-</form>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <a href="{{ route('admin.trucks.index') }}" class="btn btn-secondary">Kembali</a>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

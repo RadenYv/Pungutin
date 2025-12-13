@@ -3,30 +3,45 @@
 @section('title', 'Edit User')
 
 @section('content')
-<h2>Edit User</h2>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Edit User</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.users.update', $user->id_user) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-<form action="{{ route('admin.users.update', $user->id_user) }}" method="POST">
-    @csrf
-    @method('PUT')
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama</label>
+                    <input type="text" class="form-control" id="nama" name="nama" value="{{ $user->nama }}" required>
+                </div>
 
-    <label>Nama:</label><br>
-    <input type="text" name="nama" value="{{ $user->nama }}" required><br><br>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
+                </div>
 
-    <label>Email:</label><br>
-    <input type="email" name="email" value="{{ $user->email }}" required><br><br>
+                <div class="mb-3">
+                    <label for="no_hp" class="form-label">No HP</label>
+                    <input type="text" class="form-control" id="no_hp" name="no_hp" value="{{ $user->no_hp }}">
+                </div>
 
-    <label>No HP:</label><br>
-    <input type="text" name="no_hp" value="{{ $user->no_hp }}"><br><br>
+                <div class="mb-3">
+                    <label for="saldo_total" class="form-label">Saldo</label>
+                    <input type="number" class="form-control" id="saldo_total" name="saldo_total" value="{{ $user->saldo_total }}">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="poin_total" class="form-label">Poin</label>
+                    <input type="number" class="form-control" id="poin_total" name="poin_total" value="{{ $user->poin_total }}">
+                </div>
 
-    <label>Saldo:</label><br>
-    <input type="number" name="saldo_total" value="{{ $user->saldo_total }}"><br><br>
-    
-    <label>Poin:</label><br>
-    <input type="number" name="poin_total" value="{{ $user->poin_total }}"><br><br>
-
-    <button type="submit">Update</button>
-</form>
-
-<br>
-<a href="{{ route('admin.users.index') }}">Kembali</a>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Kembali</a>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

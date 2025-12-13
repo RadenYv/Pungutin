@@ -98,7 +98,13 @@
                                     <span class="status-badge {{ $statusClass }}">{{ $statusLabel }}</span>
                                 </td>
                                 <td>
-                                    <span class="badge bg-secondary">{{ $b->transaksi->count() }} transaksi</span>
+                                    @php
+                                        $transaksiCount = $b->transaksi->count();
+                                        $badgeClass = $transaksiCount >= 5 ? 'bg-success' : 'bg-secondary';
+                                    @endphp
+                                    <span class="badge {{ $badgeClass }}">
+                                        {{ $transaksiCount }} / 5 transaksi
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="d-flex flex-column gap-2">
@@ -124,15 +130,23 @@
                                         @endif
                                         {{-- Start Batch (only if ditugaskan) --}}
                                         @if($b->status === 'ditugaskan')
-                                            <form action="{{ route('admin.batches.start', $b->id_batch) }}" method="POST" class="d-flex align-items-center gap-2">
-                                                @csrf
-                                                <button type="submit" class="btn btn-success btn-sm" title="Mulai Batch">
-                                                    <i class="bi bi-play-fill"></i> Mulai
-                                                </button>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <form action="{{ route('admin.batches.start', $b->id_batch) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm" title="Mulai Batch">
+                                                        <i class="bi bi-play-fill"></i> Mulai
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('admin.batches.cancel', $b->id_batch) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-warning btn-sm" title="Batalkan" onclick="return confirm('Yakin ingin membatalkan batch ini?')">
+                                                        <i class="bi bi-x-circle"></i> Batal
+                                                    </button>
+                                                </form>
                                                 <a href="{{ route('admin.batches.transaksi', $b->id_batch) }}" class="btn btn-outline-info btn-sm" title="Lihat Transaksi">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                            </form>
+                                            </div>
                                         @endif
 
                                         {{-- Finish Batch (only if berjalan) --}}
@@ -161,6 +175,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="card-footer">
+            {{ $batches->links() }}
         </div>
     </div>
 </div>

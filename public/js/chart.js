@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             maintainAspectRatio: true,
             
             // Size of the center hole (0 = pie, 1 = ring)
-            cutout: '70%',
+            cutout: '80%',
             
             // Disable default legend (we use custom HTML legend)
             plugins: {
@@ -94,16 +94,62 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Tooltip configuration for hover information
                 tooltip: {
-                    enabled: true,
-                    backgroundColor: '#1a1a1a',
-                    titleColor: '#ffffff',
-                    bodyColor: '#e6edf3',
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    padding: 12,
-                    displayColors: true,
-                    boxPadding: 6,
+                    enabled: false, // Disable canvas tooltip
+                    
+                    // Use external HTML tooltip to render outside canvas
+                    external: function(context) {
+                        // Tooltip Element
+                        let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                        // Create element on first render
+                        if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.id = 'chartjs-tooltip';
+                            document.body.appendChild(tooltipEl);
+                        }
+
+                        // Hide if no tooltip
+                        const tooltipModel = context.tooltip;
+                        if (tooltipModel.opacity === 0) {
+                            tooltipEl.style.opacity = 0;
+                            return;
+                        }
+
+                        // Set Text
+                        if (tooltipModel.body) {
+                            const bodyLines = tooltipModel.body.map(b => b.lines);
+
+                            let innerHtml = '';
+
+                            bodyLines.forEach(function(body, i) {
+                                const colors = tooltipModel.labelColors[i];
+                                const span = '<span style="display:inline-block;width:10px;height:10px;background:' + colors.backgroundColor + ';border-radius:2px;margin-right:8px;"></span>';
+                                innerHtml += '<div style="display:flex;align-items:center;">' + span + body + '</div>';
+                            });
+
+                            tooltipEl.innerHTML = innerHtml;
+                        }
+
+                        const position = context.chart.canvas.getBoundingClientRect();
+
+                        // Display, position, and set styles
+                        tooltipEl.style.opacity = 1;
+                        tooltipEl.style.position = 'absolute';
+                        tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                        tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                        tooltipEl.style.fontFamily = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial';
+                        tooltipEl.style.fontSize = '12px';
+                        tooltipEl.style.padding = '8px 12px';
+                        tooltipEl.style.pointerEvents = 'none';
+                        tooltipEl.style.zIndex = 1000;
+                        tooltipEl.style.backgroundColor = '#1a1a1a';
+                        tooltipEl.style.border = '1px solid rgba(255,255,255,0.1)';
+                        tooltipEl.style.borderRadius = '8px';
+                        tooltipEl.style.color = '#e6edf3';
+                        tooltipEl.style.transform = 'translate(-50%, -100%) translateY(-10px)'; // Move above cursor
+                        tooltipEl.style.transition = 'opacity .1s ease';
+                        tooltipEl.style.boxShadow = '0 4px 6px rgba(0,0,0,0.3)';
+                    },
                     
                     // Custom tooltip callbacks
                     callbacks: {
@@ -112,7 +158,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             const total = context.dataset.data.reduce((a, b) => a + b, 0);
                             const value = context.raw;
                             const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                            return ` ${context.label}: ${value} (${percentage}%)`;
+                            return `${context.label}: ${value} (${percentage}%)`;
+                        },
+                        title: function() {
+                            return ''; // No title
                         }
                     }
                 }

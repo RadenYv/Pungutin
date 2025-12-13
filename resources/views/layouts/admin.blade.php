@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <!-- Chart CSS -->
     <link rel="stylesheet" href="{{ asset('css/chart.css') }}">
+    <!-- Form CSS -->
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 
 </head>
 
@@ -100,7 +102,8 @@
                 </ul>
             </div>
 
-            {{-- System --}}
+            {{-- 
+            System
             <div class="nav-section">
                 <div class="nav-section-title">System</div>
                 <ul class="nav flex-column">
@@ -118,6 +121,7 @@
                     </li>
                 </ul>
             </div>
+            --}}
 
         </nav>
 
@@ -144,12 +148,6 @@
                     <i class="bi bi-list"></i>
                 </button>
                 <h1 class="page-title mb-0 fs-5 fw-semibold">@yield('title', 'Dashboard')</h1>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <span class="text-secondary small">{{ auth('admin')->user()->nama ?? 'Admin' }}</span>
-                <div class="user-avatar">
-                    <i class="bi bi-person-circle"></i>
-                </div>
             </div>
         </header>
 

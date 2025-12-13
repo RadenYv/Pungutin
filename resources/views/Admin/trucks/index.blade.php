@@ -95,6 +95,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $trucks->links() }}
+        </div>
     </div>
 </div>
 @endsection

@@ -10,7 +10,7 @@ class PickupTruckController extends Controller
 {
     public function index()
     {
-        $trucks = PickupTruck::all();
+        $trucks = PickupTruck::orderBy('created_at', 'desc')->paginate(10);
         return view('Admin.trucks.index', compact('trucks'));
     }
 

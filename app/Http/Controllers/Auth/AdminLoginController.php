@@ -21,8 +21,16 @@ class AdminLoginController extends Controller
             'password' => 'required'
         ]);
 
-        // If the account exists but isn't admin, show 401 page
+        // Check if email exists in database
         $candidate = \App\Models\User::where('email', $request->email)->first();
+        
+        if (!$candidate) {
+            return back()->withErrors([
+                'email' => 'Email belum terdaftar dalam sistem.',
+            ])->withInput();
+        }
+        
+        // If the account exists but isn't admin, show 401 page
         if ($candidate && ($candidate->role ?? 'user') !== 'admin') {
             return response()->view('Errors.401', [], 401);
         }

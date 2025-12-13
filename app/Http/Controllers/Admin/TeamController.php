@@ -13,10 +13,10 @@ class TeamController extends Controller
 {
     public function index()
     {
-        $teams = Team::with(['truck', 'members.petugas'])->get();
+        $teams = Team::with(['truck', 'members.petugas'])->orderBy('tanggal', 'desc')->paginate(10);
         return view('Admin.team.index', compact('teams'));
     }
-
+    
     public function create()
     {
         $trucks = PickupTruck::where('status', 'idle')->get();
@@ -66,5 +66,18 @@ class TeamController extends Controller
 
         return redirect()->route('admin.teams.index')
             ->with('success', 'Team berhasil dibuat.');
+    }
+
+    public function destroy($id)
+    {
+        $team = Team::findOrFail($id);
+        $team->members()->delete();
+        if ($team->truck) {
+            $team->truck->status = 'idle';
+            $team->truck->save();
+        }
+        $team->delete();
+        return redirect()->route('admin.teams.index')
+            ->with('success', 'Team berhasil dihapus.');
     }
 }

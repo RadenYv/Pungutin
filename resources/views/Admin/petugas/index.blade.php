@@ -100,6 +100,9 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer">
+            {{ $petugas->links() }}
+        </div>
     </div>
 </div>
 @endsection

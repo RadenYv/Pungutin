@@ -15,6 +15,20 @@ class UserLoginController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // Check if email exists in database
+        $user = \App\Models\User::where('email', $request->email)->first();
+        
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email belum terdaftar. Silakan daftar terlebih dahulu.',
+            ])->withInput()->with('show_signup', true);
+        }
+
         $credentials = $request->only('email', 'password');
         $credentials['role'] = 'user';
 
@@ -25,7 +39,7 @@ class UserLoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            'email' => 'Password salah.',
         ])->withInput();
     }
 
