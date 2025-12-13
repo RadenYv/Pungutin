@@ -44,7 +44,7 @@
 
                 <div class="input-field">
                     <i class="bi bi-envelope-fill input-icon"></i>
-                    <input 
+                    <input
                         type="email"
                         name="email"
                         class="ocean-input"
@@ -58,7 +58,7 @@
 
                 <div class="input-field">
                     <i class="bi bi-lock-fill input-icon"></i>
-                    <input 
+                    <input
                         type="password"
                         name="password"
                         class="ocean-input"
