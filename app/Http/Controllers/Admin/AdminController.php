@@ -41,11 +41,6 @@ class AdminController extends Controller
             'batchTugas'        => Batch::where('status', 'ditugaskan')->count(),
             'batchBerjalan'     => Batch::where('status', 'berjalan')->count(),
             'batchSelesai'      => Batch::where('status', 'selesai')->count(),
-
-            // Today's operations
-            'teamsToday'        => Team::where('tanggal', Carbon::today())->with('truck')->get(),
-            'batchToday'        => Batch::where('tanggal', Carbon::today())->get(),
-            'transaksiJemputToday' => TransaksiSampah::where('status', 'dijemput')->count(),
         ]);
     }
 }

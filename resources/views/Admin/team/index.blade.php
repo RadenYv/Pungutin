@@ -21,7 +21,19 @@
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <span class="badge-count">{{ $teams->count() }} Team</span>
+            <span class="badge-count">{{ $teams->total() }} Team</span>
+            <form method="GET"
+                action="{{ route('admin.teams.index') }}"
+                class="d-flex gap-2">
+            <input type="text"
+               name="search"
+               value="{{ request('search') }}"
+               class="form-control form-control-sm"
+               placeholder="Cari id / truck / petugas">
+            <button class="btn btn-sm btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+            </form>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -97,7 +109,7 @@
             </div>
         </div>
         <div class="card-footer">
-            {{ $teams->links() }}
+            {{ $teams->appends(request()->query())->links() }}
         </div>
     </div>
 </div>

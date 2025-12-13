@@ -11,9 +11,23 @@ use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $teams = Team::with(['truck', 'members.petugas'])->orderBy('tanggal', 'desc')->paginate(10);
+        $search = $request->search;
+        $teams = Team::with(['truck', 'members.petugas'])
+        ->when($search, function ($query) use ($search) {
+            $query->where('id_team', 'like', "%{$search}%")
+                  ->orWhereHas('truck', function ($q) use ($search) {
+                      $q->where('nama', 'like', "%{$search}%")
+                        ->orWhere('plat_nomor', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('members.petugas', function ($q) use ($search) {
+                      $q->where('nama', 'like', "%{$search}%");
+                  });
+        })
+        ->orderBy('tanggal', 'desc')
+        ->paginate(5)
+        ->withQueryString();
         return view('Admin.team.index', compact('teams'));
     }
     

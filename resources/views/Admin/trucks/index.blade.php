@@ -22,6 +22,17 @@
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
             <span class="badge-count">{{ $trucks->count() }} Truck</span>
+            <form method="GET" action="{{ route('admin.trucks.index') }}" class="d-flex gap-2">
+                <input type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    class="form-control form-control-sm"
+                    placeholder="Cari truck...">
+
+                <button class="btn btn-sm btn-primary">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">

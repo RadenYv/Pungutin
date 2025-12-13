@@ -9,10 +9,18 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
-        return view('Admin.users.index', compact('users'));
+        $search = $request->search;
+        $users = User::when($search, function ($query, $search) {
+        $query->where('nama', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%")
+              ->orWhere('id_user', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
+        
+        return view('Admin.users.index', compact('users', 'search'));
     }
 
     public function create()

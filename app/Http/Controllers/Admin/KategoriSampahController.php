@@ -8,10 +8,17 @@ use App\Models\KategoriSampah;
 
 class KategoriSampahController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategori = KategoriSampah::orderBy('nama_kategori')->paginate(10);
-        return view('Admin.kategori.index', compact('kategori'));
+        $search = $request->search;
+        $kategori = KategoriSampah::when($search, function ($query, $search) {
+            $query->where('nama_kategori', 'like', "%{$search}%")
+                  ->orWhere('id_kategori', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
+        
+        return view('Admin.kategori.index', compact('kategori', 'search'));
     }
 
     public function create()

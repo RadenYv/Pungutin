@@ -8,9 +8,20 @@ use Illuminate\Http\Request;
 
 class PickupTruckController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $trucks = PickupTruck::orderBy('created_at', 'desc')->paginate(10);
+        $search = $request->search;
+        $trucks = PickupTruck::when($search, function ($query, $search) {
+            $query->where('id_truck', 'like', "%{$search}%")
+                  ->orWhere('nama', 'like', "%{$search}%")
+                  ->orWhere('plat_nomor', 'like', "%{$search}%")
+                  ->orWhere('kapasitas', 'like', "%{$search}%")
+                  ->orWhere('status', 'like', "%{$search}%")
+                  ->orWhere('warehouse', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
+
         return view('Admin.trucks.index', compact('trucks'));
     }
 

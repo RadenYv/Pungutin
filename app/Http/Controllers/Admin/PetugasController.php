@@ -9,10 +9,18 @@ use App\Models\Petugas;
 
 class PetugasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $petugas = Petugas::orderBy('created_at', 'desc')->paginate(10);
-        return view('Admin.petugas.index', compact('petugas'));
+        $search = $request->search;
+        $petugas = Petugas::when($search, function ($query, $search) {
+            $query->where('nama', 'like', "%{$search}%")
+                  ->orWhere('id_petugas', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
+        
+        return view('Admin.petugas.index', compact('petugas', 'search'));
     }
 
     public function create()

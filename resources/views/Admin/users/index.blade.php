@@ -28,8 +28,22 @@
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <span class="badge-count">{{ $users->where('role', '!=', 'admin')->count() }} User</span>
-        </div>
+    <span class="badge-count">
+        {{ $users->where('role', '!=', 'admin')->count() }} User
+    </span>
+
+    <form method="GET" action="{{ route('admin.users.index') }}" class="d-flex gap-2">
+        <input type="text"
+               name="search"
+               value="{{ request('search') }}"
+               class="form-control form-control-sm"
+               placeholder="Cari user...">
+
+        <button class="btn btn-sm btn-primary">
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+</div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table data-table mb-0">
@@ -106,7 +120,7 @@
             </div>
         </div>
         <div class="card-footer">
-            {{ $users->links() }}
+            {{ $users->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
