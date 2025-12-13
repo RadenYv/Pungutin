@@ -3,26 +3,49 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Petugas;
+use App\Models\PickupTruck;
 use App\Models\TransaksiSampah;
-use App\Models\KategoriSampah;
+use App\Models\Batch;
+use App\Models\Team;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard', [
-            'totalUser' => User::count(),
-            'totalPetugas' => Petugas::count(),
-            'totalTransaksi' => TransaksiSampah::count(),
-            'totalKategori' => KategoriSampah::count(),
-            'transaksiTerbaru' => TransaksiSampah::with(['user', 'petugas', 'kategori'])
-                ->latest()
-                ->take(5)
-                ->get(),
+        $recentTransaksi = TransaksiSampah::with([
+            'batch.truck',
+            'batch.team.members.petugas'
+        ])
+        ->where('status', 'selesai')
+        ->orderBy('id_transaksi', 'DESC')
+        ->take(9)
+        ->get();
+    
+        return view('Admin.dashboard', [
+            'totalUsers'        => User::where('role', 'user')->count(),
+            'totalPetugas'      => Petugas::count(),
+            'totalTrucks'       => PickupTruck::count(),
+            'recentTransaksi'   => $recentTransaksi,
+
+            // Transaksi statistics
+            'transaksiMenunggu' => TransaksiSampah::where('status', 'menunggu')->count(),
+            'transaksiBatch'    => TransaksiSampah::where('status', 'dalam_batch')->count(),
+            'transaksiJemput'   => TransaksiSampah::where('status', 'dijemput')->count(),
+            'transaksiSelesai'  => TransaksiSampah::where('status', 'selesai')->count(),
+
+            // Batch statistics
+            'batchPending'      => Batch::where('status', 'pending')->count(),
+            'batchTugas'        => Batch::where('status', 'ditugaskan')->count(),
+            'batchBerjalan'     => Batch::where('status', 'berjalan')->count(),
+            'batchSelesai'      => Batch::where('status', 'selesai')->count(),
+
+            // Today's operations
+            'teamsToday'        => Team::where('tanggal', Carbon::today())->with('truck')->get(),
+            'batchToday'        => Batch::where('tanggal', Carbon::today())->get(),
+            'transaksiJemputToday' => TransaksiSampah::where('status', 'dijemput')->count(),
         ]);
     }
 }
