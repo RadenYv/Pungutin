@@ -8,7 +8,7 @@
     <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
             <h2 class="page-heading fs-4 fw-semibold mb-1">
-                <i class="bi bi-person-badge me-2"></i>Data Petugas
+                <i class="bi bi-person-badge me-2"></i>Petugas
             </h2>
             <p class="page-description text-secondary mb-0">Kelola data petugas pengambilan sampah</p>
         </div>
@@ -28,9 +28,6 @@
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                <i class="bi bi-table me-2"></i>Daftar Petugas
-            </h5>
             <span class="badge-count">{{ $petugas->count() }} Petugas</span>
         </div>
         <div class="card-body p-0">

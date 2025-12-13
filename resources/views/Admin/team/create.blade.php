@@ -48,8 +48,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="co_driver" class="form-label">Co-Driver</label>
-                    <select name="co_driver" id="co_driver" class="form-select" required>
+                    <label for="co_driver" class="form-label">Co-Driver (Opsional)</label>
+                    <select name="co_driver" id="co_driver" class="form-select">
                         <option value="">Pilih Co-Driver</option>
                         @foreach($petugas as $p)
                             <option value="{{ $p->id_petugas }}">{{ $p->nama }}</option>

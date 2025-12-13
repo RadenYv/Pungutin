@@ -82,7 +82,7 @@
         <div class="col-lg-8">
             
             {{-- Section: Transaksi --}}
-            <h6 class="text-muted text-uppercase small fw-bold mb-3">Transaksi</h6>
+            <h6 class="text-muted text-uppercase small fw-bold mb-3">Penjemputan</h6>
             <div class="row g-4 mb-4">
                 <div class="col-sm-6 col-md-3">
                     <div class="card stat-card stat-warning">
@@ -176,11 +176,29 @@
         {{-- LEFT COLUMN --}}
         <div class="col-lg-8">
 
+            {{-- Batch Status Chart --}}
+            <div class="card rounded-3 mb-4">
+                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
+                        <i class="bi bi-bar-chart me-2"></i>Batch Status Overview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="batchStatusChart" 
+                        data-pending="{{ $batchPending }}"
+                        data-tugas="{{ $batchTugas }}"
+                        data-berjalan="{{ $batchBerjalan }}"
+                        data-selesai="{{ $batchSelesai }}"
+                        style="max-height: 300px;">
+                    </canvas>
+                </div>
+            </div>
+
             {{-- History Transaksi Table --}}
             <div class="card rounded-3">
                 <div class="card-header d-flex align-items-center justify-content-between py-3">
                     <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-clock-history me-2"></i>Transaksi selesai
+                        <i class="bi bi-clock-history me-2"></i>Penjemputan selesai
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -251,7 +269,7 @@
                 </div>
                 <div class="card-footer text-end">
                     <a href="{{ route('admin.transaksi.index') }}" class="text-primary text-decoration-none d-inline-flex align-items-center gap-2 small fw-medium">
-                        View All Transactions
+                        View All Penjemputan
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -298,7 +316,7 @@
                             <span class="detail-value">{{ auth('admin')->user()->created_at->format('d/m/Y') }}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">Active Projects</span>
+                            <span class="detail-label">Penjemputan aktif    </span>
                             <span class="detail-value highlight">{{ $transaksiBatch }} Active</span>
                         </div>
                     </div>

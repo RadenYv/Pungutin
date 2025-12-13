@@ -21,28 +21,35 @@ class TransaksiSampahSeeder extends Seeder
             return; // avoid FK crashes
         }
 
-        // Generate 20 dummy transaksi, all status 'menunggu'
-        for ($i = 0; $i < 20; $i++) {
+        $pickupWindows = ['09:00-12:00', '13:00-16:00', '17:00-20:00'];
+        $statuses = ['menunggu', 'dalam_batch', 'dijemput', 'selesai'];
+        $addresses = [
+            'Jl. Merdeka No. 45',
+            'Jl. Sudirman No. 123',
+            'Jl. Gatot Subroto No. 78',
+            'Jl. Ahmad Yani No. 56',
+            'Jl. Diponegoro No. 89',
+            'Jl. Veteran No. 34',
+            'Jl. Imam Bonjol No. 67',
+            'Jl. Cendrawasih No. 12',
+            'Jl. Pahlawan No. 90',
+            'Jl. Kartini No. 23'
+        ];
+
+        // Generate 10 dummy transaksi with varied statuses
+        for ($i = 0; $i < 10; $i++) {
             $user     = $users->random();
             $kategori = $kategoriList->random();
             $batch    = $batches->random();
 
             // Estimated vs final weight
-            $beratUser  = rand(1, 5) + (rand(0, 9) / 10);   // 1.0 – 5.9 kg
-            $beratFinal = max($beratUser - (rand(0, 2) / 10), 0.1); // Slight correction by petugas
+            $beratUser  = rand(10, 50) / 10;   // 1.0 – 5.0 kg
+            $beratFinal = max($beratUser - (rand(0, 3) / 10), 0.1); // Slight correction by petugas
 
             // Calculate money & points
             $totalUang = $beratFinal * $kategori->harga_per_kg;
             $poin      = floor($beratFinal * $kategori->poin_per_kg);
             $tanggalPickup = Carbon::parse($batch->tanggal)->format('Y-m-d');
-
-            // Define allowed pickup windows as ENUM values (example: '09:00-12:00', ..., '18:00-21:00')
-            $pickupWindows = [
-                '09:00-12:00',
-                '13:00-16:00',
-                '17:00-20:00',
-            ];
-            $pickupWindow = $pickupWindows[array_rand($pickupWindows)];
 
             TransaksiSampah::create([
                 'id_user'        => $user->id_user,
@@ -55,14 +62,14 @@ class TransaksiSampahSeeder extends Seeder
                 'poin_didapat'   => $poin,
 
                 'tanggal_pickup' => $tanggalPickup,
-                'pickup_window'  => $pickupWindow,
+                'pickup_window'  => $pickupWindows[array_rand($pickupWindows)],
 
-                'alamat'         => "Jl. Contoh No. " . rand(1, 200),
-                'no_hp'          => '08123' . rand(10000, 99999),
-                'catatan'        => 'Taruh depan pagar',
+                'alamat'         => $addresses[$i],
+                'no_hp'          => '0812345' . str_pad($i, 5, '0', STR_PAD_LEFT),
+                'catatan'        => $i % 2 == 0 ? 'Taruh depan pagar' : 'Hubungi dulu sebelum datang',
 
                 // Must match ENUM in database
-                'status'         => 'menunggu'
+                'status'         => $statuses[$i % 4]
             ]);
         }
     }

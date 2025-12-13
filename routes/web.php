@@ -40,7 +40,7 @@ Route::middleware(['auth:admin','role:admin'])->group(function () {
         Route::resource('trucks', PickupTruckController::class);
 
         // Teams, Batches
-        Route::resource('teams', TeamController::class)->only(['index', 'create', 'store', 'destroy']);
+        Route::resource('teams', TeamController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('batches', BatchController::class)->only(['index', 'create', 'store']);
         Route::post('/batches/{id_batch}/assign-team', [BatchController::class, 'assignTeam'])
             ->name('batches.assignTeam');

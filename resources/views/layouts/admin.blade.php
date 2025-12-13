@@ -90,7 +90,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.transaksi.*') ? 'active' : '' }}" href="{{ route('admin.transaksi.index') }}">
                             <i class="bi bi-box-seam"></i>
-                            <span>Transaksi</span>
+                            <span>Penjemputan</span>
                         </a>
                     </li>
                     <li class="nav-item">

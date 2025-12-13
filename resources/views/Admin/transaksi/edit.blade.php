@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Transaksi')
+@section('title', 'Edit Penjemputan')
 
 @section('content')
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            <h2 class="mb-0">Edit Transaksi</h2>
+            <h2 class="mb-0">Edit Penjemputan</h2>
         </div>
         <div class="card-body">
             @if ($errors->any())

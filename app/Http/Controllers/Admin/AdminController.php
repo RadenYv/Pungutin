@@ -21,7 +21,7 @@ class AdminController extends Controller
         ])
         ->where('status', 'selesai')
         ->orderBy('id_transaksi', 'DESC')
-        ->take(9)
+        ->take(5)
         ->get();
     
         return view('Admin.dashboard', [

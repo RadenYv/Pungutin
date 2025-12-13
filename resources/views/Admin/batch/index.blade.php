@@ -8,7 +8,7 @@
     <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
             <h2 class="page-heading fs-4 fw-semibold mb-1">
-                <i class="bi bi-collection me-2"></i>Daftar Batch
+                <i class="bi bi-collection me-2"></i>Batch
             </h2>
             <p class="page-description text-secondary mb-0">Kelola batch pengambilan sampah</p>
         </div>
@@ -21,10 +21,7 @@
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                <i class="bi bi-table me-2"></i>Daftar Batch
-            </h5>
-            <span class="badge-count">{{ $batches->count() }} Batches</span>
+            <span class="badge-count">{{ $batches->count() }} Batch</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">

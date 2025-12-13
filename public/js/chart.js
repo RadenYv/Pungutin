@@ -182,3 +182,101 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// ==========================================
+// BATCH STATUS BAR CHART
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('batchStatusChart');
+    
+    if (!ctx) return;
+
+    const chartData = ctx.dataset;
+    
+    const batchLabels = ['Pending', 'Ditugaskan', 'Berjalan', 'Selesai'];
+    const batchData = [
+        parseInt(chartData.pending) || 0,
+        parseInt(chartData.tugas) || 0,
+        parseInt(chartData.berjalan) || 0,
+        parseInt(chartData.selesai) || 0
+    ];
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: batchLabels,
+            datasets: [{
+                label: 'Batch Count',
+                data: batchData,
+                backgroundColor: [
+                    'rgba(255, 193, 7, 0.8)',   // Pending - Yellow
+                    'rgba(13, 110, 253, 0.8)',  // Ditugaskan - Blue
+                    'rgba(163, 113, 247, 0.8)', // Berjalan - Purple
+                    'rgba(25, 135, 84, 0.8)'    // Selesai - Green
+                ],
+                borderColor: [
+                    'rgba(255, 193, 7, 1)',
+                    'rgba(13, 110, 253, 1)',
+                    'rgba(163, 113, 247, 1)',
+                    'rgba(25, 135, 84, 1)'
+                ],
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    titleColor: '#e6edf3',
+                    bodyColor: '#e6edf3',
+                    borderColor: '#30363d',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + ' batch';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#8b949e',
+                        font: {
+                            size: 11
+                        },
+                        stepSize: 1
+                    },
+                    grid: {
+                        color: 'rgba(48, 54, 61, 0.5)',
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#8b949e',
+                        font: {
+                            size: 12,
+                            weight: '500'
+                        }
+                    },
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    }
+                }
+            }
+        }
+    });
+});

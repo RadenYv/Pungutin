@@ -18,7 +18,7 @@ class TransaksiSampahController extends Controller
             $query->where('status', $request->status);
         }
 
-        $transaksi = $query->orderBy('id_transaksi', 'DESC')->paginate(15);
+        $transaksi = $query->orderBy('id_transaksi', 'DESC')->paginate(5);
 
         $batches = Batch::where('status', 'pending')->orderBy('tanggal')->get();
 

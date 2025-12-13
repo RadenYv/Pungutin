@@ -4,21 +4,22 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Batch;
+use App\Models\Team;
+use Carbon\Carbon;
 
 class BatchesSeeder extends Seeder
 {
     public function run(): void
     {
-        $pickupWindows = ['09:00-12:00', '13:00-16:00', '17:00-20:00'];
+        $teams = Team::take(10)->get();
+        $statuses = ['pending', 'ditugaskan', 'berjalan', 'selesai'];
 
-        // Create 3 fresh batches (no truck, no team assigned)
-        foreach ($pickupWindows as $window) {
+        foreach ($teams as $index => $team) {
             Batch::create([
-                'id_team'       => null,
-                'id_truck'      => null,
-                'tanggal'       => now()->toDateString(),
-                'pickup_window' => $window,
-                'status'        => 'pending'
+                'id_team'  => $team->id_team,
+                'id_truck' => $team->id_truck,
+                'tanggal'  => $team->tanggal,
+                'status'   => $statuses[$index % 4]
             ]);
         }
     }

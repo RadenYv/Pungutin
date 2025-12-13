@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Data Transaksi')
+@section('title', 'Data Penjemputan')
 
 @section('content')
 <div class="d-flex flex-column gap-4">
@@ -8,9 +8,9 @@
     <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
             <h2 class="page-heading fs-4 fw-semibold mb-1">
-                <i class="bi bi-box-seam me-2"></i>Data Transaksi
+                <i class="bi bi-box-seam me-2"></i>Penjemputan
             </h2>
-            <p class="page-description text-secondary mb-0">Kelola transaksi pengambilan sampah</p>
+            <p class="page-description text-secondary mb-0">Kelola penjemputan pengambilan sampah</p>
         </div>
     </div>
 
@@ -24,10 +24,7 @@
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                <i class="bi bi-table me-2"></i>Daftar Transaksi
-            </h5>
-            <span class="badge-count">{{ $transaksi->count() }} Transaksi</span>
+            <span class="badge-count">{{ $transaksi->count() }} Penjemputan</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -129,7 +126,7 @@
                             <tr>
                                 <td colspan="9" class="text-center py-5 text-secondary">
                                     <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
-                                    <span>Belum ada transaksi</span>
+                                    <span>Belum ada penjemputan</span>
                                 </td>
                             </tr>
                         @endforelse
