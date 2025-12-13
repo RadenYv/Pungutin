@@ -10,13 +10,14 @@ class KategoriSampahController extends Controller
 {
     public function index()
     {
-        $kategori = KategoriSampah::all();
-        return view('admin.kategori.index', compact('kategori'));
+        $kategori = KategoriSampah::orderBy('nama_kategori')->paginate(10);
+        return view('Admin.kategori.index', compact('kategori'));
     }
 
     public function create()
     {
-        return view('admin.kategori.create');
+        $kategori = KategoriSampah::all();
+        return view('Admin.kategori.create');
     }
 
     public function store(Request $request)
@@ -39,8 +40,10 @@ class KategoriSampahController extends Controller
     public function edit($id)
     {
         $kategori = KategoriSampah::findOrFail($id);
-        return view('admin.kategori.edit', compact('kategori'));
+        return view('Admin.kategori.edit', compact('kategori'));
     }
+
+    // show() removed per requirements
 
     public function update(Request $request, $id)
     {
