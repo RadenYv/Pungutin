@@ -8,7 +8,7 @@
     <div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3">
         <div>
             <h2 class="page-heading fs-4 fw-semibold mb-1">
-                <i class="bi bi-people-fill me-2"></i>Daftar Team
+                <i class="bi bi-people-fill me-2"></i>Teams
             </h2>
             <p class="page-description text-secondary mb-0">Kelola team petugas pengambilan sampah</p>
         </div>
@@ -21,32 +21,47 @@
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                <i class="bi bi-table me-2"></i>Daftar Team
-            </h5>
-            <span class="badge-count">{{ $teams->count() }} Teams</span>
+            <span class="badge-count">{{ $teams->total() }} Team</span>
+            <form method="GET"
+                action="{{ route('admin.teams.index') }}"
+                class="d-flex gap-2">
+            <input type="text"
+               name="search"
+               value="{{ request('search') }}"
+               class="form-control form-control-sm"
+               placeholder="Cari id / truck / petugas">
+            <button class="btn btn-sm btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+            </form>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table data-table mb-0">
                     <thead>
                         <tr>
-                            <th>ID Team</th>
+                            <th class="ps-4" width="100">ID Team</th>
                             <th>Tanggal</th>
                             <th>Truck</th>
                             <th>Anggota</th>
+                            <th class="ps-4">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($teams as $team)
                             <tr>
-                                <td><code>#{{ $team->id_team }}</code></td>
-                                <td><span class="text-secondary">{{ $team->tanggal }}</span></td>
+                                <td class="ps-4"><code>#{{ $team->id_team }}</code></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2 text-secondary">
+                                        <i class="bi bi-calendar4 opacity-50"></i>
+                                        <span>{{ $team->tanggal }}</span>
+                                    </div>
+                                </td>
                                 <td>
                                     @if($team->truck)
                                         <div class="d-flex align-items-center gap-2">
                                             <i class="bi bi-truck text-primary"></i>
-                                            <span>{{ $team->truck->nama }}</span>
+                                            <span class="fw-medium">{{ $team->truck->nama }}</span>
                                             <code>{{ $team->truck->plat_nomor }}</code>
                                         </div>
                                     @else
@@ -54,20 +69,36 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @forelse($team->members as $m)
-                                        <div class="member-badge">
-                                            <i class="bi bi-person"></i>
-                                            {{ $m->petugas->nama }}
-                                            <span class="role-tag">{{ $m->role }}</span>
-                                        </div>
-                                    @empty
-                                        <span class="text-secondary">-</span>
-                                    @endforelse
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @forelse($team->members as $m)
+                                            <div class="member-badge">
+                                                <i class="bi bi-person"></i>
+                                                {{ $m->petugas->nama }}
+                                                <span class="role-tag">{{ $m->role }}</span>
+                                            </div>
+                                        @empty
+                                            <span class="text-secondary">-</span>
+                                        @endforelse
+                                    </div>
+                                </td>
+                                <td class="ps-4">
+                                    <div class="d-inline-flex align-items-center gap-2">
+                                        <a href="{{ route('admin.teams.edit', $team->id_team) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="{{ route('admin.teams.destroy', $team->id_team) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Yakin ingin menghapus team ini?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center py-5 text-secondary">
+                                <td colspan="5" class="text-center py-5 text-secondary">
                                     <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
                                     <span>Belum ada team</span>
                                 </td>
@@ -76,6 +107,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="card-footer">
+            {{ $teams->appends(request()->query())->links() }}
         </div>
     </div>
 </div>
