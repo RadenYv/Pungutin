@@ -53,8 +53,7 @@
                 </p>
             </form>
 
-            <!-- BOTTOM ILLUSTRATION -->
-            <img src="/images/working.png" class="bottom-illustration d-block mx-auto mt-4" alt="Wong Gaweh">
+            
 
         </div>
 
