@@ -20,8 +20,8 @@
 
     {{-- Data Table Card --}}
     <div class="card data-card rounded-3">
-        <div class="card-header d-flex align-items-center justify-content-between py-3">
-            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
+        <div class="card-header d-flex align-items-left justify-content-between py-3">
+            <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-left">
                 <i class="bi bi-table me-2"></i>Daftar Batch
             </h5>
             <span class="badge-count">{{ $batches->count() }} Batches</span>
@@ -54,7 +54,7 @@
                                 </td>
                                 <td>
                                     @if($b->truck)
-                                        <div class="d-flex align-items-center gap-2">
+                                        <div class="d-flex align-items-left gap-2">
                                             <i class="bi bi-truck text-primary"></i>
                                             <span>{{ $b->truck->nama }}</span>
                                             <code>{{ $b->truck->plat_nomor }}</code>
@@ -152,7 +152,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-5 text-secondary">
+                                <td colspan="8" class="text-left py-5 text-secondary">
                                     <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
                                     <span>Belum ada batch</span>
                                 </td>
