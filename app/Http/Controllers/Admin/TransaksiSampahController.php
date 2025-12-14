@@ -12,13 +12,27 @@ class TransaksiSampahController extends Controller
 {
     public function index(Request $request)
     {
-        $query = TransaksiSampah::with(['user', 'kategori', 'batch.team', 'batch.truck']);
+        $searchId   = $request->search_id;
+        $searchNama = $request->search_nama;
+        $status     = $request->status;
+        $query = TransaksiSampah::with(['user', 'kategori', 'batch.team', 'batch.truck'])
+        
+        // SEARCH ID TRANSAKSI
+        ->when($searchId, function ($q) use ($searchId) {
+            $q->where('id_transaksi', 'like', "%{$searchId}%");
+        })
 
+        // SEARCH NAMA USER
+        ->when($searchNama, function ($q) use ($searchNama) {
+            $q->whereHas('user', function ($u) use ($searchNama) {
+                $u->where('nama', 'like', "%{$searchNama}%");
+            });
+        });
         if ($request->has('status') && $request->status !== 'all') {
             $query->where('status', $request->status);
         }
 
-        $transaksi = $query->orderBy('id_transaksi', 'DESC')->paginate(5);
+        $transaksi = $query->orderBy('id_transaksi', 'DESC')->paginate(5)->withQueryString();
 
         $batches = Batch::where('status', 'pending')->orderBy('tanggal')->get();
 

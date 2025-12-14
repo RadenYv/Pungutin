@@ -48,6 +48,25 @@ class TeamController extends Controller
             'co_driver' => 'nullable|exists:petugas,id_petugas|different:driver',
         ]);
 
+        // CHECK IF DRIVER & CO-DRIVER ALREADY HAVE TEAM ON SAME DATE
+        $petugasIds = array_filter([
+        $validated['driver'],
+        $validated['co_driver'] ?? null
+        ]);
+
+        $existsPetugas = TeamPetugas::whereIn('id_petugas', $petugasIds)
+        ->whereHas('team', function ($q) use ($validated) {
+        $q->where('tanggal', $validated['tanggal']);
+        })
+        ->exists();
+
+        if ($existsPetugas) {
+        return back()->withErrors([
+        'driver' => 'Driver atau co-driver sudah tergabung dalam team lain pada tanggal tersebut.'
+        ])->withInput();
+        }
+
+
         // Check if truck is already assigned to another team on the same date
         $existingTeam = Team::where('id_truck', $validated['id_truck'])
             ->where('tanggal', $validated['tanggal'])
@@ -113,6 +132,25 @@ class TeamController extends Controller
             'co_driver' => 'nullable|exists:petugas,id_petugas|different:driver',
         ]);
 
+        // CHECK IF DRIVER & CO-DRIVER ALREADY HAVE TEAM ON SAME DATE (EXCEPT CURRENT TEAM)
+        $petugasIds = array_filter([
+        $validated['driver'],
+        $validated['co_driver'] ?? null
+        ]);
+
+        $existsPetugas = TeamPetugas::whereIn('id_petugas', $petugasIds)
+        ->whereHas('team', function ($q) use ($validated, $team) {
+        $q->where('tanggal', $validated['tanggal'])
+          ->where('id_team', '!=', $team->id_team);
+        })
+        ->exists();
+
+        if ($existsPetugas) {
+            return back()->withErrors([
+                'driver' => 'Driver atau co-driver sudah tergabung dalam team lain pada tanggal tersebut.'
+            ])->withInput();
+        }
+
         // Check if truck is already assigned to another team on the same date (except current team)
         $existingTeam = Team::where('id_truck', $validated['id_truck'])
             ->where('tanggal', $validated['tanggal'])
@@ -171,13 +209,13 @@ class TeamController extends Controller
     public function destroy($id)
     {
         $team = Team::findOrFail($id);
+        $truckId = $team->id_truck;
         $team->members()->delete();
-        if ($team->truck) {
-            $team->truck->status = 'idle';
-            $team->truck->save();
-        }
         $team->delete();
-        return redirect()->route('admin.teams.index')
+        PickupTruck::where('id_truck', $truckId)
+            ->update(['status' => 'idle']);
+                return redirect()->route('admin.teams.index')
             ->with('success', 'Team berhasil dihapus.');
     }
+
 }

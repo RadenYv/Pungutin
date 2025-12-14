@@ -26,6 +26,51 @@
         <div class="card-header d-flex align-items-center justify-content-between py-3">
             <span class="badge-count">{{ $transaksi->count() }} Penjemputan</span>
         </div>
+        {{-- SEARCH BAR --}}
+        <form method="GET" action="{{ route('admin.transaksi.index') }}">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <input
+                    type="text"
+                    name="search_id"
+                    class="form-control form-control-sm"
+                    placeholder="Cari ID Penjemputan"
+                    value="{{ request('search_id') }}"
+                >
+            </div>
+
+            <div class="col-md-4">
+                <input
+                    type="text"
+                    name="search_nama"
+                    class="form-control form-control-sm"
+                    placeholder="Cari Nama User"
+                    value="{{ request('search_nama') }}"
+                >
+            </div>
+
+            <div class="col-md-3">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="all">Semua Status</option>
+                    <option value="menunggu" {{ request('status')=='menunggu'?'selected':'' }}>Menunggu</option>
+                    <option value="dalam_batch" {{ request('status')=='dalam_batch'?'selected':'' }}>Dalam Batch</option>
+                    <option value="dijemput" {{ request('status')=='dijemput'?'selected':'' }}>Dijemput</option>
+                    <option value="selesai" {{ request('status')=='selesai'?'selected':'' }}>Selesai</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex gap-1">
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-search" style="font-size:16px;"></i>
+                </button>
+                <a href="{{ route('admin.transaksi.index') }}" class="btn btn-secondary btn-sm w-100" title="Reset">
+                    <i class="bi bi-arrow-counterclockwise" style="font-size:24px;"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table data-table mb-0">
