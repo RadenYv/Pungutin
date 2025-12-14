@@ -20,8 +20,8 @@ class AdminController extends Controller
             'batch.truck',
             'batch.team.members.petugas'
         ])
-        ->where('status', 'selesai')
-        ->orderBy('id_transaksi', 'DESC')
+        ->whereIn('status', ['dijemput', 'dalam_batch'])
+        ->orderBy('updated_at', 'DESC')
         ->take(5)
         ->get();
 

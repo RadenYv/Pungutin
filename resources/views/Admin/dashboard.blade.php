@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboard')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endpush
+
 @section('content')
 
 <div class="d-flex flex-column gap-4">
@@ -242,7 +246,7 @@
             <div class="card rounded-3">
                 <div class="card-header d-flex align-items-center justify-content-between py-3">
                     <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-clock-history me-2"></i>Penjemputan selesai
+                        <i class="bi bi-truck me-2"></i>Penjemputan Sedang Berlangsung
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -303,7 +307,7 @@
                                 <tr>
                                     <td colspan="4" class="text-center text-muted py-4">
                                         <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                        Belum ada transaksi yang selesai.
+                                        Tidak ada penjemputan yang sedang berlangsung.
                                     </td>
                                 </tr>
                                 @endforelse
@@ -325,45 +329,47 @@
         <div class="col-lg-4">
 
             {{-- Profile Card --}}
-            <div class="card profile-card rounded-3 mb-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-start gap-3 mb-3">
-                        <div class="profile-avatar">
-                            <i class="bi bi-person-circle"></i>
+            <div class="profile-dark-card mb-4">
+                <div class="profile-dark-header">
+                    <div class="profile-user">
+                        <div class="profile-avatar-circle">
+                            <i class="bi bi-person"></i>
                         </div>
-                        <div class="flex-grow-1">
-                            <h5 class="fs-6 fw-semibold mb-1">{{ auth('admin')->user()->nama }}</h5>
-                            <span class="role-badge">Administrator</span>
+                        <div>
+                            <div class="profile-name">{{ auth('admin')->user()->nama }}</div>
+                            <div class="profile-role">Administrator</div>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-three-dots"></i></button>
                     </div>
+                    <button class="profile-more-btn">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                </div>
 
-                    <div class="d-flex gap-2 mb-4">
-                        <button class="btn-action" title="Call">
-                            <i class="bi bi-telephone"></i>
-                        </button>
-                        <button class="btn-action" title="Email">
-                            <i class="bi bi-envelope"></i>
-                        </button>
-                        <button class="btn-action" title="Message">
-                            <i class="bi bi-chat-dots"></i>
-                        </button>
-                    </div>
+                <div class="profile-actions">
+                    <button class="profile-action-btn" title="Call">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="profile-action-btn" title="Email">
+                        <i class="bi bi-envelope"></i>
+                    </button>
+                    <button class="profile-action-btn" title="Message">
+                        <i class="bi bi-chat-dots"></i>
+                    </button>
+                </div>
 
-                    <div class="border-top pt-3">
-                        <div class="detail-row">
-                            <span class="detail-label">Company</span>
-                            <span class="detail-value">Pungut-in</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Joining Date</span>
-                            <span class="detail-value">{{ auth('admin')->user()->created_at->format('d/m/Y') }}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Penjemputan aktif    </span>
-                            <span class="detail-value highlight">{{ $transaksiBatch }} Active</span>
-                        </div>
-                    </div>
+                <div class="profile-divider"></div>
+
+                <div class="profile-info-row">
+                    <span>Company</span>
+                    <span>Pungut-in</span>
+                </div>
+                <div class="profile-info-row">
+                    <span>Joining Date</span>
+                    <span>{{ auth('admin')->user()->created_at->format('d/m/Y') }}</span>
+                </div>
+                <div class="profile-info-row">
+                    <span>Penjemputan Aktif</span>
+                    <span class="profile-info-active">{{ $transaksiBatch }} Active</span>
                 </div>
             </div>
 
@@ -382,10 +388,10 @@
             <i class="bi bi-calendar3 me-2"></i>Personal Calendar
         </h5>
         <div class="d-flex gap-1">
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeMonth(-1)">
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeMonth(-1, {{ $month }}, {{ $year }})">
                 <i class="bi bi-chevron-left"></i>
             </button>
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeMonth(1)">
+            <button class="btn btn-sm btn-outline-secondary" onclick="changeMonth(1, {{ $month }}, {{ $year }})">
                 <i class="bi bi-chevron-right"></i>
             </button>
         </div>
@@ -414,19 +420,7 @@
     </div>
 </div>
 
-<style>
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.cal-header{font-size:.75rem;text-align:center;font-weight:600;color:#6c757d}
-.cal-cell{height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px}
-.cal-cell.is-today{background:#0d6efd;color:#fff;font-weight:600}
-</style>
-
-<script>
-function changeMonth(step){
-    const m={{ $month }}+step,y={{ $year }};
-    location.search='?month='+((m+11)%12+1)+'&year='+(m<1?y-1:m>12?y+1:y);
-}
-</script>
+<script src="{{ asset('js/calender.js') }}"></script>
 
 
         </div>
