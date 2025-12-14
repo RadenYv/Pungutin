@@ -138,6 +138,50 @@
                 </div>
             </div>
 
+            {{-- Section: Truck Status --}}
+            <h6 class="text-muted text-uppercase small fw-bold mb-3">Truck Status</h6>
+            <div class="row g-4 mb-4">
+                <div class="col-sm-6 col-md-4">
+                    <div class="card stat-card stat-success">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value">{{ $truckIdle }}</span>
+                                <span class="stat-label">Available/Idle</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card stat-card stat-primary">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value">{{ $truckPenjemputan }}</span>
+                                <span class="stat-label">Penjemputan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    <div class="card stat-card stat-warning">
+                        <div class="card-body">
+                            <div class="stat-icon">
+                                <i class="bi bi-tools"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value">{{ $truckMaintenance }}</span>
+                                <span class="stat-label">Maintenance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- Section: Accounts --}}
             <h6 class="text-muted text-uppercase small fw-bold mb-3">Accounts</h6>
             <div class="row g-4">

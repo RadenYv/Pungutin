@@ -30,7 +30,7 @@
 
         {{-- Brand --}}
         <div class="sidebar-brand d-flex align-items-center">
-            <i class="bi bi-recycle brand-icon"></i>
+            <img src="{{ asset('images/turtle.svg') }}" alt="Turtle Logo" class="brand-icon" style="width: 1.5em; height: 1.5em;">
             <span class="brand-text">Pungut-in</span>
         </div>
 

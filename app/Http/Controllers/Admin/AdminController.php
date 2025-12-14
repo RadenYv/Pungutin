@@ -41,6 +41,11 @@ class AdminController extends Controller
             'batchTugas'        => Batch::where('status', 'ditugaskan')->count(),
             'batchBerjalan'     => Batch::where('status', 'berjalan')->count(),
             'batchSelesai'      => Batch::where('status', 'selesai')->count(),
+
+            // Truck statistics
+            'truckIdle'         => PickupTruck::where('status', 'idle')->count(),
+            'truckPenjemputan'  => PickupTruck::where('status', 'penjemputan')->count(),
+            'truckMaintenance'  => PickupTruck::where('status', 'maintenance')->count(),
         ]);
     }
 }
