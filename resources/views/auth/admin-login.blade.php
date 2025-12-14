@@ -16,7 +16,7 @@
 
     <!-- LEFT SIDE IMAGE -->
     <div class="left-side h-100 p-0">
-        <img src="/images/bg 111.jpg" class="left-img" alt="Login Image">
+        <img src="/images/logobener.png" class="left-img" alt="Login Image">
     </div>
 
     <!-- RIGHT SIDE -->
@@ -46,10 +46,7 @@
                 <!-- LOGIN BUTTON -->
                 <button class="btn btn-primary w-100 mb-2" type="submit">Login</button>
 
-                <!-- FORGOT PASSWORD -->
-                <p class="small text-center mt-1">
-                    Lupa Password?
-                    <a href="#" class="text-decoration-none">klik disini</a>
+
                 </p>
             </form>
 

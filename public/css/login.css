@@ -32,6 +32,7 @@ html, body {
 .right-side {
     width: 30%;
     padding: 30px;
+    background-color: black;
 
     display: flex;
     justify-content: center;
@@ -56,9 +57,9 @@ html, body {
     margin-bottom: 30px;
 }
 
-.bottom-illustration {
-    width: 260px;
-    display: block;
-    margin: 30px auto 0;
+/* LABEL (Email & Password) */
+.form-label {
+    color: #ffffff !important;
 }
+
 
