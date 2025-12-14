@@ -16,7 +16,7 @@
 
     <!-- LEFT SIDE IMAGE -->
     <div class="left-side h-100 p-0">
-        <img src="/images/Swordfish.jpg" class="left-img" alt="Login Image">
+        <img src="/images/bg 111.jpg" class="left-img" alt="Login Image">
     </div>
 
     <!-- RIGHT SIDE -->
@@ -48,7 +48,7 @@
 
                 <!-- FORGOT PASSWORD -->
                 <p class="small text-center mt-1">
-                    Lupa Password? 
+                    Lupa Password?
                     <a href="#" class="text-decoration-none">klik disini</a>
                 </p>
             </form>
