@@ -16,7 +16,7 @@
 
     <!-- LEFT SIDE IMAGE -->
     <div class="left-side h-100 p-0">
-        <img src="/images/logobener.png" class="left-img" alt="Login Image">
+        <img src="/images/bgbaru.jpg" class="left-img" alt="Login Image">
     </div>
 
     <!-- RIGHT SIDE -->
@@ -50,7 +50,7 @@
                 </p>
             </form>
 
-            
+
 
         </div>
 

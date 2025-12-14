@@ -32,7 +32,7 @@ html, body {
 .right-side {
     width: 30%;
     padding: 30px;
-    background-color: black;
+    background-color: #1B3163;
 
     display: flex;
     justify-content: center;
