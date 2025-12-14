@@ -15,25 +15,34 @@ class BatchController extends Controller
         $search = $request->search;
         $status = $request->status;
         
-        $batches = Batch::with(['truck', 'team.members.petugas', 'transaksi'])
-        ->when($search, function ($query) use ($search) {
-            $query->where('id_batch', 'like', "%{$search}%")
-                ->orWhere('tanggal', 'like', "%{$search}%")
-                ->orWhereHas('truck', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%")
-                      ->orWhere('plat_nomor', 'like', "%{$search}%");
-                })
-                ->orWhereHas('team.members.petugas', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%");
-                });
-        })
-        ->when($status && $status !== 'all', function ($query) use ($status) {
-            $query->where('status', $status);
-        })
+        $batches = Batch::with(['truck', 'team.members.petugas', 'transaksi']);
+        // 🔍 Search ID Batch
+        if ($request->filled('id_batch')) {
+            $batches->where('id_batch', $request->id_batch);
+        }
+
+        // 🔍 Search Tanggal
+        if ($request->filled('tanggal')) {
+            $batches->where('tanggal', $request->tanggal);
+        }
+
+        // 🔍 Search Truck
+        if ($request->filled('truck')) {
+            $batches->whereHas('truck', function ($q) use ($request) {
+                $q->where('nama', 'like', "%{$request->truck}%")
+                  ->orWhere('plat_nomor', 'like', "%{$request->truck}%");
+            });
+        }
+
+        // 🔍 Search Status
+        if ($request->filled('status') && $request->status !== 'all') {
+            $batches->where('status', $request->status);
+        }
+        $batches = $batches
             ->orderBy('tanggal', 'desc')
             ->paginate(5)
             ->withQueryString();
-            
+
         $teams = Team::withCount('members')->get();
 
         return view('Admin.batch.index', compact('batches', 'teams'));

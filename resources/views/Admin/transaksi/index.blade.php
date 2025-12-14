@@ -51,7 +51,7 @@
 
             <div class="col-md-3">
                 <select name="status" class="form-select form-select-sm">
-                    <option value="all">Semua Status</option>
+                    <option value="all">Status</option>
                     <option value="menunggu" {{ request('status')=='menunggu'?'selected':'' }}>Menunggu</option>
                     <option value="dalam_batch" {{ request('status')=='dalam_batch'?'selected':'' }}>Dalam Batch</option>
                     <option value="dijemput" {{ request('status')=='dijemput'?'selected':'' }}>Dijemput</option>

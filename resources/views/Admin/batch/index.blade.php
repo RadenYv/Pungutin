@@ -22,39 +22,48 @@
     <div class="card data-card rounded-3">
         <div class="card-header d-flex align-items-center justify-content-between py-3">
             <span class="badge-count">{{ $batches->count() }} Batch</span>
+        </div>
+            <form method="GET" action="{{ route('admin.batches.index') }}">
+                <div class="row g-2">
 
-    <form method="GET" action="{{ route('admin.batches.index') }}" class="row g-2 mb-3">
-        <div class="col-md-5">
-            <input type="text"
-                name="search"
-                class="form-control form-control-sm"
-                placeholder="Cari ID Batch, tanggal, truck, petugas..."
-                value="{{ request('search') }}">
+                    <div class="col-md-3">
+                        <input type="text" name="id_batch" class="form-control form-control-sm"
+                        value="{{ request('id_batch') }}" placeholder="Cari ID Batch">
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="date" name="tanggal" class="form-control form-control-sm"
+                        value="{{ request('tanggal') }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="text" name="truck" class="form-control form-control-sm"
+                        value="{{ request('truck') }}" placeholder="Cari Nama Truck/Plat">
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="status" class="form-select form-select-sm">
+                            <option value="">Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="ditugaskan">Ditugaskan</option>
+                            <option value="berjalan">Berjalan</option>
+                            <option value="selesai">Selesai</option>
+                        </select>
+                    </div> 
+
+        {{-- BUTTON --}}
+                    <div class="col-md-2 d-flex gap-1">
+                        <button type="submit" class="btn btn-primary btn-sm w-100">
+                            <i class="bi bi-search" style="font-size:16px;"></i>
+                        </button>
+                            <a href="{{ route('admin.batches.index') }}" class="btn btn-secondary btn-sm w-100" title="Reset">
+                                <i class="bi bi-arrow-counterclockwise" style="font-size:24px;"></i>
+                            </a>
+                    </div>
+                 </div>
+            </form>
         </div>
 
-        <div class="col-md-3">
-            <select name="status" class="form-select form-select-sm">
-                <option value="all">Semua Status</option>
-                <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
-                <option value="ditugaskan" {{ request('status')=='ditugaskan' ? 'selected' : '' }}>Ditugaskan</option>
-                <option value="berjalan" {{ request('status')=='berjalan' ? 'selected' : '' }}>Berjalan</option>
-                <option value="selesai" {{ request('status')=='selesai' ? 'selected' : '' }}>Selesai</option>
-            </select>
-        </div>
-
-        <div class="col-md-2 d-flex gap-1">
-            <button type="submit" class="btn btn-primary btn-sm w-100">
-                <i class="bi bi-search"></i>
-            </button>
-            <a href="{{ route('admin.batches.index') }}"
-                class="btn btn-secondary btn-sm w-100"
-                title="Reset">
-            <i class="bi bi-arrow-counterclockwise"></i>
-        </a>
-    </div>
-</form>
-
-        </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table data-table mb-0">

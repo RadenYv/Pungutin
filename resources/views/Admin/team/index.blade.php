@@ -29,12 +29,16 @@
                name="search"
                value="{{ request('search') }}"
                class="form-control form-control-sm"
-               placeholder="Cari id / truck / petugas">
-            <button class="btn btn-sm btn-primary">
-                <i class="bi bi-search"></i>
-            </button>
-            </form>
-        </div>
+               placeholder="Cari team...">
+
+            <div class="col-md-2 d-flex gap-1">
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-search" style="font-size:16px;"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table data-table mb-0">
