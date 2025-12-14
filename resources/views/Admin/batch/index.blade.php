@@ -23,44 +23,65 @@
         <div class="card-header d-flex align-items-center justify-content-between py-3">
             <span class="badge-count">{{ $batches->count() }} Batch</span>
         </div>
+        
+        {{-- SEARCH BAR --}}
+        <div class="card-toolbar p-3">
             <form method="GET" action="{{ route('admin.batches.index') }}">
-                <div class="row g-2">
-
-                    <div class="col-md-3">
-                        <input type="text" name="id_batch" class="form-control form-control-sm"
-                        value="{{ request('id_batch') }}" placeholder="Cari ID Batch">
+                <div class="row g-3">
+                    <div class="col-12 col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-hash"></i>
+                            </span>
+                            <input type="text" name="id_batch" class="form-control ps-2"
+                                value="{{ request('id_batch') }}" placeholder="Cari ID Batch">
+                        </div>
                     </div>
 
-                    <div class="col-md-2">
-                        <input type="date" name="tanggal" class="form-control form-control-sm"
-                        value="{{ request('tanggal') }}">
+                    <div class="col-12 col-md-2">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-calendar"></i>
+                            </span>
+                            <input type="date" name="tanggal" class="form-control ps-2"
+                                value="{{ request('tanggal') }}">
+                        </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <input type="text" name="truck" class="form-control form-control-sm"
-                        value="{{ request('truck') }}" placeholder="Cari Nama Truck/Plat">
+                    <div class="col-12 col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-truck"></i>
+                            </span>
+                            <input type="text" name="truck" class="form-control ps-2"
+                                value="{{ request('truck') }}" placeholder="Cari Truck/Plat">
+                        </div>
                     </div>
 
-                    <div class="col-md-2">
-                        <select name="status" class="form-select form-select-sm">
-                            <option value="">Status</option>
-                            <option value="pending">Pending</option>
-                            <option value="ditugaskan">Ditugaskan</option>
-                            <option value="berjalan">Berjalan</option>
-                            <option value="selesai">Selesai</option>
-                        </select>
-                    </div> 
+                    <div class="col-12 col-md-2">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-filter"></i>
+                            </span>
+                            <select name="status" class="form-select ps-2">
+                                <option value="">Semua Status</option>
+                                <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
+                                <option value="ditugaskan" {{ request('status')=='ditugaskan'?'selected':'' }}>Ditugaskan</option>
+                                <option value="berjalan" {{ request('status')=='berjalan'?'selected':'' }}>Berjalan</option>
+                                <option value="selesai" {{ request('status')=='selesai'?'selected':'' }}>Selesai</option>
+                            </select>
+                        </div>
+                    </div>
 
-        {{-- BUTTON --}}
-                    <div class="col-md-2 d-flex gap-1">
-                        <button type="submit" class="btn btn-primary btn-sm w-100">
-                            <i class="bi bi-search" style="font-size:16px;"></i>
+                    <div class="col-12 col-md-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                            <i class="bi bi-search"></i> Cari
                         </button>
-                            <a href="{{ route('admin.batches.index') }}" class="btn btn-secondary btn-sm w-100" title="Reset">
-                                <i class="bi bi-arrow-counterclockwise" style="font-size:24px;"></i>
-                            </a>
+                        <a href="{{ route('admin.batches.index') }}" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center" title="Reset">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </a>
                     </div>
-                 </div>
+                </div>
             </form>
         </div>
 
