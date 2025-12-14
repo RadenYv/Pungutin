@@ -258,3 +258,80 @@ a:hover { color: #79c0ff; }
     padding: 1rem 1.5rem;
 }
 
+
+/* 19. SEARCH BAR & INPUT GROUPS */
+.card-toolbar {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.bg-input {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+}
+
+.input-group-text {
+    background-color: var(--bg-input);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+
+.input-group .form-control,
+.input-group .form-select {
+    border-color: var(--border-default);
+}
+
+.input-group .form-control:focus,
+.input-group .form-select:focus {
+    border-color: var(--accent-blue);
+    z-index: 3;
+}
+
+/* Ensure placeholder color is correct in dark mode */
+.form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+
+/* 20. INPUT GROUP REFINEMENTS */
+.input-group-text {
+    background-color: var(--bg-input);
+    color: var(--text-muted);
+    border-color: var(--border-default);
+}
+
+.input-group .form-control,
+.input-group .form-select {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border-color: var(--border-default);
+}
+
+/* Fix the join between icon and input */
+.input-group .input-group-text {
+    border-right: 0;
+}
+.input-group .form-control,
+.input-group .form-select {
+    border-left: 0;
+}
+
+/* Focus state for the whole group */
+.input-group:focus-within .input-group-text,
+.input-group:focus-within .form-control,
+.input-group:focus-within .form-select {
+    border-color: var(--accent-blue);
+    box-shadow: none;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(88, 166, 255, 0.15);
+    border-radius: 0.375rem;
+}
+
+/* Adjust height for standard inputs */
+.form-control, .form-select, .btn {
+    min-height: 38px; /* Standard Bootstrap height */
+}
+
