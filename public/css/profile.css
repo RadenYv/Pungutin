@@ -1,51 +1,361 @@
-/* Admin profile styles */
-.admin-profile {
-  max-width: 900px;
-  margin: 0 auto;
-}
-.admin-profile .profile-card {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  padding: 1.5rem;
-  border-radius: 0.6rem;
-  box-shadow: 0 6px 20px rgba(2,6,23,0.12);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-}
-.admin-profile .avatar {
-  width: 110px;
-  height: 110px;
-  border-radius: 12px;
-  overflow: hidden;
-  flex: 0 0 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0d1117;
-  border: 1px solid rgba(255,255,255,0.04);
-}
-.admin-profile .avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.admin-profile .profile-info { flex: 1; }
-.admin-profile .profile-info h3 { margin: 0 0 0.25rem 0; font-weight: 600; }
-.admin-profile .meta { color: rgba(255,255,255,0.65); font-size: 0.95rem; }
-.admin-profile dl.row { margin-top: 1rem; }
-.admin-profile dt { color: rgba(255,255,255,0.6); }
-.admin-profile dd { font-weight: 500; }
-.admin-profile .actions { margin-top: 1.25rem; }
+/* ================================
+   Profile Page – Dark SaaS Style
+   ================================ */
 
-/* compact card for smaller screens */
-@media (max-width: 767px) {
-  .admin-profile .profile-card { flex-direction: column; align-items: flex-start; }
-  .admin-profile .avatar { width: 84px; height: 84px; border-radius: 10px; }
+.profile-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
 }
 
-.btn-primary-custom {
-  background: linear-gradient(90deg,#0d6efd,#6610f2); border: none; color: #fff;
+/* CARD */
+.profile-card {
+    background: var(--bg-card);
+    border-radius: 18px;
+    padding: 2.5rem;
+
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* subtle divider for profile fields */
-.profile-divider { height: 1px; background: rgba(255,255,255,0.03); margin: 1rem 0; }
+/* =====================
+   LEFT SIDE
+   ===================== */
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+}
+
+/* Avatar */
+.profile-avatar {
+    width: 220px;
+    height: 220px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+
+    background: var(--bg-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Camera icon */
+.avatar-edit {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+
+    background: rgba(13, 17, 23, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--accent-blue);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.avatar-edit:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.05);
+}
+
+/* Upload boxes */
+.profile-upload-group {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+}
+
+.upload-box {
+    flex: 1;
+    padding: 1rem 0.75rem;
+    border-radius: 14px;
+    border: 2px dashed rgba(88, 166, 255, 0.35);
+
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.upload-box:hover {
+    background: rgba(88, 166, 255, 0.08);
+    border-color: var(--accent-blue);
+}
+
+/* =====================
+   RIGHT SIDE
+   ===================== */
+
+.profile-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Info */
+.profile-info {
+    display: grid;
+    row-gap: 1.5rem;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.profile-field label {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.profile-field span {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* Actions */
+.profile-actions {
+    margin-top: 2.5rem;
+}
+
+.btn-edit-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.6rem 1.5rem;
+    border-radius: 12px;
+
+    border: 2px solid var(--accent-blue);
+    background: transparent;
+    color: var(--accent-blue);
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-edit-profile:hover {
+    background: var(--accent-blue);
+    color: #0f1216;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+
+@media (max-width: 900px) {
+    .profile-card {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+    }
+
+    .profile-left {
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-avatar {
+        width: 180px;
+        height: 180px;
+    }
+}
+/* ================================
+   Dark Profile Card – Unified Style
+   ================================ */
+
+.profile-dark-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    color: var(--text-primary);
+
+    border: 1px solid var(--border-default);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.profile-dark-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* =====================
+   HEADER
+   ===================== */
+
+.profile-dark-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* User identity */
+.profile-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-avatar-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7b7cff, #9ea4ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.35rem;
+}
+
+.profile-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+}
+
+.profile-role {
+    margin-top: 0.25rem;
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.72rem;
+    border-radius: 6px;
+    background: rgba(88, 166, 255, 0.15);
+    color: var(--accent-blue);
+}
+
+/* More button */
+.profile-more-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background 0.2s ease;
+}
+
+.profile-more-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* =====================
+   ACTION ICONS
+   ===================== */
+
+.profile-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.25rem 0 1.5rem;
+}
+
+.profile-action-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-primary);
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.profile-action-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+/* =====================
+   DIVIDER
+   ===================== */
+
+.profile-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.04);
+    margin: 1.25rem 0;
+}
+
+/* =====================
+   INFO LIST
+   ===================== */
+
+.profile-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
+    font-size: 0.85rem;
+}
+
+    profile-info-row span:first-child {
+    color: var(--text-secondary);
+}
+
+.profile-info-row span:last-child {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.profile-info-active {
+    color: #35d07f;
+    font-weight: 600;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+
+@media (max-width: 576px) {
+    .profile-dark-card {
+        padding: 1.5rem;
+    }
+
+    .profile-info-row {
+        font-size: 0.8rem;
+    }
+}

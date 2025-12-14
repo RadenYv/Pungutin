@@ -2,42 +2,58 @@
 
 @section('title', 'Profil Admin')
 
+@push('styles')
+	<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endpush
+
 @section('content')
-    <div class="container px-4 admin-profile">
-        <div class="card profile-card">
-            <div class="avatar">
-                @if(!empty($admin->avatar))
-                    <img src="{{ asset('storage/' . $admin->avatar) }}" alt="avatar">
-                @else
-                    <img src="{{ asset('images/profile .jpg') }}" alt="avatar">
-                @endif
-            </div>
+	<div class="profile-wrapper">
+		<div class="profile-card">
+			<div class="profile-left">
+				<div class="profile-avatar">
+					@if(!empty($admin->avatar))
+						<img src="{{ asset('storage/' . $admin->avatar) }}" alt="avatar">
+					@else
+						<img src="{{ asset('images/profile .jpg') }}" alt="avatar">
+					@endif
+					<button class="avatar-edit" title="Ubah avatar"><i class="bi bi-camera"></i></button>
+				</div>
 
-            <div class="profile-info">
-                <h3>{{ $admin->nama ?? 'Admin' }}</h3>
-                <div class="meta">Administrator</div>
+				<div class="profile-upload-group">
+					<div class="upload-box">Upload Foto</div>
+					<div class="upload-box">Ganti Background</div>
+				</div>
+			</div>
 
-                <div class="profile-divider"></div>
+			<div class="profile-right">
+				<div class="profile-info">
+					<div class="profile-field">
+						<label>Nama</label>
+						<span>{{ $admin->nama ?? '-' }}</span>
+					</div>
 
-                <dl class="row">
-                    <dt class="col-sm-3">Email</dt>
-                    <dd class="col-sm-9">{{ $admin->email ?? '-' }}</dd>
+					<div class="profile-field">
+						<label>Email</label>
+						<span>{{ $admin->email ?? '-' }}</span>
+					</div>
 
-                    <dt class="col-sm-3">No. HP</dt>
-                    <dd class="col-sm-9">{{ $admin->no_hp ?? '-' }}</dd>
+					<div class="profile-field">
+						<label>No. HP</label>
+						<span>{{ $admin->no_hp ?? '-' }}</span>
+					</div>
 
-                    <dt class="col-sm-3">Role</dt>
-                    <dd class="col-sm-9">{{ $admin->role ?? 'admin' }}</dd>
-                </dl>
+					<div class="profile-field">
+						<label>Role</label>
+						<span>{{ $admin->role ?? 'admin' }}</span>
+					</div>
+				</div>
 
-                <div class="actions">
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Kembali</a>
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="profile-actions">
+					<a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Kembali</a>
+					<a href="#" class="btn btn-edit-profile">Edit Profil</a>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-@endpush
