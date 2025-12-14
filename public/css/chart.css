@@ -1,14 +1,15 @@
 /* ============================================================
-   PUNGUT-IN - Chart Styles
-   Donut Chart & Statistics Cards
+PUNGUT-IN - Chart Styles
+Donut Chart & Statistics Cards
    ============================================================ */
 
 /* ----------------------------------------------------------
-   1. CHART CARD
+1. CHART CARD
    ---------------------------------------------------------- */
 
 /* Chart card container */
 .chart-card {
+    <span class="legend-color" style="background: #6c757d;"></span>
     background: #0d0d0d;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
@@ -22,7 +23,7 @@
 }
 
 /* ----------------------------------------------------------
-   2. CHART CONTAINER
+2. CHART CONTAINER
    ---------------------------------------------------------- */
 
 /* Container that holds the canvas */
@@ -41,7 +42,7 @@
 }
 
 /* ----------------------------------------------------------
-   3. CENTER TEXT OVERLAY
+3. CENTER TEXT OVERLAY
    ---------------------------------------------------------- */
 
 /* Positioned in the center of donut hole */
@@ -74,7 +75,7 @@
 }
 
 /* ----------------------------------------------------------
-   4. CUSTOM LEGEND
+4. CUSTOM LEGEND
    ---------------------------------------------------------- */
 
 /* Legend container below chart */
@@ -83,7 +84,7 @@
     flex-direction: column;
     gap: 10px;
     padding-top: 16px;
-    border-top: 1px solid #21262d;
+    border-top: 1px solid #ffffff;
 }
 
 /* Individual legend item */
@@ -117,12 +118,12 @@
 }
 
 /* ----------------------------------------------------------
-   5. STAT CARDS
+5. STAT CARDS
    ---------------------------------------------------------- */
 
 /* Stat card base */
 .stat-card {
-    background: #0d0d0d;
+    background: #252525;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     transition: all 150ms ease;
@@ -131,7 +132,7 @@
 /* Hover effect */
 .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
 }
 
 /* Card body layout */
@@ -179,7 +180,7 @@
 }
 
 /* ----------------------------------------------------------
-   6. STAT CARD COLOR VARIANTS
+6. STAT CARD COLOR VARIANTS
    ---------------------------------------------------------- */
 
 /* Warning - Yellow (Menunggu) */
@@ -219,7 +220,7 @@
 }
 
 /* ----------------------------------------------------------
-   7. RESPONSIVE ADJUSTMENTS
+7. RESPONSIVE ADJUSTMENTS
    ---------------------------------------------------------- */
 
 /* Tablet breakpoint */
@@ -227,13 +228,13 @@
     .stat-card .card-body {
         padding: 16px;
     }
-    
+
     .stat-icon {
         width: 40px;
         height: 40px;
         font-size: 18px;
     }
-    
+
     .stat-value {
         font-size: 20px;
     }
@@ -244,31 +245,31 @@
     .chart-container {
         max-width: 160px;
     }
-    
+
     .chart-center-text .center-value {
         font-size: 22px;
     }
-    
+
     .legend-item {
         font-size: 12px;
     }
-    
+
     .stat-card .card-body {
         padding: 14px;
         gap: 12px;
     }
-    
+
     .stat-icon {
         width: 36px;
         height: 36px;
         font-size: 16px;
         border-radius: 8px;
     }
-    
+
     .stat-value {
         font-size: 18px;
     }
-    
+
     .stat-label {
         font-size: 11px;
     }
