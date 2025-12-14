@@ -21,6 +21,16 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            // Admin for testing
+            [
+                'nama' => 'Admin Test',
+                'email' => 'admin@test.com',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'no_hp' => '081200000000',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
             // Regular users - 10 users
             [
                 'nama' => 'Rizki Pratama',
