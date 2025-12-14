@@ -25,7 +25,6 @@ class TransaksiSampahController extends Controller
         return view('Admin.transaksi.index', compact('transaksi', 'batches'));
     }
 
-    // show() removed per requirements
 
     public function edit($id)
     {

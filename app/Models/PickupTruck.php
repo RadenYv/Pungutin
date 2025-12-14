@@ -21,15 +21,16 @@ class PickupTruck extends Model
         return $this->hasMany(Team::class, 'id_truck', 'id_truck');
     }
 
+    //Ini FK Semua ya WOK
     public function batches()
     {
         return $this->hasManyThrough(
             Batch::class,
             Team::class,
-            'id_truck',  // FK on Team
-            'id_team',   // FK on Batch
-            'id_truck',  // Local key
-            'id_team'    // Team local key
+            'id_truck',  
+            'id_team',   
+            'id_truck',  
+            'id_team'   
         );
     }
 }

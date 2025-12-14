@@ -67,7 +67,7 @@ class BatchController extends Controller
 
         // Assign team and truck to batch
         $batch->id_team = $team->id_team;
-        $batch->id_truck = $team->id_truck; // Also assign the team's truck
+        $batch->id_truck = $team->id_truck;
         $batch->status = 'ditugaskan';
         $batch->save();
 
@@ -140,7 +140,7 @@ class BatchController extends Controller
         $batch->status = 'selesai';
         $batch->save();
 
-        // Free the truck back to idle
+        // Free the truck back to idle/Not doing shit
         if ($batch->truck) {
             $batch->truck->status = 'idle';
             $batch->truck->save();
