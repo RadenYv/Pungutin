@@ -45,6 +45,12 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.profile') ? 'active' : '' }}" href="{{ route('admin.profile') }}">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Profil</span>
+                        </a>
+                    </li>
             </ul>
 
             {{-- Master Data --}}

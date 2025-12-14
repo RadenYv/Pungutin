@@ -33,6 +33,10 @@ Route::middleware(['auth:admin','role:admin'])->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])
             ->name('dashboard');
 
+        // Admin profile
+        Route::get('/profile', [AdminController::class, 'profile'])
+            ->name('profile');
+
         // CRUD Resources
         Route::resource('users', UserController::class);
         Route::resource('petugas', PetugasController::class);
@@ -77,8 +81,7 @@ Route::middleware(['auth:web','role:user'])->group(function () {
 
         Route::get('/dashboard', [UserDashController::class, 'index'])->name('dashboard');
 
-        Route::get('/profile', [UserDashController::class, 'profile'])
-            ->name('profile');
+
 
 
         Route::resource('transaksi', UserTransaksiController::class)

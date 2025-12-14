@@ -10,6 +10,7 @@ use App\Models\TransaksiSampah;
 use App\Models\Batch;
 use App\Models\Team;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminController extends Controller
         ->orderBy('id_transaksi', 'DESC')
         ->take(5)
         ->get();
-    
+
         return view('Admin.dashboard', [
             'totalUsers'        => User::where('role', 'user')->count(),
             'totalPetugas'      => Petugas::count(),
@@ -47,5 +48,11 @@ class AdminController extends Controller
             'truckPenjemputan'  => PickupTruck::where('status', 'penjemputan')->count(),
             'truckMaintenance'  => PickupTruck::where('status', 'maintenance')->count(),
         ]);
+    }
+
+    public function profile()
+    {
+        $admin = Auth::guard('admin')->user();
+        return view('Admin.profile', compact('admin'));
     }
 }
