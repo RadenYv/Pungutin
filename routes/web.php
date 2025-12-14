@@ -24,7 +24,7 @@ Route::post('/', [AdminLoginController::class, 'login'])->name('admin.login.subm
 Route::post('/logout-admin', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 
-// ADMIN AREA 
+// ADMIN AREA
 Route::middleware(['auth:admin','role:admin'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
@@ -77,8 +77,13 @@ Route::middleware(['auth:web','role:user'])->group(function () {
 
         Route::get('/dashboard', [UserDashController::class, 'index'])->name('dashboard');
 
+        Route::get('/profile', [UserDashController::class, 'profile'])
+            ->name('profile');
+
+
         Route::resource('transaksi', UserTransaksiController::class)
             ->only(['index', 'create', 'store']);
+
     });
 });
 
@@ -88,7 +93,7 @@ Route::get('/petugas', [PetugasLoginController::class, 'showLoginForm'])->name('
 Route::post('/petugas', [PetugasLoginController::class, 'login'])->name('petugas.login.submit');
 Route::post('/logout-petugas', [PetugasLoginController::class, 'logout'])->name('petugas.logout');
 
-// PETUGAS AREA 
+// PETUGAS AREA
 Route::middleware('auth:petugas')->prefix('petugas')->name('petugas.')->group(function () {
 
         // Dashboard
