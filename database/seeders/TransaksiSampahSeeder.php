@@ -22,7 +22,7 @@ class TransaksiSampahSeeder extends Seeder
         }
 
         $pickupWindows = ['09:00-12:00', '13:00-16:00', '17:00-20:00'];
-        $statuses = ['menunggu', 'dalam_batch', 'dijemput', 'selesai'];
+        $statuses = ['menunggu', 'dalam_batch', 'dijemput',];
         $addresses = [
             'Jl. Merdeka No. 45',
             'Jl. Sudirman No. 123',
@@ -40,7 +40,20 @@ class TransaksiSampahSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $user     = $users->random();
             $kategori = $kategoriList->random();
-            $batch    = $batches->random();
+
+            // 50% chance to be in a batch
+            $hasBatch = (rand(0, 1) === 1) && ($batches->count() > 0);
+            
+            $batchId = null;
+            $status = 'menunggu';
+            $tanggalPickup = Carbon::now()->addDays(rand(1, 7))->format('Y-m-d'); // Default future date
+
+            if ($hasBatch) {
+                $batch = $batches->random();
+                $batchId = $batch->id_batch;
+                $status = ['dalam_batch', 'dijemput', 'selesai'][rand(0, 2)];
+                $tanggalPickup = Carbon::parse($batch->tanggal)->format('Y-m-d');
+            }
 
             // Estimated vs final weight
             $beratUser  = rand(10, 50) / 10;   // 1.0 – 5.0 kg
@@ -49,12 +62,11 @@ class TransaksiSampahSeeder extends Seeder
             // Calculate money & points
             $totalUang = $beratFinal * $kategori->harga_per_kg;
             $poin      = floor($beratFinal * $kategori->poin_per_kg);
-            $tanggalPickup = Carbon::parse($batch->tanggal)->format('Y-m-d');
 
             TransaksiSampah::create([
                 'id_user'        => $user->id_user,
                 'id_kategori'    => $kategori->id_kategori,
-                'id_batch'       => $batch->id_batch,
+                'id_batch'       => $batchId,
 
                 'berat_kg'       => $beratUser,
                 'berat_kg_final' => $beratFinal,
@@ -68,8 +80,7 @@ class TransaksiSampahSeeder extends Seeder
                 'no_hp'          => '0812345' . str_pad($i, 5, '0', STR_PAD_LEFT),
                 'catatan'        => $i % 2 == 0 ? 'Taruh depan pagar' : 'Hubungi dulu sebelum datang',
 
-                // Must match ENUM in database
-                'status'         => $statuses[$i % 4]
+                'status'         => $status
             ]);
         }
     }

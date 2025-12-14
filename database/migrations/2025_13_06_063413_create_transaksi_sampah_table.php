@@ -14,7 +14,7 @@ return new class extends Migration
             // Relations
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_kategori');
-            $table->unsignedBigInteger('id_batch');
+            $table->unsignedBigInteger('id_batch')->nullable();
             
             $table->float('berat_kg')->nullable();        
             $table->float('berat_kg_final')->nullable(); 

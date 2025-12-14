@@ -13,16 +13,10 @@ class DatabaseSeeder extends Seeder
             PetugasSeeder::class,
             KategoriSampahSeeder::class,
             PickupTrucksSeeder::class,
-
-            // TEAM SYSTEM
-            TeamSeeder::class,           // requires trucks
-            TeamPetugasSeeder::class,    // requires teams + petugas
-
-            // BATCHES
-            BatchesSeeder::class,        // requires teams + trucks
-
-            // TRANSAKSI
-            TransaksiSampahSeeder::class // requires users + kategori + batches
+            TeamSeeder::class,
+            TeamPetugasSeeder::class,    
+            BatchesSeeder::class,        
+            TransaksiSampahSeeder::class 
         ]);
     }
 }

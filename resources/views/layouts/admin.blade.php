@@ -18,6 +18,7 @@
     <!-- Form CSS -->
     <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 
+    @stack('styles')
 </head>
 
 <body>

@@ -54,7 +54,7 @@
                             <th>Email</th>
                             <th>No HP</th>
                             <th>Dibuat</th>
-                            <th class="text-end pe-4">Aksi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +92,7 @@
                                         <span class="small">{{ $u->created_at ? $u->created_at->format('d M Y') : '-' }}</span>
                                     </div>
                                 </td>
-                                <td class="text-end pe-4">
+                                <td>
                                     <div class="d-inline-flex align-items-center gap-2">
                                         <a href="{{ route('admin.users.edit', $u->id_user) }}" class="btn btn-sm btn-outline-primary" title="Edit">
                                             <i class="bi bi-pencil"></i>

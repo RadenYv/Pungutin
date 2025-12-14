@@ -1,0 +1,107 @@
+/* Batch Detail & Transaction Table Styles */
+
+.batch-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-muted);
+}
+
+.batch-info {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-default);
+    margin-bottom: 2rem;
+}
+
+.batch-info p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.batch-info strong {
+    color: var(--text-primary);
+    min-width: 100px;
+    display: inline-block;
+}
+
+.petugas-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.petugas-badge {
+    background: var(--bg-input);
+    border: 1px solid var(--border-muted);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.petugas-role {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Table Styles */
+.table-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-primary);
+}
+
+.admin-table th, 
+.admin-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-muted);
+}
+
+.admin-table th {
+    background-color: var(--bg-input);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background-color: var(--bg-card-hover);
+    transition: background-color 0.2s ease;
+}
+
+/* Section Headers */
+h2, h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+h4 {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-top: 2rem;
+}

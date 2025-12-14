@@ -11,7 +11,7 @@ class BatchesSeeder extends Seeder
 {
     public function run(): void
     {
-        $teams = Team::take(10)->get();
+        $teams = Team::take(3)->get();
         $statuses = ['pending', 'ditugaskan', 'berjalan', 'selesai'];
 
         foreach ($teams as $index => $team) {

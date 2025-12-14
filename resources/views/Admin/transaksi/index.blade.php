@@ -83,7 +83,7 @@
                                         <code>Batch #{{ $item->batch->id_batch }}</code>
                                         <small class="text-secondary d-block">{{ $item->batch->start_time }} - {{ $item->batch->end_time }}</small>
                                     @else
-                                        <span class="text-secondary">-</span>
+                                        <span class="text-warning small fw-bold">Belum Masuk Batch</span>
                                     @endif
                                 </td>
                                 <td>
