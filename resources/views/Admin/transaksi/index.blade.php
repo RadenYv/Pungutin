@@ -60,8 +60,8 @@
             </div>
 
             <div class="col-md-2 d-flex gap-1">
-                <!-- <button type="submit" class="btn btn-primary btn-sm w-100">
-                    <i class="bi bi-search" style="font-size:16px;"></i> -->
+                <button type="submit" class="btn btn-primary btn-sm w-100">
+                    <i class="bi bi-search" style="font-size:16px;"></i>
                 </button>
                 <a href="{{ route('admin.transaksi.index') }}" class="btn btn-secondary btn-sm w-100" title="Reset">
                     <i class="bi bi-arrow-counterclockwise" style="font-size:24px;"></i>
