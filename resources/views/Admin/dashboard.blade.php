@@ -369,42 +369,75 @@
 
             {{-- Calendar Widget --}}
             <div class="card rounded-3">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-calendar3 me-2"></i>Personal Calendar
-                    </h5>
-                    <div class="d-flex gap-1">
-                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-left"></i></button>
-                        <button class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-chevron-right"></i></button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="calendar-month">{{ now()->format('F Y') }}</div>
-                    <div class="calendar-grid">
-                        <div class="cal-header">Sun</div>
-                        <div class="cal-header">Mon</div>
-                        <div class="cal-header">Tue</div>
-                        <div class="cal-header">Wed</div>
-                        <div class="cal-header">Thu</div>
-                        <div class="cal-header">Fri</div>
-                        <div class="cal-header">Sat</div>
-                        @php
-                            $firstDay = now()->startOfMonth()->dayOfWeek;
-                            $daysInMonth = now()->daysInMonth;
-                        @endphp
-                        @for($i = 0; $i < $firstDay; $i++)
-                            <div class="cal-cell empty"></div>
-                        @endfor
-                        @for($i = 1; $i <= $daysInMonth; $i++)
-                            <div class="cal-cell {{ $i == now()->day ? 'is-today' : '' }}">{{ $i }}</div>
-                        @endfor
-                    </div>
-                    <div class="calendar-legend">
-                        <span><i class="bi bi-circle-fill text-danger"></i> Holiday</span>
-                        <span><i class="bi bi-circle-fill text-primary"></i> Leave</span>
-                    </div>
-                </div>
-            </div>
+    <div class="card-header d-flex align-items-center justify-content-between py-3">
+        <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
+            <i class="bi bi-calendar3 me-2"></i>Personal Calendar
+        </h5>
+        <div class="d-flex gap-1">
+            <button id="prevMonth" class="btn btn-sm btn-outline-secondary" type="button">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button id="nextMonth" class="btn btn-sm btn-outline-secondary" type="button">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div id="calendarMonth" class="text-center fw-semibold mb-2"></div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+
+        <div class="calendar-legend mt-3">
+            <span><i class="bi bi-circle-fill text-danger"></i> Holiday</span>
+            <span class="ms-3"><i class="bi bi-circle-fill text-primary"></i> Leave</span>
+        </div>
+    </div>
+</div>
+
+<style>
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-header{font-size:.75rem;text-align:center;font-weight:600;color:#6c757d}
+.cal-cell{height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;transition:.2s}
+.cal-cell:hover{background:#f1f3f5}
+.cal-cell.empty{cursor:default}
+.cal-cell.is-today{background:#0d6efd;color:#fff;font-weight:600}
+</style>
+
+<script>
+(() => {
+    const grid = document.getElementById('calendarGrid'),
+          title = document.getElementById('calendarMonth'),
+          prev = document.getElementById('prevMonth'),
+          next = document.getElementById('nextMonth');
+    let date = new Date();
+
+    function render(d){
+        grid.innerHTML='';
+        const y=d.getFullYear(),m=d.getMonth(),
+              first=new Date(y,m,1).getDay(),
+              total=new Date(y,m+1,0).getDate(),
+              today=new Date();
+        title.innerText=d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+        ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(h=>{
+            const e=document.createElement('div');e.className='cal-header';e.innerText=h;grid.appendChild(e);
+        });
+        for(let i=0;i<first;i++)grid.appendChild(Object.assign(document.createElement('div'),{className:'cal-cell empty'}));
+        for(let i=1;i<=total;i++){
+            const c=document.createElement('div');
+            c.className='cal-cell';
+            c.innerText=i;
+            if(i===today.getDate()&&m===today.getMonth()&&y===today.getFullYear())c.classList.add('is-today');
+            grid.appendChild(c);
+        }
+    }
+
+    prev.onclick=()=>{date.setMonth(date.getMonth()-1);render(date)};
+    next.onclick=()=>{date.setMonth(date.getMonth()+1);render(date)};
+    render(date);
+})();
+</script>
+
 
         </div>
 
