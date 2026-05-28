@@ -14,7 +14,7 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        // Default range: first day of current month -> today
+       
         $startDate = $request->input('start_date')
             ? Carbon::parse($request->input('start_date'))->startOfDay()
             : Carbon::now()->startOfMonth();
@@ -22,35 +22,31 @@ class LaporanController extends Controller
         $endDate = $request->input('end_date')
             ? Carbon::parse($request->input('end_date'))->endOfDay()
             : Carbon::now()->endOfDay();
-
-        // Guard: end must be >= start
+    
         if ($endDate->lt($startDate)) {
             $endDate = $startDate->copy()->endOfDay();
         }
-
-        // Base query: only completed transactions inside range
+     
         $completedQuery = TransaksiSampah::where('status', 'selesai')
             ->whereBetween('tanggal_pickup', [$startDate, $endDate]);
 
-        // ===== SUMMARY STATS =====
+        
         $totalKg        = (float) (clone $completedQuery)->sum('berat_kg_final');
         $totalUang      = (float) (clone $completedQuery)->sum('total_uang');
         $totalPoin      = (int)   (clone $completedQuery)->sum('poin_didapat');
         $totalTransaksi = (int)   (clone $completedQuery)->count();
         $avgKg          = $totalTransaksi > 0 ? $totalKg / $totalTransaksi : 0;
         $avgUang        = $totalTransaksi > 0 ? $totalUang / $totalTransaksi : 0;
-
-        // Batches completed in range
+ 
         $batchSelesai = Batch::where('status', 'selesai')
             ->whereBetween('tanggal', [$startDate->toDateString(), $endDate->toDateString()])
             ->count();
 
-        // Declined / pending (still in system) — for context
         $transaksiMenunggu = TransaksiSampah::where('status', 'menunggu')
             ->whereBetween('tanggal_pickup', [$startDate, $endDate])
             ->count();
 
-        // ===== BREAKDOWN PER KATEGORI =====
+    
         $perKategori = (clone $completedQuery)
             ->select(
                 'id_kategori',
@@ -64,7 +60,7 @@ class LaporanController extends Controller
             ->orderByDesc('total_kg')
             ->get();
 
-        // ===== DAILY BREAKDOWN =====
+
         $perHari = (clone $completedQuery)
             ->select(
                 DB::raw('DATE(tanggal_pickup) as tanggal'),
