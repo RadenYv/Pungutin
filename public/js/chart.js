@@ -40,23 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
         parseInt(chartData.selesai) || 0
     ];
 
-    // Color palette matching the dashboard theme
-    // Each color corresponds to a status in order
+    // Pull status colors from CSS variables so chart matches theme + status system
+    const rootStyles = getComputedStyle(document.documentElement);
+    const cssVar = (name) => rootStyles.getPropertyValue(name).trim();
+
     const statusColors = [
-        '#ffc107',  // Menunggu (warning/pending)
-        '#6c757d',  // Dalam Batch (secondary/queued)
-        '#0d6efd',  // Dijemput (primary/in-progress)
-        '#198754'   // Selesai (success/completed)
+        cssVar('--status-menunggu'),
+        cssVar('--status-batch'),
+        cssVar('--status-jemput'),
+        cssVar('--status-selesai')
     ];
 
-    // Brighter colors for hover effect
-    // Increases visibility when user hovers over segments
-    const statusHoverColors = [
-        '#ffda6a',  // Lighter yellow
-        '#8c939a',  // Lighter gray
-        '#4d94ff',  // Lighter blue
-        '#28a745'   // Lighter green
-    ];
+    // Same colors with brightness boost for hover (handled via opacity in CSS — use hex with alpha)
+    const statusHoverColors = statusColors.slice();
 
     // ==========================================
     // CHART CONFIGURATION

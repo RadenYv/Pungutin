@@ -16,17 +16,14 @@ class BatchController extends Controller
         $status = $request->status;
         
         $batches = Batch::with(['truck', 'team.members.petugas', 'transaksi']);
-        // 🔍 Search ID Batch
         if ($request->filled('id_batch')) {
             $batches->where('id_batch', $request->id_batch);
         }
 
-        // 🔍 Search Tanggal
         if ($request->filled('tanggal')) {
             $batches->where('tanggal', $request->tanggal);
         }
 
-        // 🔍 Search Truck
         if ($request->filled('truck')) {
             $batches->whereHas('truck', function ($q) use ($request) {
                 $q->where('nama', 'like', "%{$request->truck}%")
@@ -34,7 +31,6 @@ class BatchController extends Controller
             });
         }
 
-        // 🔍 Search Status
         if ($request->filled('status') && $request->status !== 'all') {
             $batches->where('status', $request->status);
         }

@@ -2,262 +2,101 @@
 
 @section('title', 'Dashboard')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-@endpush
-
 @section('content')
+
+@php
+    $totalTransaksi = $transaksiMenunggu + $transaksiBatch + $transaksiJemput + $transaksiSelesai;
+@endphp
 
 <div class="d-flex flex-column gap-4">
 
-    {{-- Welcome Card --}}
-    <div class="row g-4">
-        <div class="col-12">
-            <div class="card welcome-card rounded-3">
-                <div class="card-body py-4">
-                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                        <div>
-                            <h2 class="fs-4 fw-semibold mb-2">Hello, {{ auth('admin')->user()->nama }}! 👋</h2>
-                            <p class="mb-1">Hari ini kamu memiliki <strong class="text-primary fs-5">{{ $transaksiMenunggu }}</strong> pesanan baru!</p>
-                            <p class="text-secondary mb-0 small">Pesan menunggu untuk ditindak lanjuti.</p>
-                        </div>
-                        <div class="welcome-illustration">
-                            <i class="bi bi-clipboard-data"></i>
-                        </div>
-                    </div>
+    {{-- ============ PAGE HEADER ============ --}}
+    <div class="page-header-row">
+        <div>
+            <h1 class="page-header-title">Dashboard</h1>
+            <p class="page-header-subtitle">Selamat datang kembali, {{ auth('admin')->user()->nama }}.</p>
+        </div>
+        @if($transaksiMenunggu > 0)
+        <a href="{{ route('admin.transaksi.index') }}" class="page-header-pill text-decoration-none">
+            <span class="dot"></span>
+            <span class="count">{{ $transaksiMenunggu }}</span> menunggu tindak lanjut
+            <i class="bi bi-arrow-right" style="font-size: 0.75rem;"></i>
+        </a>
+        @endif
+    </div>
+
+    {{-- ============ KPI ROW (4 cards, monochrome, big numbers) ============ --}}
+    <div class="row g-3">
+        <div class="col-xl-3 col-md-6">
+            <div class="kpi-card">
+                <div class="kpi-card-header">
+                    <span class="kpi-label">Total Penjemputan</span>
+                    <i class="kpi-icon bi bi-box-seam"></i>
+                </div>
+                <div class="kpi-value">{{ $totalTransaksi }}</div>
+                <div class="kpi-sub">
+                    <span class="delta-up">{{ $transaksiSelesai }} selesai</span>
+                    &middot; {{ $transaksiMenunggu + $transaksiBatch + $transaksiJemput }} aktif
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="kpi-card">
+                <div class="kpi-card-header">
+                    <span class="kpi-label">Total Users</span>
+                    <i class="kpi-icon bi bi-people"></i>
+                </div>
+                <div class="kpi-value">{{ $totalUsers }}</div>
+                <div class="kpi-sub">Pengguna terdaftar</div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="kpi-card">
+                <div class="kpi-card-header">
+                    <span class="kpi-label">Total Petugas</span>
+                    <i class="kpi-icon bi bi-person-badge"></i>
+                </div>
+                <div class="kpi-value">{{ $totalPetugas }}</div>
+                <div class="kpi-sub">Tim lapangan aktif</div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="kpi-card">
+                <div class="kpi-card-header">
+                    <span class="kpi-label">Total Trucks</span>
+                    <i class="kpi-icon bi bi-truck"></i>
+                </div>
+                <div class="kpi-value">{{ $totalTrucks }}</div>
+                <div class="kpi-sub">
+                    <span class="delta-up">{{ $truckIdle }} tersedia</span>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Stats Row with Donut Chart --}}
-    <div class="row g-4">
-        {{-- Donut Chart Card --}}
-        <div class="col-lg-4">
-            <div class="card chart-card rounded-3 h-100">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-pie-chart me-2"></i>Order Status
-                    </h5>
-                </div>
-                <div class="card-body">
-                    {{-- Chart Canvas Container --}}
-                    <div class="chart-container">
-                        <canvas id="orderStatusChart"
-                            data-menunggu="{{ $transaksiMenunggu }}"
-                            data-batch="{{ $transaksiBatch }}"
-                            data-jemput="{{ $transaksiJemput }}"
-                            data-selesai="{{ $transaksiSelesai }}">
-                        </canvas>
-                        {{-- Center Text Overlay --}}
-                        <div class="chart-center-text">
-                            <span class="center-label">Total</span>
-                            <span class="center-value">{{ $transaksiMenunggu + $transaksiBatch + $transaksiJemput + $transaksiSelesai }}</span>
-                        </div>
-                    </div>
-                    {{-- Legend --}}
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #ffc107;"></span>
-                            <span class="legend-label">Menunggu</span>
-                            <span class="legend-value">{{ $transaksiMenunggu }}</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #6c757d;"></span>
-                            <span class="legend-label">Dalam Batch</span>
-                            <span class="legend-value">{{ $transaksiBatch }}</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #0d6efd;"></span>
-                            <span class="legend-label">Dijemput</span>
-                            <span class="legend-value">{{ $transaksiJemput }}</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background: #198754;"></span>
-                            <span class="legend-label">Selesai</span>
-                            <span class="legend-value">{{ $transaksiSelesai }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    {{-- ============ ANALYTICS ROW (2/3 + 1/3 split) ============ --}}
+    <div class="row g-3">
 
-        {{-- Quick Stats Cards --}}
+        {{-- LEFT 2/3: Recent activity table --}}
         <div class="col-lg-8">
-            
-            {{-- Section: Transaksi --}}
-            <h6 class="text-muted text-uppercase small fw-bold mb-3">Penjemputan</h6>
-            <div class="row g-4 mb-4">
-                <div class="col-sm-6 col-md-3">
-                    <div class="card stat-card stat-warning">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-hourglass-split"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $transaksiMenunggu }}</span>
-                                <span class="stat-label">Menunggu</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="card stat-card stat-secondary">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-box-seam"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $transaksiBatch }}</span>
-                                <span class="stat-label">Dalam Batch</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="card stat-card stat-primary">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-truck"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $transaksiJemput }}</span>
-                                <span class="stat-label">Dijemput</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="card stat-card stat-success">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-check-circle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $transaksiSelesai }}</span>
-                                <span class="stat-label">Selesai</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Section: Truck Status --}}
-            <h6 class="text-muted text-uppercase small fw-bold mb-3">Truck Status</h6>
-            <div class="row g-4 mb-4">
-                <div class="col-sm-6 col-md-4">
-                    <div class="card stat-card stat-success">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-check-circle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $truckIdle }}</span>
-                                <span class="stat-label">Available/Idle</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <div class="card stat-card stat-primary">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-truck"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $truckPenjemputan }}</span>
-                                <span class="stat-label">Penjemputan</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <div class="card stat-card stat-warning">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-tools"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $truckMaintenance }}</span>
-                                <span class="stat-label">Maintenance</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Section: Accounts --}}
-            <h6 class="text-muted text-uppercase small fw-bold mb-3">Accounts</h6>
-            <div class="row g-4">
-                <div class="col-sm-6 col-md-6">
-                    <div class="card stat-card stat-info">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-people"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $totalUsers }}</span>
-                                <span class="stat-label">Total Users</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6">
-                    <div class="card stat-card stat-purple">
-                        <div class="card-body">
-                            <div class="stat-icon">
-                                <i class="bi bi-person-badge"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value">{{ $totalPetugas }}</span>
-                                <span class="stat-label">Total Petugas</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-4">
-
-        {{-- LEFT COLUMN --}}
-        <div class="col-lg-8">
-
-            {{-- Batch Status Chart --}}
-            <div class="card rounded-3 mb-4">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-bar-chart me-2"></i>Batch Status Overview
+            <div class="card activity-card rounded-3 h-100">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">
+                        <i class="bi bi-truck"></i> Penjemputan Sedang Berlangsung
                     </h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="batchStatusChart" 
-                        data-pending="{{ $batchPending }}"
-                        data-tugas="{{ $batchTugas }}"
-                        data-berjalan="{{ $batchBerjalan }}"
-                        data-selesai="{{ $batchSelesai }}"
-                        style="max-height: 300px;">
-                    </canvas>
-                </div>
-            </div>
-
-            {{-- History Transaksi Table --}}
-            <div class="card rounded-3">
-                <div class="card-header d-flex align-items-center justify-content-between py-3">
-                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center">
-                        <i class="bi bi-truck me-2"></i>Penjemputan Sedang Berlangsung
-                    </h5>
+                    <a href="{{ route('admin.transaksi.index') }}" class="text-primary text-decoration-none small fw-medium d-inline-flex align-items-center gap-1">
+                        Lihat semua <i class="bi bi-arrow-right" style="font-size: 0.75rem;"></i>
+                    </a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-container">
-                        <table class="table dashboard-table">
+                        <table class="table dashboard-table mb-0">
                             <thead>
                                 <tr>
                                     <th>Petugas</th>
                                     <th>No Kendaraan</th>
                                     <th>Status</th>
-                                    <th>Tanggal</th>
+                                    <th class="text-end">Tanggal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -265,48 +104,49 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
-                                            <div class="avatar-sm">
-                                                <i class="bi bi-person"></i>
-                                            </div>
+                                            <div class="avatar-sm"><i class="bi bi-person"></i></div>
                                             <span>
                                                 @if($t->batch && $t->batch->team)
                                                     @foreach($t->batch->team->members as $m)
                                                         {{ $m->petugas->nama }}@if(!$loop->last), @endif
                                                     @endforeach
                                                 @else
-                                                    -
+                                                    <span class="text-muted">—</span>
                                                 @endif
                                             </span>
                                         </div>
                                     </td>
                                     <td>
-                                        <code>{{ $t->batch->truck->plat_nomor ?? '-' }}</code>
+                                        @if($t->batch && $t->batch->truck)
+                                            <code>{{ $t->batch->truck->plat_nomor }}</code>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
                                     </td>
                                     <td>
                                         @php
                                             $status = strtolower($t->status);
                                             $map = [
-                                                'menjemput' => ['class' => 'badge-primary', 'icon' => 'bi-truck'],
-                                                'dijemput' => ['class' => 'badge-primary', 'icon' => 'bi-truck'],
-                                                'menunggu' => ['class' => 'badge-warning', 'icon' => 'bi-hourglass-split'],
-                                                'selesai' => ['class' => 'badge-success', 'icon' => 'bi-check-circle'],
-                                                'dalam_batch' => ['class' => 'badge-secondary', 'icon' => 'bi-box']
+                                                'menunggu'    => ['class' => 'badge-menunggu', 'icon' => 'bi-hourglass-split'],
+                                                'dalam_batch' => ['class' => 'badge-batch',    'icon' => 'bi-box-seam'],
+                                                'dijemput'    => ['class' => 'badge-jemput',   'icon' => 'bi-truck'],
+                                                'selesai'     => ['class' => 'badge-selesai',  'icon' => 'bi-check-circle'],
                                             ];
-                                            $badge = $map[$status] ?? ['class' => 'badge-secondary', 'icon' => 'bi-question'];
+                                            $badge = $map[$status] ?? ['class' => 'badge-secondary', 'icon' => 'bi-circle'];
                                         @endphp
                                         <span class="status-badge {{ $badge['class'] }}">
                                             <i class="bi {{ $badge['icon'] }}"></i>
                                             {{ str_replace('_', ' ', ucfirst($t->status)) }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <span class="text-muted">{{ $t->tanggal_pickup }}</span>
+                                    <td class="text-end">
+                                        <span class="text-muted small">{{ \Carbon\Carbon::parse($t->tanggal_pickup)->format('d M Y') }}</span>
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted py-4">
-                                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                    <td colspan="4" class="text-center text-muted py-5">
+                                        <i class="bi bi-inbox d-block mb-2" style="font-size: 2rem; opacity: 0.4;"></i>
                                         Tidak ada penjemputan yang sedang berlangsung.
                                     </td>
                                 </tr>
@@ -315,116 +155,100 @@
                         </table>
                     </div>
                 </div>
-                <div class="card-footer text-end">
-                    <a href="{{ route('admin.transaksi.index') }}" class="text-primary text-decoration-none d-inline-flex align-items-center gap-2 small fw-medium">
-                        View All Penjemputan
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
             </div>
-
         </div>
 
-        {{-- RIGHT COLUMN --}}
-        <div class="col-lg-4">
+        {{-- RIGHT 1/3: Donut + truck status stacked --}}
+        <div class="col-lg-4 d-flex flex-column gap-3">
 
-            {{-- Profile Card --}}
-            <div class="profile-dark-card mb-4">
-                <div class="profile-dark-header">
-                    <div class="profile-user">
-                        <div class="profile-avatar-circle">
-                            <i class="bi bi-person"></i>
-                        </div>
-                        <div>
-                            <div class="profile-name">{{ auth('admin')->user()->nama }}</div>
-                            <div class="profile-role">Administrator</div>
+            {{-- Donut chart card --}}
+            <div class="card chart-card chart-clean">
+                <div class="card-header">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center gap-2">
+                        <i class="bi bi-pie-chart text-muted"></i> Status Penjemputan
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="orderStatusChart"
+                            data-menunggu="{{ $transaksiMenunggu }}"
+                            data-batch="{{ $transaksiBatch }}"
+                            data-jemput="{{ $transaksiJemput }}"
+                            data-selesai="{{ $transaksiSelesai }}">
+                        </canvas>
+                        <div class="chart-center-text">
+                            <span class="center-label">Total</span>
+                            <span class="center-value">{{ $totalTransaksi }}</span>
                         </div>
                     </div>
-                    <button class="profile-more-btn">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                </div>
-
-                <div class="profile-actions">
-                    <button class="profile-action-btn" title="Call">
-                        <i class="bi bi-telephone"></i>
-                    </button>
-                    <button class="profile-action-btn" title="Email">
-                        <i class="bi bi-envelope"></i>
-                    </button>
-                    <button class="profile-action-btn" title="Message">
-                        <i class="bi bi-chat-dots"></i>
-                    </button>
-                </div>
-
-                <div class="profile-divider"></div>
-
-                <div class="profile-info-row">
-                    <span>Company</span>
-                    <span>Pungut-in</span>
-                </div>
-                <div class="profile-info-row">
-                    <span>Joining Date</span>
-                    <span>{{ auth('admin')->user()->created_at->format('d/m/Y') }}</span>
-                </div>
-                <div class="profile-info-row">
-                    <span>Penjemputan Aktif</span>
-                    <span class="profile-info-active">{{ $transaksiBatch }} Active</span>
+                    <div class="status-list mt-3">
+                        <div class="status-row tile-menunggu">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Menunggu</span>
+                            </div>
+                            <span class="status-row-value">{{ $transaksiMenunggu }}</span>
+                        </div>
+                        <div class="status-row tile-batch">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Dalam Batch</span>
+                            </div>
+                            <span class="status-row-value">{{ $transaksiBatch }}</span>
+                        </div>
+                        <div class="status-row tile-jemput">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Dijemput</span>
+                            </div>
+                            <span class="status-row-value">{{ $transaksiJemput }}</span>
+                        </div>
+                        <div class="status-row tile-selesai">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Selesai</span>
+                            </div>
+                            <span class="status-row-value">{{ $transaksiSelesai }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {{-- Calendar Widget --}}
-            @php
-    $month = request('month', now()->month);
-    $year  = request('year', now()->year);
-    $date  = \Carbon\Carbon::create($year, $month, 1);
-    $firstDay = $date->dayOfWeek;
-    $daysInMonth = $date->daysInMonth;
-@endphp
-
-<div class="card rounded-3">
-    <div class="card-header d-flex align-items-center justify-content-between py-3">
-        <h5 class="mb-0 fs-6 fw-semibold">
-            <i class="bi bi-calendar3 me-2"></i>Personal Calendar
-        </h5>
-        <div class="d-flex gap-1">
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeMonth(-1, {{ $month }}, {{ $year }})">
-                <i class="bi bi-chevron-left"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-secondary" onclick="changeMonth(1, {{ $month }}, {{ $year }})">
-                <i class="bi bi-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-
-    <div class="card-body">
-        <div class="text-center fw-semibold mb-2">
-            {{ $date->format('F Y') }}
-        </div>
-
-        <div class="calendar-grid">
-            @foreach(['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] as $d)
-                <div class="cal-header">{{ $d }}</div>
-            @endforeach
-
-            @for($i=0;$i<$firstDay;$i++)
-                <div class="cal-cell empty"></div>
-            @endfor
-
-            @for($d=1;$d<=$daysInMonth;$d++)
-                <div class="cal-cell {{ now()->isSameDay($date->copy()->day($d)) ? 'is-today' : '' }}">
-                    {{ $d }}
+            {{-- Truck status card (compact list, monochrome with subtle dots) --}}
+            <div class="card chart-clean">
+                <div class="card-header">
+                    <h5 class="card-title mb-0 fs-6 fw-semibold d-flex align-items-center gap-2">
+                        <i class="bi bi-truck text-muted"></i> Status Trucks
+                    </h5>
                 </div>
-            @endfor
+                <div class="card-body p-2">
+                    <div class="status-list">
+                        <div class="status-row tile-idle">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Tersedia</span>
+                            </div>
+                            <span class="status-row-value">{{ $truckIdle }}</span>
+                        </div>
+                        <div class="status-row tile-jemput">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Penjemputan</span>
+                            </div>
+                            <span class="status-row-value">{{ $truckPenjemputan }}</span>
+                        </div>
+                        <div class="status-row tile-maintenance">
+                            <div class="status-row-left">
+                                <span class="status-tile-dot"></span>
+                                <span class="status-row-label">Maintenance</span>
+                            </div>
+                            <span class="status-row-value">{{ $truckMaintenance }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
-</div>
-
-<script src="{{ asset('js/calender.js') }}"></script>
-
-
-        </div>
-
     </div>
 
 </div>

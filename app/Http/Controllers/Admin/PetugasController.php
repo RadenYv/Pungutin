@@ -28,8 +28,6 @@ class PetugasController extends Controller
         return view('Admin.petugas.create');
     }
 
-    // show() removed per requirements
-
     public function store(Request $request)
     {
         $request->validate([

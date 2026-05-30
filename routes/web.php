@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\TransaksiSampahController;
 use App\Http\Controllers\Admin\PickupTruckController;
 use App\Http\Controllers\Admin\BatchController;
 use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\User\UserDashController;
 use App\Http\Controllers\User\TransaksiSampahController as UserTransaksiController;
 use App\Http\Controllers\Petugas\PetugasDashController;
@@ -63,6 +64,9 @@ Route::middleware(['auth:admin','role:admin'])->group(function () {
             ->name('transaksi.assignBatch');
         Route::post('/transaksi/{id}/remove-batch', [TransaksiSampahController::class, 'removeBatch'])
             ->name('transaksi.removeBatch');
+
+        // Laporan (Reports)
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     });
 
 });

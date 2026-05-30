@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="dark">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#0c1929">
     <title>@yield('title', 'Pungut-In Admin')</title>
+
+    {{-- Theme: apply before paint to prevent flash --}}
+    <script>
+        (function() {
+            var t = localStorage.getItem('pungutin-theme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', t);
+        })();
+    </script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
@@ -106,6 +114,12 @@
                             <span>Batch</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}" href="{{ route('admin.laporan.index') }}">
+                            <i class="bi bi-file-earmark-bar-graph"></i>
+                            <span>Laporan</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -156,6 +170,12 @@
                 </button>
                 <h1 class="page-title mb-0 fs-5 fw-semibold">@yield('title', 'Dashboard')</h1>
             </div>
+            <div class="d-flex align-items-center gap-2">
+                <button class="theme-toggle" type="button" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+                    <i class="bi bi-moon-stars-fill"></i>
+                    <i class="bi bi-sun-fill"></i>
+                </button>
+            </div>
         </header>
 
         {{-- Page Content --}}
@@ -180,6 +200,14 @@ function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('show');
 }
 
+// Theme toggle
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-bs-theme', next);
+    localStorage.setItem('pungutin-theme', next);
+}
+
 // Close sidebar when clicking outside on mobile
 document.addEventListener('click', function(e) {
     const sidebar = document.getElementById('sidebar');
@@ -189,29 +217,5 @@ document.addEventListener('click', function(e) {
         sidebar.classList.remove('show');
     }
 });
-
-// Calendar interactivity
-document.addEventListener('DOMContentLoaded', function() {
-    const cells = document.querySelectorAll('.cal-cell');
-    const today = new Date().getDate();
-
-    cells.forEach(cell => {
-        // Mark today
-        if (cell.textContent.trim() == today) {
-            cell.classList.add('is-today');
-        }
-
-        // Click to select
-        cell.addEventListener('click', function() {
-            if (this.textContent.trim()) {
-                cells.forEach(c => c.classList.remove('is-selected'));
-                this.classList.add('is-selected');
-            }
-        });
-    });
-});
-</script>
-
-@stack('scripts')
 </body>
 </html>

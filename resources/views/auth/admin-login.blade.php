@@ -5,12 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
 
+    <script>
+        (function() {
+            var t = localStorage.getItem('pungutin-theme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', t);
+        })();
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 
 <body>
+
+<button class="login-theme-toggle" type="button" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+    <i class="bi bi-moon-stars-fill"></i>
+    <i class="bi bi-sun-fill"></i>
+</button>
+
+<script>
+function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-bs-theme', next);
+    localStorage.setItem('pungutin-theme', next);
+}
+</script>
 
 <div class="login-wrapper d-flex vw-100 vh-100 overflow-hidden p-0 m-0">
 

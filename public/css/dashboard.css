@@ -1,40 +1,187 @@
-/* ==========================================================
-   PUNGUT-IN DASHBOARD - Custom Dark Theme Styles
-   Only styles Bootstrap doesn't provide
-   ========================================================== */
+/* ============================================================================
+   PUNGUT-IN — DASHBOARD STYLESHEET
+   ============================================================================
+   TABLE OF CONTENTS
+     §1.  Theme tokens (CSS variables)
+          1.1 Dark mode (default)
+          1.2 Light mode
+          1.3 Sidebar overrides (light mode)
+     §2.  Base & transitions
+     §3.  Layout (wrapper, main, content)
+     §4.  Sidebar
+     §5.  Top header
+          5.1 Theme toggle button
+     §6.  Page header (titles, pills, headings)
+     §7.  Cards (generic)
+     §8.  KPI cards
+     §9.  Status system
+          9.1 Status badges
+          9.2 Status list & rows
+          9.3 Status group cards
+     §10. Tables
+          10.1 Data tables (admin pages)
+          10.2 Activity card (dashboard table)
+     §11. Forms & inputs
+     §12. Buttons
+     §13. Pagination
+     §14. Misc components (welcome card, avatars, badges)
+     §15. Chart card
+     §16. Scrollbar
+     §17. Responsive
+   ============================================================================ */
 
-/* 1. CSS VARIABLES - Custom dark theme tokens */
-:root {
+
+/* ============================================================================
+   §1. THEME TOKENS
+   ============================================================================ */
+
+/* --- 1.1 Dark mode (default) --- */
+:root,
+[data-bs-theme="dark"] {
+    /* Layout */
     --sidebar-width: 260px;
     --header-height: 64px;
-    --bg-body: #0f1011;
-    --bg-sidebar: #161b22;
-    --bg-card: #21262d;
-    --bg-card-hover: #30363d;
-    --bg-input: #0d1117;
-    --text-primary: #e6edf3;
-    --text-secondary: #8b949e;
-    --text-muted: #6e7681;
-    --border-default: #30363d;
-    --border-muted: #21262d;
-    --accent-blue: #58a6ff;
-    --accent-green: #3fb950;
-    --accent-yellow: #d29922;
-    --accent-red: #f85149;
-    --accent-purple: #a371f7;
+
+    /* Surfaces */
+    --bg-body:         #0c1929;
+    --bg-sidebar:      #061425;
+    --bg-card:         #102a43;
+    --bg-card-hover:   #173759;
+    --bg-input:        #0a1f33;
+
+    /* Text */
+    --text-primary:    #e0f2fe;
+    --text-secondary:  #94b8d4;
+    --text-muted:      #6b8caa;
+
+    /* Borders */
+    --border-default:  #1e3a5f;
+    --border-muted:    #142a44;
+
+    /* Accents */
+    --accent-blue:        #38bdf8;
+    --accent-blue-soft:   rgba(56, 189, 248, 0.15);
+    --accent-blue-hover:  #7dd3fc;
+    --accent-teal:        #2dd4bf;
+    --accent-green:       #34d399;
+    --accent-yellow:      #fbbf24;
+    --accent-red:         #f87171;
+    --accent-purple:      #818cf8;
+    --accent-coral:       #fb7185;
+
+    /* Effects */
+    --shadow-card:       0 4px 12px rgba(0, 0, 0, 0.25);
+    --gradient-welcome:  linear-gradient(135deg, #102a43 0%, #1e3a5f 50%, #0c4a6e 100%);
+    --gradient-brand:    linear-gradient(135deg, #38bdf8, #0ea5e9, #2dd4bf);
+    --color-brand:       #ffffff;
+
+    /* Status colors — one per status, used consistently across the app */
+    --status-menunggu:        #fbbf24;
+    --status-menunggu-soft:   rgba(251, 191, 36, 0.15);
+    --status-batch:           #38bdf8;
+    --status-batch-soft:      rgba(56, 189, 248, 0.15);
+    --status-jemput:          #818cf8;
+    --status-jemput-soft:     rgba(129, 140, 248, 0.15);
+    --status-selesai:         #34d399;
+    --status-selesai-soft:    rgba(52, 211, 153, 0.15);
+    --status-idle:            #34d399;
+    --status-idle-soft:       rgba(52, 211, 153, 0.15);
+    --status-maintenance:     #f87171;
+    --status-maintenance-soft: rgba(248, 113, 113, 0.15);
 }
 
-/* 2. DARK THEME BASE */
-body { background: var(--bg-body); color: var(--text-primary); }
-a { color: var(--accent-blue); }
-a:hover { color: #79c0ff; }
+/* --- 1.2 Light mode --- */
+[data-bs-theme="light"] {
+    --bg-body:         #f0f9ff;
+    --bg-sidebar:      #0c4a6e;
+    --bg-card:         #ffffff;
+    --bg-card-hover:   #e0f2fe;
+    --bg-input:        #f8fafc;
 
-/* 3. LAYOUT - Fixed sidebar structure */
+    --text-primary:    #0f172a;
+    --text-secondary:  #475569;
+    --text-muted:      #94a3b8;
+
+    --border-default:  #cbd5e1;
+    --border-muted:    #e2e8f0;
+
+    --accent-blue:        #0284c7;
+    --accent-blue-soft:   rgba(2, 132, 199, 0.12);
+    --accent-blue-hover:  #0369a1;
+    --accent-teal:        #0d9488;
+    --accent-green:       #059669;
+    --accent-yellow:      #d97706;
+    --accent-red:         #dc2626;
+    --accent-purple:      #4f46e5;
+    --accent-coral:       #e11d48;
+
+    --shadow-card:       0 4px 12px rgba(15, 23, 42, 0.08);
+    --gradient-welcome:  linear-gradient(135deg, #0c4a6e 0%, #0284c7 50%, #0ea5e9 100%);
+    --gradient-brand:    linear-gradient(135deg, #0284c7, #0ea5e9, #06b6d4);
+    --color-brand:       #ffffff;
+
+    --status-menunggu:        #d97706;
+    --status-menunggu-soft:   rgba(217, 119, 6, 0.12);
+    --status-batch:           #0284c7;
+    --status-batch-soft:      rgba(2, 132, 199, 0.12);
+    --status-jemput:          #4f46e5;
+    --status-jemput-soft:     rgba(79, 70, 229, 0.12);
+    --status-selesai:         #059669;
+    --status-selesai-soft:    rgba(5, 150, 105, 0.12);
+    --status-idle:            #059669;
+    --status-idle-soft:       rgba(5, 150, 105, 0.12);
+    --status-maintenance:     #dc2626;
+    --status-maintenance-soft: rgba(220, 38, 38, 0.12);
+}
+
+/* --- 1.3 Sidebar overrides — sidebar stays dark in light mode --- */
+[data-bs-theme="light"] .sidebar {
+    --text-primary:   #f0f9ff;
+    --text-secondary: #bae6fd;
+    --text-muted:     #7dd3fc;
+    --border-default: #075985;
+    --border-muted:   #0c4a6e;
+}
+
+
+/* ============================================================================
+   §2. BASE & TRANSITIONS
+   ============================================================================ */
+* {
+    transition: background-color 200ms ease,
+                color 200ms ease,
+                border-color 200ms ease;
+}
+
+body {
+    background: var(--bg-body);
+    color: var(--text-primary);
+    background-image:
+        radial-gradient(at 20% 0%, rgba(56, 189, 248, 0.06) 0px, transparent 50%),
+        radial-gradient(at 80% 100%, rgba(45, 212, 191, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+[data-bs-theme="light"] body {
+    background-image:
+        radial-gradient(at 20% 0%, rgba(2, 132, 199, 0.08) 0px, transparent 50%),
+        radial-gradient(at 80% 100%, rgba(13, 148, 136, 0.06) 0px, transparent 50%);
+}
+
+a       { color: var(--accent-blue); text-decoration: none; }
+a:hover { color: var(--accent-blue-hover); }
+
+
+/* ============================================================================
+   §3. LAYOUT
+   ============================================================================ */
 .admin-wrapper { display: flex; min-height: 100vh; }
-.main-content { flex: 1; min-height: 100vh; margin-left: var(--sidebar-width); }
-.page-content { padding: 1.5rem; }
+.main-content  { flex: 1; min-height: 100vh; margin-left: var(--sidebar-width); }
+.page-content  { padding: 1.5rem; }
 
-/* 4. SIDEBAR - Custom component */
+
+/* ============================================================================
+   §4. SIDEBAR
+   ============================================================================ */
 .sidebar {
     position: fixed;
     top: 0;
@@ -48,28 +195,47 @@ a:hover { color: #79c0ff; }
     z-index: 1000;
     overflow-y: auto;
 }
+
+/* Brand */
 .sidebar-brand {
     display: flex;
     align-items: center;
     padding: 1.25rem 1rem;
     border-bottom: 1px solid var(--border-default);
 }
-.sidebar-brand .brand-icon { font-size: 1.5rem; margin-right: .625rem; }
-.sidebar-brand .brand-text { font-size: 1.125rem; font-weight: 600; }
+.sidebar-brand .brand-icon {
+    font-size: 1.5rem;
+    margin-right: .625rem;
+    filter: brightness(0) invert(1);    /* force pure white */
+}
+.sidebar-brand .brand-text {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.2px;
+}
+
+/* Navigation */
 .sidebar-nav { flex: 1; padding: 1rem .75rem; overflow-y: auto; }
 .sidebar-nav .nav-link {
     display: flex;
     align-items: center;
     padding: .625rem .75rem;
     color: var(--text-secondary);
-    border-radius: .375rem;
+    border-radius: .5rem;
     transition: all 150ms ease;
 }
-.sidebar-nav .nav-link i { font-size: 1rem; margin-right: .75rem; opacity: .7; }
-.sidebar-nav .nav-link:hover { color: var(--text-primary); background: rgba(255,255,255,.05); }
-.sidebar-nav .nav-link:hover i { opacity: 1; }
-.sidebar-nav .nav-link.active { color: var(--text-primary); background: rgba(88,166,255,.15); font-weight: 500; }
+.sidebar-nav .nav-link i        { font-size: 1rem; margin-right: .75rem; opacity: .75; }
+.sidebar-nav .nav-link:hover    { color: var(--text-primary); background: rgba(56, 189, 248, 0.08); }
+.sidebar-nav .nav-link:hover i  { opacity: 1; color: var(--accent-blue); }
+.sidebar-nav .nav-link.active {
+    color: #fff;
+    background: var(--accent-blue-soft);
+    font-weight: 500;
+    box-shadow: inset 3px 0 0 var(--accent-blue);
+}
 .sidebar-nav .nav-link.active i { color: var(--accent-blue); opacity: 1; }
+
 .nav-section { margin-top: 1.5rem; }
 .nav-section-title {
     padding: .5rem .75rem;
@@ -79,6 +245,8 @@ a:hover { color: #79c0ff; }
     letter-spacing: .5px;
     color: var(--text-muted);
 }
+
+/* Footer (logout) */
 .sidebar-footer { padding: 1rem; border-top: 1px solid var(--border-default); }
 .btn-logout {
     display: flex;
@@ -88,14 +256,21 @@ a:hover { color: #79c0ff; }
     padding: .625rem;
     background: transparent;
     border: 1px solid var(--border-default);
-    border-radius: .375rem;
+    border-radius: .5rem;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 150ms ease;
 }
-.btn-logout:hover { background: rgba(248,81,73,.1); border-color: var(--accent-red); color: var(--accent-red); }
+.btn-logout:hover {
+    background: rgba(248, 113, 113, 0.12);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
 
-/* 5. TOP HEADER */
+
+/* ============================================================================
+   §5. TOP HEADER
+   ============================================================================ */
 .top-header {
     display: flex;
     align-items: center;
@@ -104,6 +279,10 @@ a:hover { color: #79c0ff; }
     padding: 0 1.5rem;
     background: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-default);
+}
+[data-bs-theme="light"] .top-header {
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 .user-avatar {
     width: 2.25rem;
@@ -115,108 +294,448 @@ a:hover { color: #79c0ff; }
     justify-content: center;
     color: var(--text-secondary);
 }
-.btn-menu-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+.btn-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 
-/* 6. DARK CARD OVERRIDES */
-.card { background: var(--bg-card); border-color: var(--border-default); }
+/* --- 5.1 Theme toggle button --- */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 50%;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 200ms ease;
+}
+.theme-toggle:hover {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #fff;
+    transform: rotate(20deg);
+}
+.theme-toggle .bi-sun-fill         { display: none; }
+.theme-toggle .bi-moon-stars-fill  { display: inline-block; }
+[data-bs-theme="light"] .theme-toggle .bi-sun-fill        { display: inline-block; }
+[data-bs-theme="light"] .theme-toggle .bi-moon-stars-fill { display: none; }
+
+
+/* ============================================================================
+   §6. PAGE HEADER
+   ============================================================================ */
+/* Compact page header used at the top of admin pages */
+.page-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+}
+.page-header-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.4px;
+}
+.page-header-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0.125rem 0 0;
+}
+.page-header-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.page-header-pill .dot {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: var(--status-menunggu);
+}
+.page-header-pill .count { color: var(--text-primary); font-weight: 600; }
+
+/* Legacy page-heading helpers (still used by some admin pages) */
+.page-heading i      { color: var(--accent-blue); }
+.page-description    { font-size: .875rem; color: var(--text-muted); margin: 0; }
+.page-title          { color: var(--text-primary); }
+
+/* Section heading utility (small caps label with divider line) */
+.section-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-muted);
+}
+
+
+/* ============================================================================
+   §7. CARDS (generic)
+   ============================================================================ */
+.card {
+    background: var(--bg-card);
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-card);
+    border-radius: 0.75rem;
+}
 .card-header { background: transparent; border-color: var(--border-default); }
+.card-title  { color: var(--text-primary); }
 .card-title i { color: var(--accent-blue); }
-.data-card .card-header { background: rgba(0,0,0,.2); }
+.card-footer {
+    background: transparent;
+    border-top: 1px solid var(--border-default);
+    padding: 1rem 1.5rem;
+}
+.data-card .card-header               { background: rgba(56, 189, 248, 0.04); }
+[data-bs-theme="light"] .data-card .card-header { background: rgba(2, 132, 199, 0.04); }
 
-/* 7. DARK TABLE OVERRIDES */
+
+/* ============================================================================
+   §8. KPI CARDS (Shadcn-style: monochrome, minimal, big number)
+   ============================================================================ */
+.kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.375rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 200ms ease;
+}
+.kpi-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.kpi-label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin: 0;
+}
+.kpi-icon {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+.kpi-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+}
+.kpi-value small { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
+.kpi-sub        { margin-top: 0.375rem; font-size: 0.75rem; color: var(--text-muted); }
+.kpi-sub .delta-up   { color: var(--status-selesai); font-weight: 600; }
+.kpi-sub .delta-down { color: var(--status-maintenance); font-weight: 600; }
+
+
+/* ============================================================================
+   §9. STATUS SYSTEM
+   ============================================================================ */
+
+/* --- 9.1 Status badges (used inside tables & lists) --- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    padding: .375rem .75rem;
+    font-size: .75rem;
+    font-weight: 500;
+    border-radius: 1.25rem;
+}
+
+/* Legacy generic variants */
+.status-warning    { background: rgba(251, 191, 36, 0.15); color: var(--accent-yellow); }
+.status-info       { background: rgba(45, 212, 191, 0.15); color: var(--accent-teal); }
+.status-primary    { background: var(--accent-blue-soft); color: var(--accent-blue); }
+.status-success    { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+.status-secondary  { background: rgba(148, 184, 212, 0.15); color: var(--text-secondary); }
+
+/* Status-color variants (meaningful: matches the donut + dots) */
+.status-badge.badge-menunggu,
+.status-badge.status-menunggu,
+.status-badge.badge-warning    { background: var(--status-menunggu-soft); color: var(--status-menunggu); }
+.status-badge.badge-batch,
+.status-badge.status-batch,
+.status-badge.badge-secondary  { background: var(--status-batch-soft); color: var(--status-batch); }
+.status-badge.badge-jemput,
+.status-badge.status-jemput,
+.status-badge.badge-primary    { background: var(--status-jemput-soft); color: var(--status-jemput); }
+.status-badge.badge-selesai,
+.status-badge.status-selesai,
+.status-badge.badge-success    { background: var(--status-selesai-soft); color: var(--status-selesai); }
+
+/* --- 9.2 Status list & rows (used in compact lists, e.g. truck status) --- */
+.status-list { display: flex; flex-direction: column; gap: 0.25rem; }
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0.875rem;
+    border-radius: 0.5rem;
+    transition: background 150ms ease;
+}
+.status-row:hover { background: var(--bg-input); }
+.status-row-left {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-width: 0;
+}
+.status-row-label {
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+.status-row-value {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Status dots (the ONE place where status color appears in the dashboard) */
+.status-tile-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.tile-menunggu    .status-tile-dot { background: var(--status-menunggu); }
+.tile-batch       .status-tile-dot { background: var(--status-batch); }
+.tile-jemput      .status-tile-dot { background: var(--status-jemput); }
+.tile-selesai     .status-tile-dot { background: var(--status-selesai); }
+.tile-idle        .status-tile-dot { background: var(--status-idle); }
+.tile-maintenance .status-tile-dot { background: var(--status-maintenance); }
+
+/* --- 9.3 Status group cards (a card with status content) --- */
+.status-group {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    height: 100%;
+}
+.status-group-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.status-group-title i { color: var(--text-muted); font-size: 0.9375rem; }
+.status-tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.625rem;
+}
+
+
+/* ============================================================================
+   §10. TABLES
+   ============================================================================ */
+
+/* --- 10.1 Data tables (admin index pages) --- */
 .data-table thead th {
     font-size: .6875rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .5px;
     color: var(--accent-blue);
-    background: rgba(88,166,255,.08);
+    background: var(--accent-blue-soft);
     border: none;
 }
-.data-table tbody td { border-color: var(--border-muted); vertical-align: middle; }
-.data-table tbody tr:hover { background: rgba(255,255,255,.02); }
+.data-table tbody td        { border-color: var(--border-muted); vertical-align: middle; color: var(--text-primary); }
+.data-table tbody tr:hover  { background: var(--accent-blue-soft); }
 .data-table tbody tr:last-child td { border-bottom: none; }
-.data-table code { background: var(--bg-input); padding: .25rem .5rem; border-radius: .25rem; font-size: .75rem; color: var(--accent-purple); }
-
-/* 8. CUSTOM BADGES - Dark theme variants */
-.status-badge { display: inline-flex; align-items: center; gap: .375rem; padding: .375rem .75rem; font-size: .75rem; font-weight: 500; border-radius: 1.25rem; }
-.status-warning { background: rgba(255,193,7,.15); color: #ffc107; }
-.status-info { background: rgba(13,202,240,.15); color: #0dcaf0; }
-.status-primary { background: rgba(13,110,253,.15); color: #0d6efd; }
-.status-success { background: rgba(25,135,84,.15); color: #198754; }
-.status-secondary { background: rgba(108,117,125,.15); color: #6c757d; }
-.badge-count { padding: .25rem .75rem; background: var(--bg-input); border: 1px solid var(--border-default); border-radius: 1.25rem; font-size: .75rem; color: var(--text-secondary); }
-.badge-poin { padding: .25rem .625rem; background: rgba(163,113,247,.15); border-radius: .25rem; font-size: .75rem; font-weight: 500; color: var(--accent-purple); }
-
-/* 9. CUSTOM COMPONENTS */
-.avatar-sm { width: 2rem; height: 2rem; border-radius: 50%; background: var(--bg-input); display: flex; align-items: center; justify-content: center; font-size: .875rem; color: var(--text-secondary); flex-shrink: 0; }
-.member-badge { display: inline-flex; align-items: center; gap: .375rem; padding: .25rem .625rem; background: var(--bg-input); border-radius: .25rem; font-size: .75rem; }
-.member-badge i { color: var(--text-muted); }
-.role-tag { padding: .125rem .375rem; background: rgba(88,166,255,.15); border-radius: .1875rem; font-size: .625rem; font-weight: 500; color: var(--accent-blue); text-transform: uppercase; }
-.time-badge, .kategori-tag { display: inline-flex; align-items: center; gap: .375rem; padding: .25rem .625rem; background: var(--bg-input); border-radius: .25rem; font-size: .75rem; color: var(--text-secondary); }
-.kategori-tag { background: rgba(63,185,80,.1); color: var(--accent-green); }
-
-/* 10. ACTION BUTTON HOVERS */
-.btn-action-sm.btn-edit:hover { background: rgba(88,166,255,.15); border-color: var(--accent-blue); color: var(--accent-blue); }
-.btn-action-sm.btn-delete:hover { background: rgba(248,81,73,.15); border-color: var(--accent-red); color: var(--accent-red); }
-
-/* 11. PAGE HEADER */
-.page-heading i { color: var(--accent-blue); }
-.page-description { font-size: .875rem; color: var(--text-muted); margin: 0; }
-
-/* 12. CALENDAR - Custom component */
-.calendar-month { text-align: center; font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: .25rem; }
-.cal-header { padding: .5rem .25rem; text-align: center; font-size: .6875rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
-.cal-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: .8125rem; font-weight: 500; color: var(--text-secondary); background: var(--bg-input); border-radius: .5rem; cursor: pointer; transition: all 150ms ease; }
-.cal-cell:hover:not(.empty) { background: var(--bg-card-hover); color: var(--text-primary); }
-.cal-cell.empty { background: transparent; cursor: default; }
-.cal-cell.is-today { background: var(--accent-blue); color: #fff; font-weight: 600; }
-.cal-cell.is-selected { background: var(--accent-purple); color: #fff; }
-.cal-cell:nth-child(7n+1):not(.empty):not(.is-today),
-.cal-cell:nth-child(7n+8):not(.empty):not(.is-today) { color: var(--accent-red); }
-.calendar-legend { display: flex; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-muted); font-size: .75rem; color: var(--text-secondary); }
-
-/* 13. WELCOME CARD */
-.welcome-card { background: linear-gradient(135deg, var(--bg-card) 0%, #1a2332 100%); border: none; }
-.welcome-illustration { font-size: 4rem; color: var(--accent-blue); opacity: .3; }
-
-/* 14. PROFILE CARD */
-.profile-avatar { width: 3rem; height: 3rem; border-radius: 50%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; color: #fff; }
-.role-badge { display: inline-block; padding: .125rem .5rem; font-size: .6875rem; font-weight: 500; background: rgba(88,166,255,.15); color: var(--accent-blue); border-radius: .25rem; }
-.btn-action { width: 2.5rem; height: 2.5rem; border-radius: .625rem; background: var(--bg-input); border: 1px solid var(--border-default); color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 150ms ease; }
-.btn-action:hover { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
-.detail-row { display: flex; justify-content: space-between; padding: .5rem 0; font-size: .8125rem; }
-.detail-label { color: var(--text-muted); }
-.detail-value { font-weight: 500; }
-.detail-value.highlight { color: var(--accent-green); }
-
-/* 15. FORM FOCUS OVERRIDE */
-.form-select:focus, .form-control:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 .1875rem rgba(88,166,255,.15); }
-
-/* 16. SCROLLBAR */
-::-webkit-scrollbar { width: .5rem; height: .5rem; }
-::-webkit-scrollbar-track { background: var(--bg-body); }
-::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: .25rem; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-/* 17. RESPONSIVE */
-@media (max-width: 992px) {
-    .sidebar { transform: translateX(-100%); transition: transform 250ms ease; }
-    .sidebar.show { transform: translateX(0); }
-    .main-content { margin-left: 0; }
-    .btn-menu-toggle { display: block; }
-}
-@media (max-width: 768px) {
-    .page-content { padding: 1rem; }
+.data-table code {
+    background: var(--bg-input);
+    padding: .25rem .5rem;
+    border-radius: .25rem;
+    font-size: .75rem;
+    color: var(--accent-teal);
 }
 
-/* 18. PAGINATION STYLING */
-.pagination {
+/* --- 10.2 Activity card (dashboard recent activity) --- */
+.activity-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border-muted);
+    padding: 1rem 1.25rem;
+}
+.activity-card .card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
     margin: 0;
-    gap: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.activity-card .card-title i { color: var(--text-muted); font-size: 1rem; }
+.activity-card .card-footer {
+    background: transparent;
+    border-top: 1px solid var(--border-muted);
+    padding: 0.75rem 1.25rem;
+}
+.activity-card .dashboard-table thead th {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: transparent;
+    border-bottom: 1px solid var(--border-muted);
+    padding: 0.625rem 1rem;
+}
+.activity-card .dashboard-table tbody td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-muted);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+.activity-card .dashboard-table tbody tr:last-child td { border-bottom: none; }
+.activity-card .dashboard-table tbody tr:hover         { background: var(--bg-input); }
+
+
+/* ============================================================================
+   §11. FORMS & INPUTS
+   ============================================================================ */
+.form-control, .form-select {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border-color: var(--border-default);
+}
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 .1875rem var(--accent-blue-soft);
+}
+.form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
+.form-control, .form-select, .btn { min-height: 38px; }
+
+/* Search bar / card toolbar */
+.card-toolbar                           { background: rgba(56, 189, 248, 0.04); border-bottom: 1px solid var(--border-default); }
+[data-bs-theme="light"] .card-toolbar   { background: rgba(2, 132, 199, 0.04); }
+.bg-input                               { background-color: var(--bg-input) !important; color: var(--text-primary) !important; }
+
+/* Input groups (icon + input) */
+.input-group-text {
+    background-color: var(--bg-input);
+    border-color: var(--border-default);
+    color: var(--text-secondary);
+}
+.input-group .input-group-text         { border-right: 0; }
+.input-group .form-control,
+.input-group .form-select              { border-color: var(--border-default); border-left: 0; }
+.input-group .form-control:focus,
+.input-group .form-select:focus        { border-color: var(--accent-blue); z-index: 3; }
+.input-group:focus-within .input-group-text,
+.input-group:focus-within .form-control,
+.input-group:focus-within .form-select { border-color: var(--accent-blue); box-shadow: none; }
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem var(--accent-blue-soft);
+    border-radius: 0.375rem;
 }
 
+
+/* ============================================================================
+   §12. BUTTONS
+   ============================================================================ */
+.btn-primary {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background: var(--accent-blue-hover);
+    border-color: var(--accent-blue-hover);
+    color: #fff;
+}
+.btn-outline-primary {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+.btn-outline-primary:hover {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #fff;
+}
+
+/* Small action buttons (edit/delete in tables) */
+.btn-action-sm.btn-edit:hover {
+    background: var(--accent-blue-soft);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+.btn-action-sm.btn-delete:hover {
+    background: rgba(248, 113, 113, 0.15);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+/* Profile action buttons (round icon buttons) */
+.btn-action {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: .625rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+.btn-action:hover { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
+
+
+/* ============================================================================
+   §13. PAGINATION
+   ============================================================================ */
+.pagination { margin: 0; gap: 0.25rem; }
 .page-link {
     background: var(--bg-input);
     border: 1px solid var(--border-default);
@@ -226,24 +745,14 @@ a:hover { color: #79c0ff; }
     font-size: 0.875rem;
     transition: all 150ms ease;
 }
-
-.page-link:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--accent-blue);
-    color: var(--accent-blue);
-}
-
-.page-link:focus {
-    box-shadow: 0 0 0 0.1875rem rgba(88, 166, 255, 0.15);
-}
-
+.page-link:hover { background: var(--bg-card-hover); border-color: var(--accent-blue); color: var(--accent-blue); }
+.page-link:focus { box-shadow: 0 0 0 0.1875rem var(--accent-blue-soft); }
 .page-item.active .page-link {
     background: var(--accent-blue);
     border-color: var(--accent-blue);
     color: #fff;
     font-weight: 500;
 }
-
 .page-item.disabled .page-link {
     background: var(--bg-card);
     border-color: var(--border-muted);
@@ -252,86 +761,148 @@ a:hover { color: #79c0ff; }
     cursor: not-allowed;
 }
 
-.card-footer {
-    background: transparent;
-    border-top: 1px solid var(--border-default);
-    padding: 1rem 1.5rem;
+
+/* ============================================================================
+   §14. MISC COMPONENTS
+   ============================================================================ */
+
+/* Welcome card (gradient banner) */
+.welcome-card {
+    background: var(--gradient-welcome);
+    border: none;
+    color: #e0f2fe;
+}
+.welcome-card .card-title,
+.welcome-card h1, .welcome-card h2, .welcome-card h3, .welcome-card h4, .welcome-card h5 { color: #fff; }
+.welcome-illustration { font-size: 4rem; color: var(--accent-teal); opacity: .5; }
+
+/* Profile avatar (used in tables/lists) */
+.profile-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: #fff;
+}
+.role-badge {
+    display: inline-block;
+    padding: .125rem .5rem;
+    font-size: .6875rem;
+    font-weight: 500;
+    background: var(--accent-blue-soft);
+    color: var(--accent-blue);
+    border-radius: .25rem;
 }
 
+/* Detail rows (key/value pairs) */
+.detail-row              { display: flex; justify-content: space-between; padding: .5rem 0; font-size: .8125rem; }
+.detail-label            { color: var(--text-muted); }
+.detail-value            { font-weight: 500; color: var(--text-primary); }
+.detail-value.highlight  { color: var(--accent-green); }
 
-/* 19. SEARCH BAR & INPUT GROUPS */
-.card-toolbar {
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid var(--border-default);
+/* Small avatar (for table rows) */
+.avatar-sm {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--bg-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .875rem;
+    color: var(--text-secondary);
+    flex-shrink: 0;
 }
 
-.bg-input {
-    background-color: var(--bg-input) !important;
-    color: var(--text-primary) !important;
-}
-
-.input-group-text {
-    background-color: var(--bg-input);
-    border-color: var(--border-default);
+/* Member badge (inline person tag) */
+.member-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    padding: .25rem .625rem;
+    background: var(--bg-input);
+    border-radius: .25rem;
+    font-size: .75rem;
     color: var(--text-secondary);
 }
+.member-badge i { color: var(--text-muted); }
 
-.input-group .form-control,
-.input-group .form-select {
-    border-color: var(--border-default);
+/* Role / count badges */
+.role-tag {
+    padding: .125rem .375rem;
+    background: var(--accent-blue-soft);
+    border-radius: .1875rem;
+    font-size: .625rem;
+    font-weight: 500;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+}
+.badge-count {
+    padding: .25rem .75rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border-default);
+    border-radius: 1.25rem;
+    font-size: .75rem;
+    color: var(--text-secondary);
+}
+.badge-poin {
+    padding: .25rem .625rem;
+    background: rgba(129, 140, 248, 0.15);
+    border-radius: .25rem;
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--accent-purple);
 }
 
-.input-group .form-control:focus,
-.input-group .form-select:focus {
-    border-color: var(--accent-blue);
-    z-index: 3;
+/* Time & kategori inline tags */
+.time-badge,
+.kategori-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    padding: .25rem .625rem;
+    background: var(--bg-input);
+    border-radius: .25rem;
+    font-size: .75rem;
+    color: var(--text-secondary);
+}
+.kategori-tag { background: rgba(45, 212, 191, 0.12); color: var(--accent-teal); }
+
+
+/* ============================================================================
+   §15. CHART CARD
+   ============================================================================ */
+.chart-clean .card-header {
+    padding: 1rem 1.25rem;
+    background: transparent;
+    border-bottom: 1px solid var(--border-muted);
+}
+.chart-clean .card-body { padding: 1.25rem; }
+
+
+/* ============================================================================
+   §16. SCROLLBAR
+   ============================================================================ */
+::-webkit-scrollbar              { width: .5rem; height: .5rem; }
+::-webkit-scrollbar-track        { background: var(--bg-body); }
+::-webkit-scrollbar-thumb        { background: var(--border-default); border-radius: .25rem; }
+::-webkit-scrollbar-thumb:hover  { background: var(--accent-blue); }
+
+
+/* ============================================================================
+   §17. RESPONSIVE
+   ============================================================================ */
+@media (max-width: 992px) {
+    .sidebar          { transform: translateX(-100%); transition: transform 250ms ease; }
+    .sidebar.show     { transform: translateX(0); }
+    .main-content     { margin-left: 0; }
+    .btn-menu-toggle  { display: block; }
 }
 
-/* Ensure placeholder color is correct in dark mode */
-.form-control::placeholder {
-    color: var(--text-muted);
-    opacity: 0.7;
+@media (max-width: 768px) {
+    .page-content { padding: 1rem; }
 }
-
-
-/* 20. INPUT GROUP REFINEMENTS */
-.input-group-text {
-    background-color: var(--bg-input);
-    color: var(--text-muted);
-    border-color: var(--border-default);
-}
-
-.input-group .form-control,
-.input-group .form-select {
-    background-color: var(--bg-input);
-    color: var(--text-primary);
-    border-color: var(--border-default);
-}
-
-/* Fix the join between icon and input */
-.input-group .input-group-text {
-    border-right: 0;
-}
-.input-group .form-control,
-.input-group .form-select {
-    border-left: 0;
-}
-
-/* Focus state for the whole group */
-.input-group:focus-within .input-group-text,
-.input-group:focus-within .form-control,
-.input-group:focus-within .form-select {
-    border-color: var(--accent-blue);
-    box-shadow: none;
-}
-
-.input-group:focus-within {
-    box-shadow: 0 0 0 0.25rem rgba(88, 166, 255, 0.15);
-    border-radius: 0.375rem;
-}
-
-/* Adjust height for standard inputs */
-.form-control, .form-select, .btn {
-    min-height: 38px; /* Standard Bootstrap height */
-}
-
